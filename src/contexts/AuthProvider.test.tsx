@@ -2,6 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useAuth } from '../hooks/useAuth'
+import { apiClient } from '../services/api/apiClient'
 import { ApiError } from '../services/api/apiError'
 import { authService } from '../services/authService'
 import type { User } from '../types/entities'
@@ -106,5 +107,33 @@ describe('AuthProvider', () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => renderHook(() => useAuth())).toThrow('useAuth must be used within AuthProvider')
     consoleError.mockRestore()
+  })
+
+  it('ignores a late 401 for an old token after a fresh login', async () => {
+    localStorage.setItem('agroserv_token', 'mock.old')
+    let rejectMe: (error: unknown) => void = () => {}
+    mockedAuthService.me.mockImplementation(() => new Promise((_, reject) => (rejectMe = reject)))
+    mockedAuthService.login.mockResolvedValue({ token: 'mock.usr-1', user })
+    const { result } = renderHook(() => useAuth(), { wrapper })
+    await act(async () => {
+      await result.current.login('produtor@agroserv.com', '123456')
+    })
+    await act(async () => rejectMe(new ApiError({ status: 401, code: 'unauthorized', message: 'Sessão inválida.' })))
+    expect(result.current.isAuthenticated).toBe(true)
+    expect(getToken()).toBe('mock.usr-1')
+    expect(result.current.isLoading).toBe(false)
+  })
+
+  it('logs out when an authenticated request returns 401', async () => {
+    saveSession('mock.usr-1', user)
+    mockedAuthService.me.mockResolvedValue(user)
+    const { result } = renderHook(() => useAuth(), { wrapper })
+    await waitFor(() => expect(result.current.isLoading).toBe(false))
+    localStorage.setItem('agroserv_token', 'mock.expired')
+    await act(async () => {
+      await expect(apiClient.get('/requests')).rejects.toBeInstanceOf(ApiError)
+    })
+    expect(result.current.isAuthenticated).toBe(false)
+    expect(getToken()).toBeNull()
   })
 })

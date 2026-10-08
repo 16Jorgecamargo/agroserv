@@ -1,14 +1,22 @@
 import { useCallback } from 'react'
 import { categoryService } from '../services/categoryService'
 import { serviceService } from '../services/serviceService'
-import type { ServiceFilters } from '../types/api'
+import type { Paginated, ServiceFilters } from '../types/api'
+import type { Service } from '../types/entities'
 import { useAsync } from './useAsync'
 
-export function useServices({ q, location, category, page, pageSize }: ServiceFilters) {
-  const fetcher = useCallback(
-    () => serviceService.list({ q, location, category, page, pageSize }),
-    [q, location, category, page, pageSize],
-  )
+type ServicePageFilters = Omit<ServiceFilters, 'page' | 'pageSize'>
+
+export function useServicePages({ q, location, category }: ServicePageFilters, pageSize: number, pageCount: number) {
+  const fetcher = useCallback(async (): Promise<Paginated<Service>> => {
+    const pages = await Promise.all(
+      Array.from({ length: pageCount }, (_, index) =>
+        serviceService.list({ q, location, category, page: index + 1, pageSize }),
+      ),
+    )
+    const last = pages[pages.length - 1]
+    return { data: pages.flatMap((page) => page.data), meta: last.meta }
+  }, [q, location, category, pageSize, pageCount])
   return useAsync(fetcher)
 }
 

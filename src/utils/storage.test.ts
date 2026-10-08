@@ -35,4 +35,12 @@ describe('storage', () => {
     localStorage.setItem('agroserv_user', '{oops')
     expect(getStoredUser()).toBeNull()
   })
+
+  it('ignores stored values that are not a user and removes them', () => {
+    for (const raw of ['{}', '"x"', '123', '[]', '{"id":1,"name":"A"}']) {
+      localStorage.setItem('agroserv_user', raw)
+      expect(getStoredUser()).toBeNull()
+      expect(localStorage.getItem('agroserv_user')).toBeNull()
+    }
+  })
 })

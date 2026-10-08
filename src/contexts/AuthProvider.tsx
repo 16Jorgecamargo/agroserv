@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { subscribeUnauthorized } from '../services/api/apiClient'
 import { isApiError } from '../services/api/apiError'
 import { authService } from '../services/authService'
 import type { User } from '../types/entities'
@@ -16,12 +17,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authService
       .me()
       .then((currentUser) => {
-        if (!active) return
+        if (!active || getToken() !== token) return
         saveSession(token, currentUser)
         setUser(currentUser)
       })
       .catch((error: unknown) => {
-        if (!active || !isApiError(error) || error.status !== 401) return
+        if (!active || !isApiError(error) || error.status !== 401 || getToken() !== token) return
         clearSession()
         setUser(null)
       })
@@ -33,10 +34,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  useEffect(
+    () =>
+      subscribeUnauthorized((token) => {
+        if (getToken() !== token) return
+        clearSession()
+        setUser(null)
+      }),
+    [],
+  )
+
   const login = useCallback(async (email: string, password: string) => {
     const response = await authService.login({ email: email.trim(), password })
     saveSession(response.token, response.user)
     setUser(response.user)
+    setIsLoading(false)
     return response.user
   }, [])
 

@@ -13,7 +13,7 @@ import { EmptyState } from '../components/ui/EmptyState'
 import { ErrorState } from '../components/ui/ErrorState'
 import { FilterChip } from '../components/ui/FilterChip'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { useCategories, useServices } from '../hooks/useServices'
+import { useCategories, useServicePages } from '../hooks/useServices'
 import { paths } from '../routes/paths'
 import { cn } from '../utils/cn'
 import { formatCount } from '../utils/format'
@@ -34,13 +34,11 @@ export function ServicesPage() {
   const pageCount = pagination.filterKey === filterKey ? pagination.pageCount : 1
 
   const categories = useCategories()
-  const { data, error, isLoading, refetch } = useServices({
-    q: query || undefined,
-    location: location || undefined,
-    category: category || undefined,
-    page: 1,
-    pageSize: PAGE_SIZE * pageCount,
-  })
+  const { data, error, isLoading, refetch } = useServicePages(
+    { q: query || undefined, location: location || undefined, category: category || undefined },
+    PAGE_SIZE,
+    pageCount,
+  )
 
   const services = data?.data ?? []
   const total = data?.meta.total ?? 0

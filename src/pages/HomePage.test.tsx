@@ -34,4 +34,14 @@ describe('HomePage', () => {
     renderApp('/rota-inexistente')
     expect(screen.getByRole('heading', { level: 1, name: 'Página não encontrada' })).toBeInTheDocument()
   })
+
+  it('still renders when the stored user is corrupted', async () => {
+    localStorage.setItem('agroserv_token', 'mock.usr-1')
+    localStorage.setItem('agroserv_user', '{}')
+    renderApp('/')
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Encontre o serviço agrícola certo para sua propriedade.' }),
+    ).toBeInTheDocument()
+    expect(await screen.findByRole('link', { name: 'Meu painel' })).toBeInTheDocument()
+  })
 })

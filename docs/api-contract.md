@@ -15,7 +15,7 @@ Para usar a API real, crie `.env` com `VITE_API_MODE=http` e `VITE_API_URL=<url>
 ## Convenções
 
 - JSON em requisições e respostas. IDs `string`. Datas ISO 8601 (`2026-10-15`). Valores em reais como `number`.
-- Autenticação: `Authorization: Bearer <token>`, token obtido em `POST /auth/login`.
+- Autenticação: `Authorization: Bearer <token>`, token obtido em `POST /auth/login`. Qualquer resposta 401 a uma requisição autenticada encerra a sessão no front-end e leva o usuário ao login.
 - Listas paginadas: `{ "data": T[], "meta": { "page", "pageSize", "total", "totalPages" } }`.
 - Erros: status HTTP + corpo `{ "status": number, "code": string, "message": string }`. A `message` é exibida ao usuário (PT-BR).
 
