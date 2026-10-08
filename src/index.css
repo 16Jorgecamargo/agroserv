@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/manrope';
+
+@theme {
+  --font-sans: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+  --color-bg: #f7f8f5;
+  --color-surface: #ffffff;
+  --color-surface-muted: #eef1ec;
+  --color-border: #e4e8e1;
+  --color-text: #17201a;
+  --color-text-muted: #667085;
+  --color-primary: #2f6b45;
+  --color-primary-strong: #173f2a;
+  --color-primary-light: #7fb685;
+  --color-primary-soft: #e6f0e8;
+  --color-warning: #b7791f;
+  --color-danger: #b42318;
+  --color-info: #2b5c8a;
+  --shadow-card: 0 1px 2px rgb(16 24 20 / 0.04);
+  --shadow-card-hover: 0 12px 28px -14px rgb(16 24 20 / 0.22);
+  --radius-card: 10px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-bg font-sans text-text;
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
