@@ -430,3 +430,20 @@ Verificação final:
 Cadastro, criação de solicitação, favoritos, mapa, dark mode, toasts, perfil, configurações, contratos, mensagens, área do prestador e papéis, páginas de prestadores, sobre e como funciona, gráficos, back-end real.
 
 A arquitetura (contrato de API, adaptadores e camadas) permite adicionar esses itens nas próximas etapas sem reescrever o que existe.
+
+## 14. Ajustes definidos no planejamento
+
+Detalhes fixados ao escrever o plano de implementação. Prevalecem sobre as seções anteriores.
+
+- `Service` ganha `providerName: string` (campo desnormalizado, comum em DTOs de listagem).
+- `GET /services` aceita também `location` (cidade/UF, sem diferenciar acento, caixa ou pontuação). A busca `q` exige todos os termos e procura em título, descrição, prestador, categoria e cidade.
+- `ProducerDashboard` fica em `types/api.ts`.
+- `mockAdapter` aceita `?mockError` na URL da página para forçar erro 500 em requisições `GET` (demonstração do estado de erro).
+- `AuthContext` é dividido em `contexts/AuthContext.ts` (contexto e tipo) e `contexts/AuthProvider.tsx` (provider). A sessão só é apagada no boot quando `/auth/me` responde 401; falha de rede mantém a sessão salva.
+- O estado de navegação do login é `{ from?: { pathname, search }, reason?: 'protected' }`. O alerta "Faça login para acessar esta área." aparece só quando `reason === 'protected'` (definido pelo `ProtectedRoute`).
+- O detalhe do serviço tem um CTA: deslogado, "Entrar para contratar" leva ao login e volta ao serviço; logado, "Acompanhar no painel" leva ao dashboard.
+- O botão "Usar conta demo" só aparece quando `VITE_API_MODE !== 'http'`.
+- `/solicitacoes` tem os filtros Todas, Pendentes, Aceitas, Em andamento, Concluídas e Canceladas, sincronizados com `?status=`. Status inválido na URL volta para "Todas".
+- Hook genérico `useAsync` mantém os dados anteriores enquanto recarrega (`isLoading` verdadeiro, `data` antigo).
+- Componentes extras: `Avatar`, `Breadcrumbs`, `FilterChip`, `SectionHeader`, `FullScreenLoader`, `Container`, `SkipLink`, `ScrollToTop`, `ServiceImage`, `ServiceCardSkeleton`, `CategoryIcon`, `HeroVisual`. Utilitários extras: `utils/searchParams.ts`, `utils/requestStatus.ts`, `utils/validators.ts`, `hooks/usePageTitle.ts`.
+- `README.md` com instruções de execução, conta demo e troca para a API real.
