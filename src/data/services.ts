@@ -1,3 +1,4 @@
+import droneImage from '../assets/images/service-drone.jpg'
 import fertilizingImage from '../assets/images/service-fertilizing.jpg'
 import harvestImage from '../assets/images/service-harvest.jpg'
 import irrigationImage from '../assets/images/service-irrigation.jpg'
@@ -169,7 +170,7 @@ export const services: ServiceRecord[] = [
     rating: 4.9,
     reviewCount: 53,
     available: true,
-    imageUrl: sprayingImage,
+    imageUrl: droneImage,
   },
   {
     id: 'svc-11',
