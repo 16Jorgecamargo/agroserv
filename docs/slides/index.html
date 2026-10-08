@@ -34,10 +34,10 @@
   --info: #2B5C8A;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; background: #0F1511; overflow: hidden; }
+html, body { height: 100%; background: var(--bg); overflow: hidden; transition: background-color .5s; }
 body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
-.viewport { position: fixed; inset: 0; display: grid; place-items: center; }
-.stage { position: relative; width: 1920px; height: 1080px; background: var(--bg); overflow: hidden; transform-origin: center center; flex: none; }
+.viewport { position: fixed; inset: 0; overflow: hidden; }
+.stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; background: var(--bg); overflow: hidden; transform-origin: center center; transform: translate(-50%, -50%); }
 .slide { position: absolute; inset: 0; visibility: hidden; }
 .slide.is-active { visibility: visible; }
 .slide.is-leaving { visibility: visible; pointer-events: none; }
@@ -761,13 +761,14 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
     counter.textContent = `${String(current + 1).padStart(2, '0')} / ${slides.length}`
     bar.style.width = `${((current + 1) / slides.length) * 100}%`
     chrome.classList.toggle('on-dark', slide.dataset.darkChrome === 'true')
+    document.body.style.backgroundColor = slide.dataset.darkChrome === 'true' ? '#173F2A' : '#F7F8F5'
     history.replaceState(null, '', `#${current + 1}`)
     if (current > 0) hint.style.opacity = '0'
   }
 
   function fit() {
     const scale = Math.min(innerWidth / 1920, innerHeight / 1080)
-    stage.style.transform = `scale(${scale})`
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`
   }
 
   addEventListener('resize', fit)
