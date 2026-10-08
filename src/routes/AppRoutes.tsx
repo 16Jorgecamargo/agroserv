@@ -3,6 +3,7 @@ import { PrivateLayout } from '../layouts/PrivateLayout'
 import { PublicLayout } from '../layouts/PublicLayout'
 import { DashboardPage } from '../pages/DashboardPage'
 import { HomePage } from '../pages/HomePage'
+import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { ServiceDetailPage } from '../pages/ServiceDetailPage'
 import { ServicesPage } from '../pages/ServicesPage'
@@ -18,6 +19,7 @@ export function AppRoutes() {
         <Route path={routePatterns.serviceDetail} element={<ServiceDetailPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
+      <Route path={paths.login} element={<LoginPage />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<PrivateLayout />}>
           <Route path={paths.dashboard} element={<DashboardPage />} />
