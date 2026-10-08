@@ -17,7 +17,7 @@ Oito diagramas que explicam a navegação, a autenticação e a arquitetura do A
 
 Páginas públicas em verde-claro, área privada em verde-escuro.
 
-![Mapa de navegação](flowcharts/01-navigation.png)
+<p align="center"><img src="flowcharts/01-navigation.png" alt="Mapa de navegação" width="960"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -57,7 +57,7 @@ flowchart LR
 
 Implementado em `src/routes/ProtectedRoute.tsx`. Envolve todas as rotas privadas.
 
-![Proteção de rotas (ProtectedRoute)](flowcharts/02-protected-route.png)
+<p align="center"><img src="flowcharts/02-protected-route.png" alt="Proteção de rotas (ProtectedRoute)" width="777"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -82,7 +82,7 @@ flowchart TD
 
 Implementado em `src/pages/LoginPage.tsx` e `src/contexts/AuthProvider.tsx`.
 
-![Fluxo de login](flowcharts/03-login.png)
+<p align="center"><img src="flowcharts/03-login.png" alt="Fluxo de login" width="960"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -114,7 +114,7 @@ flowchart TD
 
 Implementado em `src/contexts/AuthProvider.tsx`.
 
-![Restauração da sessão ao abrir o app](flowcharts/04-session-restore.png)
+<p align="center"><img src="flowcharts/04-session-restore.png" alt="Restauração da sessão ao abrir o app" width="960"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -142,7 +142,7 @@ flowchart TD
 
 A interface nunca acessa os dados diretamente. Trocar dados simulados por API real é uma variável de ambiente.
 
-![Arquitetura em camadas](flowcharts/05-architecture.png)
+<p align="center"><img src="flowcharts/05-architecture.png" alt="Arquitetura em camadas" width="960"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -187,7 +187,7 @@ flowchart TB
 
 Exemplo: abrir a listagem de serviços.
 
-![Caminho de uma requisição de dados](flowcharts/06-data-request.png)
+<p align="center"><img src="flowcharts/06-data-request.png" alt="Caminho de uma requisição de dados" width="960"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -220,7 +220,7 @@ sequenceDiagram
 
 Implementado em `src/pages/ServicesPage.tsx` (estado na URL) e `src/services/api/mockRoutes.ts` (regras do "servidor").
 
-![Busca e filtros de serviços](flowcharts/07-service-search.png)
+<p align="center"><img src="flowcharts/07-service-search.png" alt="Busca e filtros de serviços" width="783"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -251,7 +251,7 @@ flowchart TD
 
 Padrão aplicado em todas as páginas com dados (home, serviços, detalhe, dashboard, solicitações).
 
-![Estados de interface de uma listagem](flowcharts/08-ui-states.png)
+<p align="center"><img src="flowcharts/08-ui-states.png" alt="Estados de interface de uma listagem" width="764"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
