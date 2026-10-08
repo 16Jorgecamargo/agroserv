@@ -301,34 +301,30 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
   <section class="slide" data-seed="140,150,64,8,4,#2F6B45" data-script="auth">
     <div class="eyebrow" data-a="rise" data-b="0">06 · Middleware de proteção</div>
     <h2 class="title" data-a="mask" data-b="1">Verificar, permitir ou redirecionar.</h2>
-    <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
-      <defs>
-        <marker id="auth-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8E9A92" stroke="none"/></marker>
-        <marker class="hot" id="auth-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6B45" stroke="none"/></marker>
-      </defs>
-      <path data-a="draw" data-b="6" data-arrow="auth-arrow" d="M400 615 H458"/>
-      <path data-a="draw" data-b="8" data-arrow="auth-arrow" d="M560 714 V788"/>
-      <path data-a="draw" data-b="9" data-arrow="auth-arrow" d="M659 615 H798"/>
-      <path data-a="draw" data-b="11" data-arrow="auth-arrow" d="M900 516 V430 H1078"/>
-      <path data-a="draw" data-b="12" data-arrow="auth-arrow-hot" class="hot" d="M900 714 V800 H1078"/>
-      <path data-a="draw" data-b="14" data-arrow="auth-arrow-hot" class="hot" d="M1400 800 H1438"/>
-      <path data-a="draw" data-b="16" data-arrow="auth-arrow-hot" class="hot" d="M1610 745 V672"/>
-      <path data-a="draw" data-b="18" data-arrow="auth-arrow-hot" class="hot" d="M1610 560 V430 H1402"/>
-      <path id="auth-route" class="route" d="M400 615 H900 V800 H1610 V430 H1402"/>
-    </svg>
-    <div class="node" style="left:140px;top:560px;width:260px;height:110px" data-a="pop" data-b="4"><b>Rota privada</b><span>ex.: /solicitacoes</span></div>
-    <div class="diamond" style="left:460px;top:515px" data-a="pop" data-b="6"><b style="font-size:20px">Verificando<br>sessão?</b></div>
-    <div class="edge-label" style="left:575px;top:730px;color:var(--muted)" data-a="rise" data-b="8">Sim</div>
-    <div class="node" style="left:410px;top:790px;width:300px;height:100px" data-a="pop" data-b="9"><b>Carregando…</b><span>aguarda GET /auth/me</span></div>
-    <div class="edge-label" style="left:700px;top:575px;color:var(--muted)" data-a="rise" data-b="9">Não</div>
-    <div class="diamond" style="left:800px;top:515px" data-a="pop" data-b="10"><b>Sessão<br>ativa?</b></div>
-    <div class="edge-label" style="left:915px;top:455px;color:var(--muted)" data-a="rise" data-b="11">Sim</div>
-    <div class="edge-label" style="left:915px;top:740px;color:var(--green)" data-a="rise" data-b="12">Não</div>
-    <div class="node accent" style="left:1080px;top:375px;width:320px;height:110px" data-a="pop" data-b="12"><b>Renderiza a página</b><span>&lt;Outlet /&gt;</span></div>
-    <div class="node" style="left:1080px;top:745px;width:320px;height:110px" data-a="pop" data-b="13"><b>Guarda a rota</b><span>pathname + query</span></div>
-    <div class="node soft" style="left:1440px;top:745px;width:340px;height:110px" data-a="pop" data-b="15"><b>/login com aviso</b><span>“Faça login para acessar esta área.”</span></div>
-    <div class="node dark" style="left:1440px;top:560px;width:340px;height:110px" data-a="pop" data-b="17"><b>Login com sucesso</b><span>navega para a rota guardada</span></div>
-    <div class="packet" data-packet></div>
+    <div style="position:absolute;inset:0;transform:translateX(-140px)">
+      <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
+        <defs>
+          <marker id="auth-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8E9A92" stroke="none"/></marker>
+          <marker class="hot" id="auth-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6B45" stroke="none"/></marker>
+        </defs>
+        <path data-a="draw" data-b="8" data-arrow="auth-arrow" d="M700 615 H798"/>
+        <path data-a="draw" data-b="11" data-arrow="auth-arrow" d="M900 516 V430 H1078"/>
+        <path data-a="draw" data-b="12" data-arrow="auth-arrow-hot" class="hot" d="M900 714 V800 H1078"/>
+        <path data-a="draw" data-b="14" data-arrow="auth-arrow-hot" class="hot" d="M1400 800 H1438"/>
+        <path data-a="draw" data-b="16" data-arrow="auth-arrow-hot" class="hot" d="M1610 745 V672"/>
+        <path data-a="draw" data-b="18" data-arrow="auth-arrow-hot" class="hot" d="M1610 560 V430 H1402"/>
+        <path id="auth-route" class="route" d="M700 615 H900 V800 H1610 V430 H1402"/>
+      </svg>
+      <div class="node" style="left:420px;top:560px;width:280px;height:110px" data-a="pop" data-b="4"><b>Rota privada</b><span>ex.: /solicitacoes</span></div>
+      <div class="diamond" style="left:800px;top:515px" data-a="pop" data-b="10"><b>Sessão<br>ativa?</b></div>
+      <div class="edge-label" style="left:915px;top:455px;color:var(--muted)" data-a="rise" data-b="11">Sim</div>
+      <div class="edge-label" style="left:915px;top:740px;color:var(--green)" data-a="rise" data-b="12">Não</div>
+      <div class="node accent" style="left:1080px;top:375px;width:320px;height:110px" data-a="pop" data-b="12"><b>Renderiza a página</b><span>&lt;Outlet /&gt;</span></div>
+      <div class="node" style="left:1080px;top:745px;width:320px;height:110px" data-a="pop" data-b="13"><b>Guarda a rota</b><span>pathname + query</span></div>
+      <div class="node soft" style="left:1440px;top:745px;width:340px;height:110px" data-a="pop" data-b="15"><b>/login com aviso</b><span>“Faça login para acessar esta área.”</span></div>
+      <div class="node dark" style="left:1440px;top:560px;width:340px;height:110px" data-a="pop" data-b="17"><b>Login com sucesso</b><span>navega para a rota guardada</span></div>
+      <div class="packet" data-packet></div>
+    </div>
   </section>
 
   <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="home">
