@@ -1,32 +1,82 @@
-# React + TypeScript + Vite
+# AgroServ
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Plataforma web para contratação de serviços agrícolas. Conecta produtores rurais a prestadores de máquinas, equipamentos e mão de obra.
 
-Currently, two official plugins are available:
+Projeto acadêmico: nesta etapa o front-end usa um back-end simulado que segue o mesmo contrato da API REST que será implementada na próxima etapa.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Como executar
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Acesse `http://localhost:5173`.
+
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm run build` | Build de produção |
+| `npm run test:run` | Testes automatizados |
+| `npm run lint` | Lint |
+
+## Conta de demonstração
+
+- E-mail: `produtor@agroserv.com`
+- Senha: `123456`
+
+Na tela de login, o botão **Usar conta demo** preenche os campos.
+
+## Páginas
+
+| Rota | Acesso | Conteúdo |
+|---|---|---|
+| `/` | Pública | Página inicial com busca, categorias e serviços em destaque |
+| `/servicos` | Pública | Listagem com busca, filtro por categoria e "Carregar mais" |
+| `/servicos/:id` | Pública | Detalhes do serviço e do prestador |
+| `/login` | Pública | Login |
+| `/dashboard` | Privada | Resumo do produtor e solicitações recentes |
+| `/solicitacoes` | Privada | Todas as solicitações com filtro por status |
+
+Ao abrir uma rota privada sem login, o `ProtectedRoute` redireciona para `/login` com a mensagem "Faça login para acessar esta área." Depois do login, o usuário volta para a página que tentou abrir.
+
+## Arquitetura
+
+```
+src/
+├── types/        entidades e contrato da API
+├── data/         dados simulados (usados só pelo mock)
+├── services/
+│   ├── api/      apiClient + adaptadores mock e http
+│   └── *Service.ts   funções por recurso (auth, services, categories, requests)
+├── hooks/        useAuth, useServices, useRequests, useAsync
+├── contexts/     AuthContext + AuthProvider
+├── routes/       rotas, paths e ProtectedRoute
+├── layouts/      PublicLayout e PrivateLayout
+├── components/   ui, domain e layout
+└── pages/        uma página por rota
+```
+
+Fluxo de dados: `página → hook → service → apiClient → adaptador (mock ou http)`.
+
+## Conectar ao back-end real
+
+1. Implemente os endpoints descritos em `docs/api-contract.md`.
+2. Crie `.env` a partir de `.env.example`:
+
+```
+VITE_API_MODE=http
+VITE_API_URL=http://localhost:3333
+```
+
+Nenhum componente, hook ou service precisa mudar.
+
+## Demonstrar estados
+
+- Carregamento: os dados simulados têm atraso de 300–600 ms (skeletons).
+- Vazio: busque um termo inexistente em `/servicos`.
+- Erro: adicione `?mockError` a qualquer URL (ex.: `/servicos?mockError`).
+
+## Próximas etapas
+
+Itens adiados estão em `docs/backlog.md`.
