@@ -94,7 +94,10 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
 
 .diagram { position: absolute; inset: 0; pointer-events: none; }
 .diagram path, .diagram line { stroke: #A9B4AC; stroke-width: 3; fill: none; }
-.diagram .hot { stroke: var(--green); }
+.diagram path.hot { stroke: var(--green); }
+.diagram path.route { stroke: none; }
+.diagram marker path { stroke: none; fill: #8E9A92; }
+.diagram marker.hot path { fill: var(--green); }
 .node { position: absolute; display: flex; flex-direction: column; justify-content: center; padding: 0 28px; background: var(--white); border: 1.5px solid var(--line); border-radius: 18px; }
 .node b { font-size: 28px; letter-spacing: -.01em; }
 .node span { font-size: 19px; color: var(--muted); margin-top: 4px; }
@@ -284,19 +287,25 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
     <div class="eyebrow" data-a="rise" data-b="0">04 · Arquitetura</div>
     <h2 class="title" data-a="mask" data-b="1">Camadas que separam a tela dos dados.</h2>
     <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
-      <path data-a="draw" data-b="7" d="M420 610 H470"/>
-      <path data-a="draw" data-b="8" d="M750 610 H800"/>
-      <path data-a="draw" data-b="9" d="M1080 610 H1130"/>
-      <path data-a="draw" data-b="10" d="M1410 610 C1440 610 1430 520 1470 520"/>
-      <path data-a="draw" data-b="10" d="M1410 610 C1440 610 1430 700 1470 700"/>
-      <path id="arch-route" d="M280 610 H1430 C1450 610 1440 520 1470 520 H1620" stroke="none"/>
+      <defs>
+        <marker id="arch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8E9A92" stroke="none"/></marker>
+        <marker class="hot" id="arch-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6B45" stroke="none"/></marker>
+      </defs>
+      <path data-a="draw" data-b="7" data-arrow="arch-arrow" d="M420 610 H468"/>
+      <path data-a="draw" data-b="8" data-arrow="arch-arrow" d="M750 610 H798"/>
+      <path data-a="draw" data-b="9" data-arrow="arch-arrow" d="M1080 610 H1128"/>
+      <path data-a="draw" data-b="10" data-arrow="arch-arrow-hot" class="hot" d="M1410 610 C1440 610 1430 520 1468 520"/>
+      <path data-a="draw" data-b="10" data-arrow="arch-arrow" d="M1410 610 C1440 610 1430 700 1468 700"/>
+      <path id="arch-route" class="route" d="M420 610 H1410 C1440 610 1430 520 1470 520"/>
     </svg>
     <div class="node" style="left:140px;top:540px;width:280px;height:140px" data-a="pop" data-b="4"><b>Páginas</b><span>pages/ · components/</span></div>
     <div class="node" style="left:470px;top:540px;width:280px;height:140px" data-a="pop" data-b="5"><b>Hooks</b><span>useAuth · useAsync</span></div>
     <div class="node" style="left:800px;top:540px;width:280px;height:140px" data-a="pop" data-b="6"><b>Services</b><span>auth · service · request</span></div>
     <div class="node accent" style="left:1130px;top:540px;width:280px;height:140px" data-a="pop" data-b="7"><b>apiClient</b><span>token · erros · 401</span></div>
-    <div class="node soft" style="left:1470px;top:460px;width:310px;height:120px" data-a="pop" data-b="9"><b>Mock adapter</b><span>VITE_API_MODE=mock</span></div>
-    <div class="node dark" style="left:1470px;top:640px;width:310px;height:120px" data-a="pop" data-b="10"><b>HTTP adapter</b><span>VITE_API_MODE=http</span></div>
+    <div class="node soft" style="left:1470px;top:460px;width:310px;height:120px" data-a="pop" data-b="9"><b>Mock adapter</b><span>dados simulados</span></div>
+    <div class="node dark" style="left:1470px;top:640px;width:310px;height:120px" data-a="pop" data-b="10"><b>HTTP adapter</b><span>API REST (fetch)</span></div>
+    <div class="edge-label" style="left:140px;top:730px;color:var(--muted);font-size:18px" data-a="rise" data-b="11">Requisição →</div>
+    <div class="edge-label" style="left:140px;top:770px;color:var(--green);font-size:18px" data-a="rise" data-b="11">← Resposta: dados ou ApiError</div>
     <div class="packet" data-packet></div>
     <p class="caption" data-a="rise" data-b="12">A interface nunca importa dados diretamente. <b>Trocar o mock pela API real é uma variável de ambiente.</b></p>
   </section>
@@ -324,22 +333,32 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
     <div class="eyebrow" data-a="rise" data-b="0">06 · Middleware de proteção</div>
     <h2 class="title" data-a="mask" data-b="1">Verificar, permitir ou redirecionar.</h2>
     <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
-      <path data-a="draw" data-b="6" d="M440 615 H560"/>
-      <path data-a="draw" data-b="8" d="M660 515 V420 H900"/>
-      <path data-a="draw" data-b="9" class="hot" d="M660 715 V800 H900"/>
-      <path data-a="draw" data-b="11" class="hot" d="M1230 800 H1300"/>
-      <path data-a="draw" data-b="13" class="hot" d="M1465 745 V625"/>
-      <path data-a="draw" data-b="14" class="hot" d="M1300 570 H1270 C1250 570 1250 420 1230 420"/>
-      <path id="auth-route" d="M290 615 H560 L660 615 V800 H1300 H1465 V570 H1270 C1250 570 1250 420 1230 420 H1065" stroke="none"/>
+      <defs>
+        <marker id="auth-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8E9A92" stroke="none"/></marker>
+        <marker class="hot" id="auth-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6B45" stroke="none"/></marker>
+      </defs>
+      <path data-a="draw" data-b="6" data-arrow="auth-arrow" d="M400 615 H458"/>
+      <path data-a="draw" data-b="8" data-arrow="auth-arrow" d="M560 714 V788"/>
+      <path data-a="draw" data-b="9" data-arrow="auth-arrow" d="M659 615 H798"/>
+      <path data-a="draw" data-b="11" data-arrow="auth-arrow" d="M900 516 V430 H1078"/>
+      <path data-a="draw" data-b="12" data-arrow="auth-arrow-hot" class="hot" d="M900 714 V800 H1078"/>
+      <path data-a="draw" data-b="14" data-arrow="auth-arrow-hot" class="hot" d="M1400 800 H1438"/>
+      <path data-a="draw" data-b="16" data-arrow="auth-arrow-hot" class="hot" d="M1610 745 V672"/>
+      <path data-a="draw" data-b="18" data-arrow="auth-arrow-hot" class="hot" d="M1610 560 V430 H1402"/>
+      <path id="auth-route" class="route" d="M400 615 H900 V800 H1610 V430 H1402"/>
     </svg>
-    <div class="node" style="left:140px;top:560px;width:300px;height:110px" data-a="pop" data-b="4"><b>Rota privada</b><span>ex.: /solicitacoes?status=…</span></div>
-    <div class="diamond" style="left:560px;top:515px" data-a="pop" data-b="6"><b>Sessão<br>ativa?</b></div>
-    <div class="edge-label" style="left:680px;top:450px;color:var(--muted)" data-a="rise" data-b="8">Sim</div>
-    <div class="edge-label" style="left:680px;top:740px;color:var(--green)" data-a="rise" data-b="9">Não</div>
-    <div class="node accent" style="left:900px;top:365px;width:330px;height:110px" data-a="pop" data-b="9"><b>Renderiza a página</b><span>&lt;Outlet /&gt;</span></div>
-    <div class="node" style="left:900px;top:745px;width:330px;height:110px" data-a="pop" data-b="10"><b>Guarda a rota</b><span>pathname + query</span></div>
-    <div class="node soft" style="left:1300px;top:745px;width:420px;height:110px" data-a="pop" data-b="12"><b>/login com aviso</b><span>“Faça login para acessar esta área.”</span></div>
-    <div class="node dark" style="left:1300px;top:515px;width:420px;height:110px" data-a="pop" data-b="14"><b>Login com sucesso</b><span>volta para a rota guardada</span></div>
+    <div class="node" style="left:140px;top:560px;width:260px;height:110px" data-a="pop" data-b="4"><b>Rota privada</b><span>ex.: /solicitacoes</span></div>
+    <div class="diamond" style="left:460px;top:515px" data-a="pop" data-b="6"><b style="font-size:20px">Verificando<br>sessão?</b></div>
+    <div class="edge-label" style="left:575px;top:730px;color:var(--muted)" data-a="rise" data-b="8">Sim</div>
+    <div class="node" style="left:410px;top:790px;width:300px;height:100px" data-a="pop" data-b="9"><b>Carregando…</b><span>aguarda GET /auth/me</span></div>
+    <div class="edge-label" style="left:700px;top:575px;color:var(--muted)" data-a="rise" data-b="9">Não</div>
+    <div class="diamond" style="left:800px;top:515px" data-a="pop" data-b="10"><b>Sessão<br>ativa?</b></div>
+    <div class="edge-label" style="left:915px;top:455px;color:var(--muted)" data-a="rise" data-b="11">Sim</div>
+    <div class="edge-label" style="left:915px;top:740px;color:var(--green)" data-a="rise" data-b="12">Não</div>
+    <div class="node accent" style="left:1080px;top:375px;width:320px;height:110px" data-a="pop" data-b="12"><b>Renderiza a página</b><span>&lt;Outlet /&gt;</span></div>
+    <div class="node" style="left:1080px;top:745px;width:320px;height:110px" data-a="pop" data-b="13"><b>Guarda a rota</b><span>pathname + query</span></div>
+    <div class="node soft" style="left:1440px;top:745px;width:340px;height:110px" data-a="pop" data-b="15"><b>/login com aviso</b><span>“Faça login para acessar esta área.”</span></div>
+    <div class="node dark" style="left:1440px;top:560px;width:340px;height:110px" data-a="pop" data-b="17"><b>Login com sucesso</b><span>navega para a rota guardada</span></div>
     <div class="packet" data-packet></div>
   </section>
 
@@ -607,7 +626,9 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
       if (type === 'draw') {
         const length = el.getTotalLength()
         el.style.strokeDasharray = `${length}`
-        run(el, [{ strokeDashoffset: length }, { strokeDashoffset: 0 }], { delay, duration: 520, easing: 'cubic-bezier(.65,0,.35,1)' })
+        el.removeAttribute('marker-end')
+        const drawing = run(el, [{ strokeDashoffset: length }, { strokeDashoffset: 0 }], { delay, duration: 520, easing: 'cubic-bezier(.65,0,.35,1)' })
+        if (el.dataset.arrow) drawing.finished.then(() => el.setAttribute('marker-end', `url(#${el.dataset.arrow})`)).catch(() => {})
       }
       if (type === 'count') countUp(el, delay)
     })
@@ -617,7 +638,7 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
     slide.getAnimations({ subtree: true }).forEach((a) => a.cancel())
   }
 
-  function travel(dot, path, { delay = 0, duration = 2600, iterations = Infinity } = {}) {
+  function travel(dot, path, { delay = 0, duration = 2600, iterations = Infinity, direction = 'normal' } = {}) {
     if (reduce) return
     const length = path.getTotalLength()
     const frames = []
@@ -626,7 +647,7 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
       const p = path.getPointAtLength((length * i) / count)
       frames.push({ transform: `translate(${p.x}px, ${p.y}px)`, opacity: i === 0 || i === count ? 0 : 1 })
     }
-    dot.animate(frames, { duration, delay, iterations, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'both' })
+    dot.animate(frames, { duration, delay, iterations, direction, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'both' })
   }
 
   function focusFrame(cam, fx, fy, scale) {
@@ -645,10 +666,10 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
 
   const scripts = {
     arch(slide) {
-      travel(slide.querySelector('[data-packet]'), slide.querySelector('#arch-route'), { delay: 13 * BEAT, duration: 2800 })
+      travel(slide.querySelector('[data-packet]'), slide.querySelector('#arch-route'), { delay: 13 * BEAT, duration: 2400, direction: 'alternate' })
     },
     auth(slide) {
-      travel(slide.querySelector('[data-packet]'), slide.querySelector('#auth-route'), { delay: 16 * BEAT, duration: 4200 })
+      travel(slide.querySelector('[data-packet]'), slide.querySelector('#auth-route'), { delay: 20 * BEAT, duration: 4200 })
     },
     home(slide) {
       const cam = slide.querySelector('[data-cam]')
