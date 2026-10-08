@@ -147,29 +147,8 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
 .stat b { display: block; font-size: 46px; letter-spacing: -.02em; }
 .stat span { font-size: 19px; color: var(--muted); }
 
-.phone { position: absolute; width: 320px; height: 692px; border-radius: 46px; background: #10160F; padding: 12px; box-shadow: 0 40px 80px -40px rgb(16 24 20 / .6); }
-.phone img { width: 100%; height: 100%; border-radius: 34px; object-fit: cover; object-position: top; display: block; }
 
-.facts { position: absolute; left: 140px; top: 470px; width: 1100px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 40px; }
-.fact { display: grid; grid-template-columns: 56px 1fr; gap: 18px; align-items: start; }
-.fact .ic { width: 56px; height: 56px; border-radius: 14px; background: var(--soft); color: var(--green); display: grid; place-items: center; font-size: 28px; }
-.fact b { display: block; font-size: 28px; margin-bottom: 6px; }
-.fact span { font-size: 22px; color: var(--muted); line-height: 1.45; }
 
-.toggle-wrap { position: absolute; left: 140px; top: 440px; }
-.toggle-label { font-size: 22px; font-weight: 800; letter-spacing: .1em; color: var(--muted); }
-.knob { position: absolute; left: 152px; top: 532px; width: 72px; height: 72px; border-radius: 50%; background: var(--white); box-shadow: 0 4px 12px rgb(0 0 0 / .2); z-index: 3; }
-.mode { position: absolute; left: 400px; top: 520px; font-size: 64px; font-weight: 800; letter-spacing: -.02em; height: 96px; overflow: hidden; }
-.mode span { display: block; height: 96px; line-height: 96px; }
-.source { position: absolute; left: 140px; top: 660px; width: 700px; }
-.env { margin-top: 26px; background: #10160F; color: #D7E4DA; border-radius: 16px; padding: 28px 32px; font-size: 24px; line-height: 1.7; }
-.env .k { color: var(--light); }
-.endpoints { position: absolute; left: 1000px; top: 420px; width: 780px; }
-.ep { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 18px; padding: 15px 0; border-bottom: 1px solid var(--line); font-size: 24px; }
-.ep i { font-style: normal; font-size: 17px; font-weight: 800; letter-spacing: .06em; text-align: center; padding: 6px 0; border-radius: 8px; background: var(--soft); color: var(--green); }
-.ep i.post { background: #FBF1E2; color: var(--warn); }
-.ep code { font-size: 23px; }
-.ep small { color: var(--muted); font-size: 19px; margin-left: 14px; font-family: 'Manrope', sans-serif; }
 
 
 .cover-info { position: absolute; left: 140px; top: 735px; width: 470px; }
@@ -401,63 +380,13 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
     <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url" data-url>agroserv.app/dashboard</div></div><div class="view"><div class="cam" data-cam><img src="screens/dashboard.jpg" alt="Dashboard" /></div><div class="layer" data-next style="opacity:0"><img src="screens/requests.jpg" alt="Solicitações" style="width:1000px;height:625px;object-fit:cover;object-position:top left;display:block" /></div></div></div>
   </section>
 
-  <section class="slide" data-seed="900,140,880,800,40,#E6F0E8">
-    <div class="side">
-      <div class="eyebrow" data-a="rise" data-b="0">12 · Responsividade</div>
-      <h2 class="title" data-a="mask" data-b="1">Do desktop ao celular.</h2>
-      <ul class="bullets">
-        <li data-a="rise" data-b="4">Grids viram uma coluna</li>
-        <li data-a="rise" data-b="5">Menu principal vira menu recolhível</li>
-        <li data-a="rise" data-b="6">Tabelas viram cartões</li>
-        <li data-a="rise" data-b="7">Sem rolagem horizontal em 375 px</li>
-      </ul>
-    </div>
-    <div class="phone" style="left:1010px;top:190px;--r:-4deg" data-a="phone" data-b="4"><img src="screens/mobile-home.jpg" alt="Página inicial no celular" /></div>
-    <div class="phone" style="left:1390px;top:230px;--r:4deg" data-a="phone" data-b="6"><img src="screens/mobile-services.jpg" alt="Serviços no celular" /></div>
-  </section>
-
-  <section class="slide" data-seed="1380,300,380,380,190,#E6F0E8">
-    <div class="eyebrow" data-a="rise" data-b="0">13 · Qualidade</div>
-    <h2 class="title" data-a="mask" data-b="1" style="width:1180px">Qualidade verificada a cada passo.</h2>
-    <div class="facts">
-      <div class="fact" data-a="rise" data-b="5"><div class="ic">✓</div><div><b>TDD</b><span>Cada funcionalidade começou por um teste falhando.</span></div></div>
-      <div class="fact" data-a="rise" data-b="6"><div class="ic">⌘</div><div><b>Tipagem e lint</b><span>TypeScript estrito, oxlint e build sem erros.</span></div></div>
-      <div class="fact" data-a="rise" data-b="7"><div class="ic">◎</div><div><b>Acessibilidade</b><span>HTML semântico, labels, foco visível, skip link e reduced motion.</span></div></div>
-      <div class="fact" data-a="rise" data-b="8"><div class="ic">⇄</div><div><b>Revisão independente</b><span>Revisão final de código; problemas importantes corrigidos com testes.</span></div></div>
-    </div>
-    <div class="big-count" data-a="pop" data-b="4"><strong data-a="count" data-b="5" data-to="115">115</strong><small>testes automatizados</small></div>
-  </section>
-
-  <section class="slide" data-seed="140,520,220,96,48,#2F6B45" data-script="toggle">
-    <div class="eyebrow" data-a="rise" data-b="0">14 · Próxima etapa</div>
-    <h2 class="title" data-a="mask" data-b="1">Pronto para conectar o back-end.</h2>
-    <div class="toggle-wrap" data-a="rise" data-b="3"><div class="toggle-label mono">VITE_API_MODE</div></div>
-    <div class="knob" data-knob data-a="pop" data-b="4"></div>
-    <div class="mode" data-a="rise" data-b="4"><div data-mode><span>mock</span><span>http</span></div></div>
-    <div class="source" data-a="rise" data-b="6">
-      <p class="lead" style="font-size:26px">Mesmo código de interface. Só muda a origem dos dados:</p>
-      <div class="env mono"><span class="k">VITE_API_MODE</span>=http<br><span class="k">VITE_API_URL</span>=http://localhost:3333</div>
-    </div>
-    <div class="endpoints">
-      <div class="toggle-label" style="margin-bottom:12px" data-a="rise" data-b="5">Contrato da API · docs/api-contract.md</div>
-      <div class="ep" data-a="rise" data-b="6"><i class="post">POST</i><code class="mono">/auth/login</code></div>
-      <div class="ep" data-a="rise" data-b="7"><i>GET</i><code class="mono">/auth/me</code></div>
-      <div class="ep" data-a="rise" data-b="8"><i>GET</i><code class="mono">/categories</code></div>
-      <div class="ep" data-a="rise" data-b="9"><i>GET</i><code class="mono">/services<small>?q &amp; location &amp; category &amp; page</small></code></div>
-      <div class="ep" data-a="rise" data-b="10"><i>GET</i><code class="mono">/services/featured</code></div>
-      <div class="ep" data-a="rise" data-b="11"><i>GET</i><code class="mono">/services/:id</code></div>
-      <div class="ep" data-a="rise" data-b="12"><i>GET</i><code class="mono">/requests<small>?status</small></code></div>
-      <div class="ep" data-a="rise" data-b="13"><i>GET</i><code class="mono">/dashboard</code></div>
-    </div>
-  </section>
-
   <section class="slide final" data-seed="0,0,1920,1080,0,#173F2A" data-dark-chrome="true">
     <div class="eyebrow" data-a="rise" data-b="2" style="top:360px">AgroServ · Etapa 1</div>
     <div class="thanks" data-a="mask" data-b="3">Obrigado.</div>
   </section>
 
   <div class="hint" id="hint">← → para navegar · F tela cheia</div>
-  <div class="chrome" id="chrome"><span>AGROSERV</span><span id="counter" class="counter">01 / 16</span></div>
+  <div class="chrome" id="chrome"><span>AGROSERV</span><span id="counter" class="counter">01 / 13</span></div>
   <div class="progress"><i id="bar"></i></div>
 </div>
 </div>
@@ -560,7 +489,6 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
       if (type === 'rise') run(el, [{ opacity: 0, transform: 'translateY(46px)' }, { opacity: 1, transform: 'none' }], { delay })
       if (type === 'pop') run(el, [{ opacity: 0, transform: 'scale(.86)' }, { opacity: 1, transform: 'none' }], { kind: 'playful', delay })
       if (type === 'wipe') run(el, [{ clipPath: 'inset(0 0 0 100% round 16px)' }, { clipPath: 'inset(0 0 0 0% round 16px)' }], { kind: 'heavy', delay })
-      if (type === 'phone') run(el, [{ opacity: 0, transform: 'translateY(160px) rotate(0deg)' }, { opacity: 1, transform: 'translateY(0) rotate(var(--r))' }], { kind: 'heavy', delay })
       if (type === 'mask') {
         splitWords(el)
         el.querySelectorAll('.w > span').forEach((word, i) => {
@@ -671,15 +599,6 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
         url.textContent = 'agroserv.app/solicitacoes?status=completed'
         next.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 560, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'both' })
       }, 4300)
-    },
-    toggle(slide) {
-      const knob = slide.querySelector('[data-knob]')
-      const mode = slide.querySelector('[data-mode]')
-      later(() => {
-        run(knob, [{ transform: 'none' }, { transform: 'translateX(124px)' }], { kind: 'playful' })
-        run(mode, [{ transform: 'none' }, { transform: 'translateY(-96px)' }], { kind: 'snappy' })
-        run(seed, [{ background: '#2F6B45' }, { background: '#173F2A' }], { kind: 'snappy' })
-      }, 2400)
     },
   }
 
