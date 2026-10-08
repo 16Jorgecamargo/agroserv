@@ -160,9 +160,28 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
 .final { color: var(--white); }
 .final .eyebrow { color: var(--light); }
 .thanks { position: absolute; left: 140px; top: 410px; font-size: 200px; line-height: 1; font-weight: 800; letter-spacing: -.05em; }
+.rotate { position: fixed; inset: 0; z-index: 100; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 28px; padding: 32px; background: var(--dark); color: var(--white); text-align: center; }
+.rotate svg { width: 96px; height: 96px; stroke: var(--light); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; animation: turn 2.4s cubic-bezier(.65,0,.35,1) infinite; }
+.rotate b { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+.rotate p { max-width: 280px; font-size: 16px; line-height: 1.5; color: rgb(255 255 255 / .75); }
+.rotate small { font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--light); }
+@keyframes turn { 0%, 20% { transform: rotate(0deg); } 50%, 75% { transform: rotate(-90deg); } 100% { transform: rotate(0deg); } }
+@media (orientation: portrait) and (pointer: coarse) {
+  .rotate { display: flex; }
+  .viewport { visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotate svg { animation: none; transform: rotate(-90deg); }
+}
 </style>
 </head>
 <body>
+<div class="rotate" role="alert">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg>
+  <small>AgroServ · Apresentação</small>
+  <b>Gire o celular</b>
+  <p>A apresentação foi feita para a tela na horizontal. Vire o aparelho para ver os slides.</p>
+</div>
 <div class="viewport">
 <div class="stage" id="stage">
   <div id="seed"></div>
@@ -680,6 +699,7 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
     touchX = null
   })
 
+  if (matchMedia('(pointer: coarse)').matches) hint.textContent = 'Toque à direita para avançar · à esquerda para voltar'
   fit()
   const start = Number(location.hash.slice(1)) || 1
   document.fonts.ready.then(() => show(start - 1, true))
