@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="AgroServ — plataforma web para contratação de serviços agrícolas. Projeto da disciplina CC6PDSW, UTFPR Campus Santa Helena." />
+<meta name="theme-color" content="#173F2A" />
+<title>AgroServ — Projeto CC6PDSW</title>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232F6B45'/%3E%3Cpath d='M16 25V15m0 0c0-4.4 3.1-7.5 7.5-7.5 0 4.4-3.1 7.5-7.5 7.5Zm0 3c0-3.3-2.7-6-6-6 0 3.3 2.7 6 6 6Z' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<style>
+@font-face {
+  font-family: 'Manrope';
+  src: url('slides/fonts/manrope.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('slides/fonts/manrope-ext.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+:root {
+  --dark: #173F2A;
+  --green: #2F6B45;
+  --light: #7FB685;
+  --soft: #E6F0E8;
+  --bg: #F7F8F5;
+  --muted: #667085;
+  --ink: #17201A;
+  --line: #E4E8E1;
+  --white: #FFFFFF;
+  --warn: #B7791F;
+  --shadow: 0 1px 2px rgb(16 24 20 / .04);
+  --shadow-hover: 0 18px 40px -22px rgb(16 24 20 / .35);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 6px; }
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.icon { width: 1em; height: 1em; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+.topbar { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid transparent; transition: background-color .25s, border-color .25s, backdrop-filter .25s; }
+.topbar.is-scrolled { background: rgb(247 248 245 / .82); border-color: var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.topbar .container { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .1em; color: var(--dark); font-size: 16px; }
+.logo-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--green); color: var(--white); display: grid; place-items: center; font-size: 19px; }
+.topbar nav { display: flex; align-items: center; gap: 6px; }
+.topbar nav a.link { padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--muted); transition: color .2s; }
+.topbar nav a.link:hover { color: var(--ink); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 48px; padding: 0 22px; border-radius: 10px; font-weight: 700; font-size: 15px; transition: background-color .2s, border-color .2s, transform .15s; white-space: nowrap; }
+.btn:active { transform: scale(.98); }
+.btn-primary { background: var(--green); color: var(--white); }
+.btn-primary:hover { background: var(--dark); }
+.btn-secondary { background: var(--white); border: 1px solid var(--line); color: var(--ink); }
+.btn-secondary:hover { border-color: rgb(102 112 133 / .4); background: #EEF1EC; }
+.btn-sm { height: 38px; padding: 0 14px; font-size: 14px; border-radius: 9px; }
+
+.hero { padding: 56px 0 72px; }
+.hero .container { display: grid; grid-template-columns: 1.02fr 1fr; gap: 56px; align-items: center; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
+.badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--white); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; color: var(--green); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; }
+h1 { margin-top: 22px; font-size: clamp(42px, 6vw, 72px); line-height: 1.02; font-weight: 800; letter-spacing: -.04em; }
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+.w > span { display: inline-block; }
+.lead { margin-top: 22px; font-size: 19px; line-height: 1.6; color: var(--muted); max-width: 520px; }
+.actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+.meta { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.meta b { display: block; font-size: 26px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.meta span { font-size: 13px; color: var(--muted); }
+
+.visual { position: relative; }
+.frame { border-radius: 14px; overflow: hidden; background: var(--white); border: 1px solid rgb(23 32 26 / .08); box-shadow: 0 40px 80px -46px rgb(16 24 20 / .55); }
+.frame .bar { height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 14px; background: #EEF1EC; border-bottom: 1px solid var(--line); }
+.frame .bar i { width: 10px; height: 10px; border-radius: 50%; background: #D3D9D0; display: block; }
+.frame .bar span { margin-left: 12px; height: 20px; flex: 1; max-width: 260px; border-radius: 6px; background: var(--white); font-size: 11px; color: var(--muted); display: flex; align-items: center; padding: 0 10px; }
+.frame .screen { position: relative; aspect-ratio: 1440 / 900; overflow: hidden; }
+.frame .screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+.frame .screen img + img { opacity: 0; }
+.backdrop { position: absolute; inset: -22px -22px -22px 22px; border-radius: 20px; background: var(--soft); z-index: -1; }
+.chip { position: absolute; display: flex; align-items: center; gap: 12px; background: rgb(255 255 255 / .96); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px 12px 12px; box-shadow: 0 20px 40px -22px rgb(16 24 20 / .45); }
+.chip .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--soft); color: var(--green); display: grid; place-items: center; font-size: 20px; }
+.chip b { display: block; font-size: 14px; line-height: 1.3; }
+.chip small { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.chip-a { left: -28px; bottom: 34px; }
+.chip-b { right: -18px; top: -18px; }
+
+section { padding: 72px 0; }
+.section-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+h2 { margin-top: 10px; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; font-weight: 800; letter-spacing: -.03em; }
+.section-head p { color: var(--muted); max-width: 460px; }
+
+.docs { display: grid; grid-template-columns: 1.35fr 1fr 1fr; grid-template-rows: auto auto; gap: 18px; }
+.card { position: relative; display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: 24px; box-shadow: var(--shadow); transition: box-shadow .25s, border-color .25s, transform .25s cubic-bezier(.2,.8,.2,1); }
+.card:hover { box-shadow: var(--shadow-hover); border-color: rgb(47 107 69 / .3); transform: translateY(-4px); }
+.card .ic { width: 46px; height: 46px; border-radius: 12px; background: var(--soft); color: var(--green); display: grid; place-items: center; font-size: 22px; transition: background-color .25s, color .25s; }
+.card:hover .ic { background: var(--green); color: var(--white); }
+.card h3 { margin-top: 18px; font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+.card p { margin-top: 6px; color: var(--muted); font-size: 15px; }
+.card .go { margin-top: auto; padding-top: 18px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--green); }
+.card .go .icon { transition: transform .25s; }
+.card:hover .go .icon { transform: translateX(4px); }
+.card.featured { grid-row: span 2; padding: 0; overflow: hidden; background: var(--dark); border-color: var(--dark); color: var(--white); }
+.card.featured .thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+.card.featured .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+.card.featured:hover .thumb img { transform: scale(1.04); }
+.card.featured .thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgb(23 63 42 / .9)); }
+.card.featured .play { position: absolute; left: 24px; bottom: 20px; z-index: 1; width: 56px; height: 56px; border-radius: 50%; background: var(--white); color: var(--dark); display: grid; place-items: center; font-size: 22px; box-shadow: 0 12px 30px -10px rgb(0 0 0 / .5); }
+.card.featured .body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+.card.featured h3 { margin-top: 0; font-size: 24px; }
+.card.featured p { color: rgb(255 255 255 / .72); }
+.card.featured .go { color: var(--light); }
+.card.featured:hover { border-color: var(--dark); }
+.keys { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+.keys span { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: rgb(255 255 255 / .1); color: rgb(255 255 255 / .8); }
+
+.gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.shot { background: var(--white); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); transition: box-shadow .25s, transform .25s cubic-bezier(.2,.8,.2,1); }
+.shot:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+.shot .img { aspect-ratio: 1440 / 900; overflow: hidden; border-bottom: 1px solid var(--line); }
+.shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+.shot:hover img { transform: scale(1.05); }
+.shot div.cap { padding: 14px 16px; }
+.shot b { display: block; font-size: 15px; }
+.shot code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12px; color: var(--green); }
+
+.stack { display: flex; flex-wrap: wrap; gap: 10px; }
+.stack span { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--white); border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+.stack span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--light); }
+
+.team { background: var(--dark); color: var(--white); border-radius: 20px; padding: 44px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 44px; }
+.team .eyebrow { color: var(--light); }
+.team h2 { color: var(--white); }
+.team p.sub { margin-top: 12px; color: rgb(255 255 255 / .72); }
+.people { display: flex; flex-direction: column; gap: 12px; }
+.person { display: flex; align-items: center; gap: 16px; padding: 14px 16px; border-radius: 14px; background: rgb(255 255 255 / .06); border: 1px solid rgb(255 255 255 / .1); }
+.person .av { width: 46px; height: 46px; border-radius: 50%; background: var(--light); color: var(--dark); display: grid; place-items: center; font-weight: 800; font-size: 15px; flex: none; }
+.person b { display: block; font-size: 16px; }
+.person code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 13px; color: rgb(255 255 255 / .6); }
+
+footer { padding: 36px 0 48px; color: var(--muted); font-size: 14px; }
+footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 24px; }
+
+.js [data-reveal] { opacity: 0; }
+
+@media (max-width: 980px) {
+  .hero .container { grid-template-columns: 1fr; gap: 64px; }
+  .docs { grid-template-columns: 1fr 1fr; }
+  .card.featured { grid-column: span 2; grid-row: auto; }
+  .gallery { grid-template-columns: 1fr 1fr; }
+  .team { grid-template-columns: 1fr; padding: 32px; }
+}
+@media (max-width: 640px) {
+  .topbar nav a.link { display: none; }
+  .hero { padding-top: 32px; }
+  .meta { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .meta b { font-size: 22px; }
+  .docs, .gallery { grid-template-columns: 1fr; }
+  .card.featured { grid-column: auto; }
+  .chip-a { left: -8px; bottom: 16px; }
+  .chip-b { right: -6px; top: -14px; }
+  .backdrop { inset: -14px -10px -14px 14px; }
+  section { padding: 56px 0; }
+  .team { padding: 26px; border-radius: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<header class="topbar" id="topbar">
+  <div class="container">
+    <a class="logo" href="./" aria-label="AgroServ, início">
+      <span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span>
+      AGROSERV
+    </a>
+    <nav aria-label="Principal">
+      <a class="link" href="#documentacao">Documentação</a>
+      <a class="link" href="#telas">Telas</a>
+      <a class="link" href="#equipe">Equipe</a>
+      <a class="btn btn-secondary btn-sm" href="https://github.com/16Jorgecamargo/agroserv">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div>
+        <span class="badge" data-reveal="rise" data-b="0"><span class="dot"></span>UTFPR · Campus Santa Helena · CC6PDSW</span>
+        <h1 data-reveal="mask" data-b="1">O jeito moderno de contratar serviços agrícolas.</h1>
+        <p class="lead" data-reveal="rise" data-b="7">AgroServ é uma plataforma web que conecta produtores rurais a prestadores de máquinas, equipamentos e mão de obra. Projeto da disciplina Projeto e Desenvolvimento de Sistemas Web — etapa 1, front-end.</p>
+        <div class="actions" data-reveal="rise" data-b="9">
+          <a class="btn btn-primary" href="slides/">
+            <svg class="icon" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            Assistir à apresentação
+          </a>
+          <a class="btn btn-secondary" href="report.html">Ler o relatório</a>
+        </div>
+        <div class="meta" data-reveal="rise" data-b="11">
+          <div><b data-count="13">13</b><span>slides animados</span></div>
+          <div><b data-count="115">115</b><span>testes automatizados</span></div>
+          <div><b data-count="8">8</b><span>fluxogramas</span></div>
+        </div>
+      </div>
+      <div class="visual" data-reveal="scale" data-b="3">
+        <div class="backdrop"></div>
+        <div class="frame">
+          <div class="bar"><i></i><i></i><i></i><span id="url">agroserv.app</span></div>
+          <div class="screen" id="screen">
+            <img src="slides/screens/home.jpg" alt="Página inicial do AgroServ" />
+            <img src="slides/screens/dashboard.jpg" alt="Painel do produtor" />
+          </div>
+        </div>
+        <div class="chip chip-a" data-reveal="pop" data-b="9" data-float="0">
+          <div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+          <div><b>Rotas protegidas</b><small><span class="dot"></span>login + ProtectedRoute</small></div>
+        </div>
+        <div class="chip chip-b" data-reveal="pop" data-b="11" data-float="1">
+          <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <div><b>115 testes passando</b><small>TDD · Vitest</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="documentacao">
+    <div class="container">
+      <div class="section-head">
+        <div data-reveal="rise">
+          <span class="eyebrow">Documentação</span>
+          <h2>Tudo sobre o projeto</h2>
+        </div>
+        <p data-reveal="rise" data-b="1">Apresentação, relatório técnico, fluxogramas e o contrato da API que liga o front-end ao back-end da próxima etapa.</p>
+      </div>
+      <div class="docs" data-stagger>
+        <a class="card featured" href="slides/" data-reveal="rise">
+          <div class="thumb">
+            <img src="slides/screens/login-protected.jpg" alt="" />
+            <span class="play"><svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><polygon points="7 4 20 12 7 20 7 4"/></svg></span>
+          </div>
+          <div class="body">
+            <h3>Apresentação</h3>
+            <p>13 slides com motion design: arquitetura, rotas, proteção de rotas e demonstração das telas.</p>
+            <div class="keys"><span>← → navegar</span><span>F tela cheia</span><span>R repetir</span></div>
+            <span class="go">Abrir slides <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a class="card" href="report.html" data-reveal="rise">
+          <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
+          <h3>Relatório técnico</h3>
+          <p>Requisitos, arquitetura, autenticação, páginas, testes e decisões.</p>
+          <span class="go">Ler relatório <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="card" href="flowcharts.html" data-reveal="rise">
+          <span class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="5" rx="1"/><rect x="14" y="16" width="7" height="5" rx="1"/><path d="M6.5 8v4.5a2 2 0 0 0 2 2H17.5V16"/></svg></span>
+          <h3>Fluxogramas</h3>
+          <p>Navegação, login, proteção de rotas, arquitetura e estados da interface.</p>
+          <span class="go">Ver fluxogramas <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="card" href="api-contract.html" data-reveal="rise">
+          <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4M6 8l-4 4 4 4M14.5 4l-5 16"/></svg></span>
+          <h3>Contrato da API</h3>
+          <p>Os 8 endpoints REST que o back-end vai implementar.</p>
+          <span class="go">Ver contrato <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="card" href="https://github.com/16Jorgecamargo/agroserv" data-reveal="rise">
+          <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></span>
+          <h3>Código-fonte</h3>
+          <p>React, TypeScript e Vite, com instruções para rodar localmente.</p>
+          <span class="go">Abrir no GitHub <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="telas">
+    <div class="container">
+      <div class="section-head">
+        <div data-reveal="rise">
+          <span class="eyebrow">Telas</span>
+          <h2>O app em funcionamento</h2>
+        </div>
+        <p data-reveal="rise" data-b="1">Páginas públicas, login com proteção de rotas e área privada do produtor.</p>
+      </div>
+      <div class="gallery" data-stagger>
+        <a class="shot" href="slides/screens/home.jpg" data-reveal="rise"><div class="img"><img src="slides/screens/home.jpg" alt="Página inicial" loading="lazy" /></div><div class="cap"><b>Página inicial</b><code>/</code></div></a>
+        <a class="shot" href="slides/screens/services.jpg" data-reveal="rise"><div class="img"><img src="slides/screens/services.jpg" alt="Listagem de serviços" loading="lazy" /></div><div class="cap"><b>Serviços</b><code>/servicos</code></div></a>
+        <a class="shot" href="slides/screens/service-detail.jpg" data-reveal="rise"><div class="img"><img src="slides/screens/service-detail.jpg" alt="Detalhes do serviço" loading="lazy" /></div><div class="cap"><b>Detalhes</b><code>/servicos/:id</code></div></a>
+        <a class="shot" href="slides/screens/dashboard.jpg" data-reveal="rise"><div class="img"><img src="slides/screens/dashboard.jpg" alt="Painel do produtor" loading="lazy" /></div><div class="cap"><b>Painel</b><code>/dashboard</code></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <div data-reveal="rise">
+          <span class="eyebrow">Tecnologias</span>
+          <h2>Stack do projeto</h2>
+        </div>
+      </div>
+      <div class="stack" data-stagger>
+        <span data-reveal="pop">React 19</span>
+        <span data-reveal="pop">TypeScript</span>
+        <span data-reveal="pop">Vite</span>
+        <span data-reveal="pop">React Router</span>
+        <span data-reveal="pop">Tailwind CSS</span>
+        <span data-reveal="pop">Framer Motion</span>
+        <span data-reveal="pop">Context API</span>
+        <span data-reveal="pop">Vitest + Testing Library</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="equipe">
+    <div class="container">
+      <div class="team" data-reveal="rise">
+        <div>
+          <span class="eyebrow">Equipe</span>
+          <h2>UTFPR · Campus Santa Helena</h2>
+          <p class="sub">CC6PDSW · Projeto e Desenvolvimento de Sistemas Web</p>
+        </div>
+        <div class="people" data-stagger>
+          <div class="person" data-reveal="rise"><span class="av">JC</span><div><b>Jorge Daniel Ristow de Camargo</b><code>RA 2521679</code></div></div>
+          <div class="person" data-reveal="rise"><span class="av">FF</span><div><b>Felipe Fonseca</b><code>RA 2651394</code></div></div>
+          <div class="person" data-reveal="rise"><span class="av">PA</span><div><b>Pedro Luca de Lacerda Alves</b><code>RA 2651416</code></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <span>AgroServ · Projeto acadêmico · 2026</span>
+    <a href="https://github.com/16Jorgecamargo/agroserv">github.com/16Jorgecamargo/agroserv</a>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const BEAT = 90
+  const SPRINGS = { smooth: [170, 24], heavy: [120, 22], playful: [260, 15] }
+  const cache = new Map()
+
+  function spring(name) {
+    if (cache.has(name)) return cache.get(name)
+    const [stiffness, damping] = SPRINGS[name]
+    const w0 = Math.sqrt(stiffness)
+    const zeta = damping / (2 * Math.sqrt(stiffness))
+    const position = (t) => {
+      if (zeta >= 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t)
+      const wd = w0 * Math.sqrt(1 - zeta * zeta)
+      return 1 - Math.exp(-zeta * w0 * t) * (Math.cos(wd * t) + ((zeta * w0) / wd) * Math.sin(wd * t))
+    }
+    let duration = 0.1
+    while (duration < 3 && Math.abs(1 - position(duration)) + Math.abs(1 - position(duration + 0.1)) > 0.004) duration += 0.02
+    const points = []
+    for (let i = 0; i <= 40; i += 1) points.push(position((duration * i) / 40).toFixed(4))
+    points[40] = '1'
+    const result = { easing: `linear(${points.join(', ')})`, duration: Math.round(duration * 1000) }
+    cache.set(name, result)
+    return result
+  }
+
+  function run(el, keyframes, kind, delay) {
+    const s = spring(kind)
+    return el.animate(keyframes, { duration: reduce ? 1 : s.duration, easing: s.easing, delay: reduce ? 0 : delay, fill: 'both' })
+  }
+
+  function splitWords(el) {
+    const words = el.textContent.trim().split(/\s+/)
+    el.innerHTML = words.map((word) => `<span class="w"><span>${word}</span></span>`).join(' ')
+  }
+
+  function reveal(el, extraDelay = 0) {
+    const type = el.dataset.reveal
+    const delay = Number(el.dataset.b || 0) * BEAT + extraDelay
+    el.style.opacity = '1'
+    if (type === 'rise') run(el, [{ opacity: 0, transform: 'translateY(28px)' }, { opacity: 1, transform: 'none' }], 'smooth', delay)
+    if (type === 'pop') run(el, [{ opacity: 0, transform: 'scale(.86)' }, { opacity: 1, transform: 'none' }], 'playful', delay)
+    if (type === 'scale') run(el, [{ opacity: 0, transform: 'translateY(24px) scale(.96)' }, { opacity: 1, transform: 'none' }], 'heavy', delay)
+    if (type === 'mask') {
+      splitWords(el)
+      el.querySelectorAll('.w > span').forEach((word, i) => run(word, [{ transform: 'translateY(110%)' }, { transform: 'none' }], 'heavy', delay + i * BEAT * 0.6))
+    }
+  }
+
+  function countUp(el) {
+    const to = Number(el.dataset.count)
+    if (reduce) return
+    const start = performance.now() + 1100
+    const step = (now) => {
+      const p = Math.max(0, Math.min(1, (now - start) / 1100))
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 4)))
+      if (p < 1) requestAnimationFrame(step)
+    }
+    el.textContent = '0'
+    requestAnimationFrame(step)
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return
+      observer.unobserve(entry.target)
+      const group = entry.target.closest('[data-stagger]')
+      const index = group ? [...group.querySelectorAll(':scope > [data-reveal]')].indexOf(entry.target) : 0
+      reveal(entry.target, Math.max(0, index) * BEAT * 0.8)
+    })
+  }, { rootMargin: '0px 0px -60px 0px', threshold: 0.12 })
+
+  document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el))
+  document.querySelectorAll('[data-count]').forEach(countUp)
+
+  if (!reduce) {
+    document.querySelectorAll('[data-float]').forEach((el) => {
+      const offset = Number(el.dataset.float) * 1400
+      el.animate([{ translate: '0 0' }, { translate: '0 -8px' }, { translate: '0 0' }], { duration: 4200, delay: 1800 + offset, iterations: Infinity, easing: 'ease-in-out' })
+    })
+    const screen = document.getElementById('screen')
+    const url = document.getElementById('url')
+    const [first, second] = screen.querySelectorAll('img')
+    let showingSecond = false
+    setInterval(() => {
+      showingSecond = !showingSecond
+      const incoming = showingSecond ? second : first
+      const outgoing = showingSecond ? first : second
+      url.textContent = showingSecond ? 'agroserv.app/dashboard' : 'agroserv.app'
+      incoming.style.zIndex = '1'
+      outgoing.style.zIndex = '0'
+      incoming.animate([{ opacity: 0, transform: 'scale(1.03)' }, { opacity: 1, transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' })
+      outgoing.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, delay: 300, fill: 'forwards' })
+    }, 4200)
+  }
+
+  const topbar = document.getElementById('topbar')
+  const onScroll = () => topbar.classList.toggle('is-scrolled', scrollY > 8)
+  addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+})()
+</script>
+</body>
+</html>
