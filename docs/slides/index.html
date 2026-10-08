@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgroServ — Apresentação</title>
+<style>
+@font-face {
+  font-family: 'Manrope';
+  src: url('fonts/manrope.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: block;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  src: url('fonts/manrope-ext.woff2') format('woff2');
+  font-weight: 200 800;
+  font-display: block;
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+:root {
+  --dark: #173F2A;
+  --green: #2F6B45;
+  --light: #7FB685;
+  --soft: #E6F0E8;
+  --bg: #F7F8F5;
+  --muted: #667085;
+  --ink: #17201A;
+  --line: #E4E8E1;
+  --white: #FFFFFF;
+  --warn: #B7791F;
+  --danger: #B42318;
+  --info: #2B5C8A;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #0F1511; overflow: hidden; }
+body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage { position: relative; width: 1920px; height: 1080px; background: var(--bg); overflow: hidden; transform-origin: center center; flex: none; }
+.slide { position: absolute; inset: 0; visibility: hidden; }
+.slide.is-active { visibility: visible; }
+.slide.is-leaving { visibility: visible; pointer-events: none; }
+#seed { position: absolute; left: 140px; top: 150px; width: 64px; height: 8px; border-radius: 4px; background: var(--green); will-change: left, top, width, height; }
+.eyebrow { position: absolute; left: 140px; top: 180px; font-size: 22px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
+.title { position: absolute; left: 140px; top: 226px; width: 1500px; font-size: 76px; line-height: 1.06; font-weight: 800; letter-spacing: -.03em; }
+.lead { font-size: 30px; line-height: 1.45; color: var(--muted); }
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.w > span { display: inline-block; }
+.mono { font-family: ui-monospace, 'SF Mono', Menlo, monospace; }
+.pill { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--line); background: var(--white); border-radius: 999px; padding: 10px 22px; font-size: 24px; font-weight: 600; }
+.card { position: absolute; background: var(--white); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 1px 2px rgb(16 24 20 / .04); }
+.icon { width: 1em; height: 1em; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.chrome { position: absolute; left: 0; right: 0; bottom: 0; height: 90px; display: flex; align-items: center; justify-content: space-between; padding: 0 140px; font-size: 18px; font-weight: 700; letter-spacing: .12em; color: var(--muted); z-index: 50; transition: color .4s; }
+.chrome.on-dark { color: rgb(255 255 255 / .6); }
+.counter { background: rgb(255 255 255 / .9); color: var(--muted); padding: 6px 14px; border-radius: 10px; }
+.progress { position: absolute; left: 0; bottom: 0; height: 6px; width: 100%; background: var(--line); z-index: 50; }
+.progress > i { display: block; height: 100%; width: 0; background: var(--green); }
+.hint { position: absolute; left: 330px; bottom: 33px; font-size: 16px; color: var(--muted); letter-spacing: .04em; z-index: 50; opacity: .7; }
+
+.cover-photo { position: absolute; left: 1040px; top: 40px; width: 840px; height: 940px; border-radius: 16px; overflow: hidden; }
+.cover-photo img { width: 100%; height: 100%; object-fit: cover; }
+.logo { display: flex; align-items: center; gap: 18px; font-size: 34px; font-weight: 800; letter-spacing: .1em; color: var(--dark); }
+.logo-mark { width: 64px; height: 64px; border-radius: 16px; background: var(--green); color: var(--white); display: grid; place-items: center; font-size: 36px; }
+.float-chip { position: absolute; display: flex; align-items: center; gap: 18px; background: rgb(255 255 255 / .96); border: 1px solid var(--line); border-radius: 18px; padding: 20px 28px 20px 20px; box-shadow: 0 24px 48px -24px rgb(16 24 20 / .35); }
+.float-chip .ic { width: 64px; height: 64px; border-radius: 14px; background: var(--soft); color: var(--green); display: grid; place-items: center; font-size: 32px; }
+.float-chip b { display: block; font-size: 24px; }
+.float-chip small { display: flex; align-items: center; gap: 8px; font-size: 19px; color: var(--muted); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); display: inline-block; }
+
+.col3 { position: absolute; left: 140px; top: 520px; display: grid; grid-template-columns: repeat(3, 520px); gap: 40px; }
+.col3 .box { position: relative; border-top: 3px solid var(--ink); padding-top: 28px; }
+.col3 .num { font-size: 22px; font-weight: 800; color: var(--green); letter-spacing: .1em; }
+.col3 h3 { font-size: 36px; margin: 14px 0 12px; letter-spacing: -.01em; }
+.col3 p { font-size: 25px; line-height: 1.45; color: var(--muted); }
+.statement { position: absolute; left: 140px; top: 860px; display: flex; align-items: center; gap: 22px; font-size: 32px; font-weight: 700; color: var(--dark); }
+.statement .arrow { width: 56px; height: 56px; border-radius: 50%; background: var(--green); color: var(--white); display: grid; place-items: center; font-size: 28px; }
+
+.req { position: absolute; left: 140px; top: 470px; width: 1080px; }
+.req-row { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.req-row .ck { width: 48px; height: 48px; border-radius: 50%; background: var(--green); color: var(--white); display: grid; place-items: center; }
+.req-row .ck svg { width: 26px; height: 26px; stroke-width: 3; }
+.req-row span { font-size: 32px; font-weight: 700; }
+.req-row code { font-size: 22px; color: var(--green); background: var(--soft); padding: 8px 16px; border-radius: 10px; }
+.big-count { position: absolute; left: 1380px; top: 300px; width: 380px; height: 380px; display: grid; place-content: center; text-align: center; }
+.big-count strong { font-size: 128px; line-height: 1; font-weight: 800; letter-spacing: -.04em; color: var(--dark); }
+.big-count small { display: block; margin-top: 10px; font-size: 24px; color: var(--green); font-weight: 700; }
+
+.tiles { position: absolute; left: 140px; top: 470px; display: grid; grid-template-columns: repeat(4, 390px); gap: 30px; }
+.tile { background: var(--white); border: 1px solid var(--line); border-radius: 18px; padding: 32px; height: 200px; display: flex; flex-direction: column; justify-content: space-between; }
+.tile b { font-size: 34px; letter-spacing: -.01em; }
+.tile span { font-size: 22px; color: var(--muted); }
+.tile .tag { width: 44px; height: 6px; border-radius: 3px; background: var(--light); }
+
+.diagram { position: absolute; inset: 0; pointer-events: none; }
+.diagram path, .diagram line { stroke: #A9B4AC; stroke-width: 3; fill: none; }
+.diagram .hot { stroke: var(--green); }
+.node { position: absolute; display: flex; flex-direction: column; justify-content: center; padding: 0 28px; background: var(--white); border: 1.5px solid var(--line); border-radius: 18px; }
+.node b { font-size: 28px; letter-spacing: -.01em; }
+.node span { font-size: 19px; color: var(--muted); margin-top: 4px; }
+.node.accent { border-color: var(--green); }
+.node.dark { background: var(--dark); border-color: var(--dark); color: var(--white); }
+.node.dark span { color: rgb(255 255 255 / .7); }
+.node.soft { background: var(--soft); border-color: transparent; }
+.diamond { position: absolute; width: 200px; height: 200px; display: grid; place-items: center; }
+.diamond::before { content: ''; position: absolute; inset: 30px; background: var(--white); border: 1.5px solid var(--green); border-radius: 18px; transform: rotate(45deg); }
+.diamond b { position: relative; font-size: 24px; text-align: center; line-height: 1.2; }
+.edge-label { position: absolute; font-size: 20px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.packet { position: absolute; left: 0; top: 0; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 8px rgb(47 107 69 / .18); opacity: 0; }
+.caption { position: absolute; left: 140px; top: 900px; font-size: 26px; color: var(--muted); }
+.caption b { color: var(--ink); }
+
+.routes { position: absolute; top: 400px; display: flex; flex-direction: column; gap: 22px; }
+.route { display: flex; align-items: center; gap: 22px; }
+.route code { font-size: 30px; font-weight: 700; padding: 16px 26px; border-radius: 14px; background: var(--white); border: 1px solid var(--line); min-width: 330px; }
+.route span { font-size: 24px; color: var(--muted); }
+.routes.private code { background: rgb(255 255 255 / .08); border-color: rgb(255 255 255 / .16); color: var(--white); }
+.routes.private span { color: rgb(255 255 255 / .7); }
+.col-title { position: absolute; top: 340px; font-size: 22px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.lock { position: absolute; left: 1640px; top: 360px; width: 84px; height: 84px; border-radius: 22px; background: var(--light); color: var(--dark); display: grid; place-items: center; font-size: 42px; }
+
+.side { position: absolute; left: 140px; top: 180px; width: 560px; }
+.side .eyebrow, .side .title { position: static; width: auto; }
+.side .title { margin-top: 22px; font-size: 68px; }
+.bullets { margin-top: 40px; display: flex; flex-direction: column; gap: 22px; }
+.bullets li { list-style: none; display: grid; grid-template-columns: 34px 1fr; gap: 14px; font-size: 26px; line-height: 1.4; color: #3B4740; }
+.bullets li::before { content: ''; width: 14px; height: 14px; border-radius: 4px; background: var(--green); margin-top: 11px; }
+.browser { position: absolute; left: 780px; top: 172px; width: 1000px; height: 669px; border-radius: 16px; overflow: hidden; background: var(--white); box-shadow: 0 30px 80px -40px rgb(16 24 20 / .45); border: 1px solid rgb(23 32 26 / .08); }
+.browser .bar { height: 44px; display: flex; align-items: center; gap: 9px; padding: 0 18px; background: #EEF1EC; border-bottom: 1px solid var(--line); }
+.browser .bar i { width: 13px; height: 13px; border-radius: 50%; background: #D3D9D0; display: block; }
+.browser .url { margin-left: 18px; height: 26px; flex: 1; max-width: 420px; border-radius: 8px; background: var(--white); font-size: 15px; color: var(--muted); display: flex; align-items: center; padding: 0 12px; }
+.browser .view { position: relative; width: 1000px; height: 625px; overflow: hidden; }
+.browser .cam { position: absolute; left: 0; top: 0; width: 1000px; transform-origin: 0 0; }
+.browser .cam img { display: block; width: 1000px; height: 625px; object-fit: cover; object-position: top left; }
+.browser .layer { position: absolute; inset: 0; }
+.typed { position: absolute; left: 644px; width: 200px; height: 19px; line-height: 19px; font-size: 11.5px; color: var(--ink); background: var(--white); opacity: 0; z-index: 3; }
+.cursor { position: absolute; left: 0; top: 0; width: 34px; height: 34px; z-index: 5; opacity: 0; filter: drop-shadow(0 3px 6px rgb(0 0 0 / .3)); }
+.ripple { position: absolute; width: 70px; height: 70px; margin: -35px 0 0 -35px; border-radius: 50%; border: 3px solid var(--green); opacity: 0; z-index: 4; }
+.inset { position: absolute; left: 1360px; top: 640px; width: 460px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--white); box-shadow: 0 30px 60px -30px rgb(16 24 20 / .45); }
+.inset img { display: block; width: 100%; }
+.inset small { position: absolute; left: 14px; top: 12px; font-size: 16px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--white); background: var(--dark); padding: 6px 10px; border-radius: 8px; }
+.stats { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.stat { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 20px 24px; }
+.stat b { display: block; font-size: 46px; letter-spacing: -.02em; }
+.stat span { font-size: 19px; color: var(--muted); }
+
+.phone { position: absolute; width: 320px; height: 692px; border-radius: 46px; background: #10160F; padding: 12px; box-shadow: 0 40px 80px -40px rgb(16 24 20 / .6); }
+.phone img { width: 100%; height: 100%; border-radius: 34px; object-fit: cover; object-position: top; display: block; }
+
+.facts { position: absolute; left: 140px; top: 470px; width: 1100px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 40px; }
+.fact { display: grid; grid-template-columns: 56px 1fr; gap: 18px; align-items: start; }
+.fact .ic { width: 56px; height: 56px; border-radius: 14px; background: var(--soft); color: var(--green); display: grid; place-items: center; font-size: 28px; }
+.fact b { display: block; font-size: 28px; margin-bottom: 6px; }
+.fact span { font-size: 22px; color: var(--muted); line-height: 1.45; }
+
+.toggle-wrap { position: absolute; left: 140px; top: 440px; }
+.toggle-label { font-size: 22px; font-weight: 800; letter-spacing: .1em; color: var(--muted); }
+.knob { position: absolute; left: 152px; top: 532px; width: 72px; height: 72px; border-radius: 50%; background: var(--white); box-shadow: 0 4px 12px rgb(0 0 0 / .2); z-index: 3; }
+.mode { position: absolute; left: 400px; top: 520px; font-size: 64px; font-weight: 800; letter-spacing: -.02em; height: 96px; overflow: hidden; }
+.mode span { display: block; height: 96px; line-height: 96px; }
+.source { position: absolute; left: 140px; top: 660px; width: 700px; }
+.env { margin-top: 26px; background: #10160F; color: #D7E4DA; border-radius: 16px; padding: 28px 32px; font-size: 24px; line-height: 1.7; }
+.env .k { color: var(--light); }
+.endpoints { position: absolute; left: 1000px; top: 420px; width: 780px; }
+.ep { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 18px; padding: 15px 0; border-bottom: 1px solid var(--line); font-size: 24px; }
+.ep i { font-style: normal; font-size: 17px; font-weight: 800; letter-spacing: .06em; text-align: center; padding: 6px 0; border-radius: 8px; background: var(--soft); color: var(--green); }
+.ep i.post { background: #FBF1E2; color: var(--warn); }
+.ep code { font-size: 23px; }
+.ep small { color: var(--muted); font-size: 19px; margin-left: 14px; font-family: 'Manrope', sans-serif; }
+
+.timeline { position: absolute; left: 140px; top: 470px; width: 1640px; height: 300px; }
+.tl-node { position: absolute; top: 0; width: 370px; }
+.tl-node .bubble { width: 40px; height: 40px; border-radius: 50%; background: var(--white); border: 4px solid var(--green); margin-bottom: 30px; }
+.tl-node.now .bubble { background: var(--green); }
+.tl-node b { display: block; font-size: 30px; margin-bottom: 10px; letter-spacing: -.01em; }
+.tl-node span { font-size: 22px; color: var(--muted); line-height: 1.45; }
+.tl-node em { display: inline-block; margin-bottom: 14px; font-style: normal; font-size: 17px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--green); }
+
+.final { color: var(--white); }
+.final .eyebrow { color: var(--light); }
+.thanks { position: absolute; left: 140px; top: 240px; font-size: 200px; line-height: 1; font-weight: 800; letter-spacing: -.05em; }
+.final-grid { position: absolute; left: 140px; top: 600px; display: grid; grid-template-columns: repeat(3, 520px); gap: 40px; }
+.final-grid div { border-top: 2px solid rgb(255 255 255 / .2); padding-top: 24px; }
+.final-grid small { font-size: 18px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--light); }
+.final-grid p { margin-top: 12px; font-size: 28px; line-height: 1.45; }
+.final-grid code { font-size: 25px; color: var(--white); }
+</style>
+</head>
+<body>
+<div class="viewport">
+<div class="stage" id="stage">
+  <div id="seed"></div>
+
+  <section class="slide" data-seed="1000,0,920,1080,0,#173F2A" data-dark-chrome="false">
+    <div class="eyebrow" data-a="rise" data-b="0">Projeto da disciplina · Etapa 1 — Front-end</div>
+    <div class="logo" style="position:absolute;left:140px;top:300px" data-a="pop" data-b="1">
+      <div class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></div>
+      AGROSERV
+    </div>
+    <h1 data-a="mask" data-b="2" style="position:absolute;left:140px;top:420px;width:840px;font-size:86px;line-height:1.04;font-weight:800;letter-spacing:-.04em">O jeito moderno de contratar serviços agrícolas.</h1>
+    <p class="lead" data-a="rise" data-b="9" style="position:absolute;left:140px;top:770px;width:760px">Plataforma web que conecta produtores rurais a prestadores de máquinas, equipamentos e mão de obra.</p>
+    <div data-a="rise" data-b="11" style="position:absolute;left:140px;top:930px;display:flex;gap:14px">
+      <span class="pill">React · TypeScript · Vite</span><span class="pill">Outubro de 2026</span>
+    </div>
+    <div class="cover-photo" data-a="wipe" data-b="2"><img src="screens/hero-field.jpg" alt="" /></div>
+    <div class="float-chip" style="left:920px;top:700px" data-a="pop" data-b="8">
+      <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3h.01M7 5h.01M11 7h.01M3 7h.01M7 9h.01M3 11h.01"/><rect x="15" y="5" width="4" height="4"/><path d="m19 9 2 2v10c0 .6-.4 1-1 1h-6c-.6 0-1-.4-1-1V11l2-2"/><path d="m13 14 8-2M13 19l8-2"/></svg></div>
+      <div><b>Pulverização Agrícola</b><small><i class="dot"></i>Disponível hoje · Santa Helena - PR</small></div>
+    </div>
+    <div class="float-chip" style="left:1460px;top:160px" data-a="pop" data-b="10">
+      <div class="ic" style="background:#FBF1E2;color:var(--warn)"><svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></div>
+      <div><b>4,9 de 5</b><small>128 serviços avaliados</small></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">01 · Contexto</div>
+    <h2 class="title" data-a="mask" data-b="1">Contratar um serviço no campo ainda é informal.</h2>
+    <div class="col3">
+      <div class="box" data-a="rise" data-b="6"><div class="num">01</div><h3>Indicação boca a boca</h3><p>O produtor depende de contatos pessoais e grupos de mensagem para achar quem tem máquina disponível.</p></div>
+      <div class="box" data-a="rise" data-b="7"><div class="num">02</div><h3>Sem comparação</h3><p>Preço, avaliação e disponibilidade não ficam lado a lado. Decidir leva tempo.</p></div>
+      <div class="box" data-a="rise" data-b="8"><div class="num">03</div><h3>Sem acompanhamento</h3><p>Depois do combinado, não há um lugar para ver o status de cada serviço.</p></div>
+    </div>
+    <div class="statement" data-a="rise" data-b="11"><span class="arrow">→</span>AgroServ: encontrar, comparar e acompanhar serviços em um só lugar.</div>
+  </section>
+
+  <section class="slide" data-seed="1380,300,380,380,190,#E6F0E8">
+    <div class="eyebrow" data-a="rise" data-b="0">02 · Requisitos da entrega</div>
+    <h2 class="title" data-a="mask" data-b="1" style="width:1180px">Tudo o que foi pedido, implementado e testado.</h2>
+    <div class="req">
+      <div class="req-row" data-a="rise" data-b="6"><div class="ck"><svg class="icon" viewBox="0 0 24 24"><path data-a="draw" data-b="8" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span>Homepage como ponto de entrada</span><code class="mono">/</code></div>
+      <div class="req-row" data-a="rise" data-b="7"><div class="ck"><svg class="icon" viewBox="0 0 24 24"><path data-a="draw" data-b="9" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span>Duas páginas públicas</span><code class="mono">/servicos · /servicos/:id</code></div>
+      <div class="req-row" data-a="rise" data-b="8"><div class="ck"><svg class="icon" viewBox="0 0 24 24"><path data-a="draw" data-b="10" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span>Área privada</span><code class="mono">/dashboard · /solicitacoes</code></div>
+      <div class="req-row" data-a="rise" data-b="9"><div class="ck"><svg class="icon" viewBox="0 0 24 24"><path data-a="draw" data-b="11" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span>Sistema de login funcional</span><code class="mono">/login · AuthContext</code></div>
+      <div class="req-row" data-a="rise" data-b="10"><div class="ck"><svg class="icon" viewBox="0 0 24 24"><path data-a="draw" data-b="12" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span>Middleware de proteção de rotas</span><code class="mono">ProtectedRoute</code></div>
+    </div>
+    <div class="big-count" data-a="pop" data-b="4"><strong><span data-a="count" data-b="6" data-to="5">5</span>/5</strong><small>requisitos atendidos</small></div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">03 · Tecnologias</div>
+    <h2 class="title" data-a="mask" data-b="1">Stack moderna, sem excessos.</h2>
+    <div class="tiles">
+      <div class="tile" data-a="pop" data-b="4"><div class="tag"></div><div><b>React 19</b><br><span>Componentes e hooks</span></div></div>
+      <div class="tile" data-a="pop" data-b="5"><div class="tag"></div><div><b>TypeScript</b><br><span>Tipagem estrita</span></div></div>
+      <div class="tile" data-a="pop" data-b="6"><div class="tag"></div><div><b>Vite</b><br><span>Dev server e build</span></div></div>
+      <div class="tile" data-a="pop" data-b="7"><div class="tag"></div><div><b>React Router</b><br><span>Rotas e proteção</span></div></div>
+      <div class="tile" data-a="pop" data-b="8"><div class="tag"></div><div><b>Tailwind CSS</b><br><span>Design tokens da marca</span></div></div>
+      <div class="tile" data-a="pop" data-b="9"><div class="tag"></div><div><b>Framer Motion</b><br><span>Animações com molas</span></div></div>
+      <div class="tile" data-a="pop" data-b="10"><div class="tag"></div><div><b>Vitest</b><br><span>Testes automatizados</span></div></div>
+      <div class="tile" data-a="pop" data-b="11"><div class="tag"></div><div><b>Context API</b><br><span>Estado global de autenticação</span></div></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45" data-script="arch">
+    <div class="eyebrow" data-a="rise" data-b="0">04 · Arquitetura</div>
+    <h2 class="title" data-a="mask" data-b="1">Camadas que separam a tela dos dados.</h2>
+    <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
+      <path data-a="draw" data-b="7" d="M420 610 H470"/>
+      <path data-a="draw" data-b="8" d="M750 610 H800"/>
+      <path data-a="draw" data-b="9" d="M1080 610 H1130"/>
+      <path data-a="draw" data-b="10" d="M1410 610 C1440 610 1430 520 1470 520"/>
+      <path data-a="draw" data-b="10" d="M1410 610 C1440 610 1430 700 1470 700"/>
+      <path id="arch-route" d="M280 610 H1430 C1450 610 1440 520 1470 520 H1620" stroke="none"/>
+    </svg>
+    <div class="node" style="left:140px;top:540px;width:280px;height:140px" data-a="pop" data-b="4"><b>Páginas</b><span>pages/ · components/</span></div>
+    <div class="node" style="left:470px;top:540px;width:280px;height:140px" data-a="pop" data-b="5"><b>Hooks</b><span>useAuth · useAsync</span></div>
+    <div class="node" style="left:800px;top:540px;width:280px;height:140px" data-a="pop" data-b="6"><b>Services</b><span>auth · service · request</span></div>
+    <div class="node accent" style="left:1130px;top:540px;width:280px;height:140px" data-a="pop" data-b="7"><b>apiClient</b><span>token · erros · 401</span></div>
+    <div class="node soft" style="left:1470px;top:460px;width:310px;height:120px" data-a="pop" data-b="9"><b>Mock adapter</b><span>VITE_API_MODE=mock</span></div>
+    <div class="node dark" style="left:1470px;top:640px;width:310px;height:120px" data-a="pop" data-b="10"><b>HTTP adapter</b><span>VITE_API_MODE=http</span></div>
+    <div class="packet" data-packet></div>
+    <p class="caption" data-a="rise" data-b="12">A interface nunca importa dados diretamente. <b>Trocar o mock pela API real é uma variável de ambiente.</b></p>
+  </section>
+
+  <section class="slide" data-seed="1000,330,780,560,24,#173F2A" data-dark-chrome="false">
+    <div class="eyebrow" data-a="rise" data-b="0">05 · Navegação</div>
+    <h2 class="title" data-a="mask" data-b="1">Rotas públicas e privadas.</h2>
+    <div class="col-title" style="left:140px;color:var(--green)" data-a="rise" data-b="4">Públicas</div>
+    <div class="routes" style="left:140px">
+      <div class="route" data-a="rise" data-b="5"><code class="mono">/</code><span>Página inicial</span></div>
+      <div class="route" data-a="rise" data-b="6"><code class="mono">/servicos</code><span>Listagem e filtros</span></div>
+      <div class="route" data-a="rise" data-b="7"><code class="mono">/servicos/:id</code><span>Detalhes</span></div>
+      <div class="route" data-a="rise" data-b="8"><code class="mono">/login</code><span>Autenticação</span></div>
+    </div>
+    <div class="col-title" style="left:1060px;top:380px;color:var(--light)" data-a="rise" data-b="9">Privadas · ProtectedRoute</div>
+    <div class="routes private" style="left:1060px;top:450px">
+      <div class="route" data-a="rise" data-b="10"><code class="mono">/dashboard</code><span>Painel do produtor</span></div>
+      <div class="route" data-a="rise" data-b="11"><code class="mono">/solicitacoes</code><span>Filtro por status</span></div>
+    </div>
+    <div class="lock" data-a="pop" data-b="12"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+    <p data-a="rise" data-b="13" style="position:absolute;left:1060px;top:730px;width:640px;font-size:24px;line-height:1.45;color:rgb(255 255 255 / .75)">Sem sessão, o usuário vai para <code class="mono" style="color:#fff">/login</code> e volta exatamente para onde queria ir, inclusive com os filtros da URL.</p>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45" data-script="auth">
+    <div class="eyebrow" data-a="rise" data-b="0">06 · Middleware de proteção</div>
+    <h2 class="title" data-a="mask" data-b="1">Verificar, permitir ou redirecionar.</h2>
+    <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
+      <path data-a="draw" data-b="6" d="M440 615 H560"/>
+      <path data-a="draw" data-b="8" d="M660 515 V420 H900"/>
+      <path data-a="draw" data-b="9" class="hot" d="M660 715 V800 H900"/>
+      <path data-a="draw" data-b="11" class="hot" d="M1230 800 H1300"/>
+      <path data-a="draw" data-b="13" class="hot" d="M1465 745 V625"/>
+      <path data-a="draw" data-b="14" class="hot" d="M1300 570 H1270 C1250 570 1250 420 1230 420"/>
+      <path id="auth-route" d="M290 615 H560 L660 615 V800 H1300 H1465 V570 H1270 C1250 570 1250 420 1230 420 H1065" stroke="none"/>
+    </svg>
+    <div class="node" style="left:140px;top:560px;width:300px;height:110px" data-a="pop" data-b="4"><b>Rota privada</b><span>ex.: /solicitacoes?status=…</span></div>
+    <div class="diamond" style="left:560px;top:515px" data-a="pop" data-b="6"><b>Sessão<br>ativa?</b></div>
+    <div class="edge-label" style="left:680px;top:450px;color:var(--muted)" data-a="rise" data-b="8">Sim</div>
+    <div class="edge-label" style="left:680px;top:740px;color:var(--green)" data-a="rise" data-b="9">Não</div>
+    <div class="node accent" style="left:900px;top:365px;width:330px;height:110px" data-a="pop" data-b="9"><b>Renderiza a página</b><span>&lt;Outlet /&gt;</span></div>
+    <div class="node" style="left:900px;top:745px;width:330px;height:110px" data-a="pop" data-b="10"><b>Guarda a rota</b><span>pathname + query</span></div>
+    <div class="node soft" style="left:1300px;top:745px;width:420px;height:110px" data-a="pop" data-b="12"><b>/login com aviso</b><span>“Faça login para acessar esta área.”</span></div>
+    <div class="node dark" style="left:1300px;top:515px;width:420px;height:110px" data-a="pop" data-b="14"><b>Login com sucesso</b><span>volta para a rota guardada</span></div>
+    <div class="packet" data-packet></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="home">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">07 · Demonstração</div>
+      <h2 class="title" data-a="mask" data-b="1">Página inicial</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Hero com chamada clara e atalho para o painel</li>
+        <li data-a="rise" data-b="5">Busca por serviço e localização</li>
+        <li data-a="rise" data-b="6">8 categorias clicáveis</li>
+        <li data-a="rise" data-b="7">Serviços em destaque com preço, avaliação e disponibilidade</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv.app</div></div><div class="view"><div class="cam" data-cam><img src="screens/home.jpg" alt="Página inicial" /><img src="screens/home-sections.jpg" alt="Categorias e destaques" /></div></div></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="services">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">08 · Demonstração</div>
+      <h2 class="title" data-a="mask" data-b="1">Listagem de serviços</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Busca ignora acentos, maiúsculas e pontuação</li>
+        <li data-a="rise" data-b="5">Filtro por categoria salvo na URL</li>
+        <li data-a="rise" data-b="6">“Carregar mais” página a página</li>
+        <li data-a="rise" data-b="7">Estados de carregamento, vazio e erro</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv.app/servicos</div></div><div class="view"><div class="cam" data-cam><img src="screens/services.jpg" alt="Listagem de serviços" /></div></div></div>
+    <div class="inset" data-a="pop" data-b="22"><small>Estado vazio</small><img src="screens/services-empty.jpg" alt="Busca sem resultados" /></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="detail">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">09 · Demonstração</div>
+      <h2 class="title" data-a="mask" data-b="1">Detalhes do serviço</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Trilha de navegação e categoria</li>
+        <li data-a="rise" data-b="5">Preço por unidade e disponibilidade</li>
+        <li data-a="rise" data-b="6">Resumo do prestador: avaliação e experiência</li>
+        <li data-a="rise" data-b="7">“Entrar para contratar” leva ao login e volta para cá</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv.app/servicos/svc-1</div></div><div class="view"><div class="cam" data-cam><img src="screens/service-detail.jpg" alt="Detalhes do serviço" /></div></div></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="login">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">10 · Demonstração</div>
+      <h2 class="title" data-a="mask" data-b="1">Login e proteção</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Sem sessão, /dashboard redireciona para /login com aviso</li>
+        <li data-a="rise" data-b="5">Validação dos campos e erro da API</li>
+        <li data-a="rise" data-b="6">“Usar conta demo” preenche as credenciais</li>
+        <li data-a="rise" data-b="7">Sessão salva no localStorage</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url" data-url>agroserv.app/login</div></div><div class="view"><div class="cam" data-cam><img src="screens/login-protected.jpg" alt="Tela de login" /></div><div class="typed" data-typed style="top:266px">produtor@agroserv.com</div><div class="typed" data-typed style="top:326px">••••••</div><div class="layer" data-next style="opacity:0"><img src="screens/dashboard.jpg" alt="Dashboard" style="width:1000px;height:625px;object-fit:cover;object-position:top left;display:block" /></div><div class="ripple" data-ripple></div><svg class="cursor" data-cursor viewBox="0 0 24 24"><path d="M4 2l16 11-7 1.5L9.5 21z" fill="#17201A" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="private">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">11 · Área privada</div>
+      <h2 class="title" data-a="mask" data-b="1">Painel do produtor</h2>
+      <div class="stats">
+        <div class="stat" data-a="rise" data-b="4"><b data-a="count" data-b="5" data-to="3">3</b><span>Solicitações abertas</span></div>
+        <div class="stat" data-a="rise" data-b="5"><b data-a="count" data-b="6" data-to="1">1</b><span>Em andamento</span></div>
+        <div class="stat" data-a="rise" data-b="6"><b data-a="count" data-b="7" data-to="3">3</b><span>Concluídos</span></div>
+        <div class="stat" data-a="rise" data-b="7"><b data-a="count" data-b="8" data-to="10260" data-prefix="R$ ">R$ 10.260</b><span>Total contratado</span></div>
+      </div>
+      <ul class="bullets" style="margin-top:30px">
+        <li data-a="rise" data-b="9">Solicitações filtradas por status, com a URL sincronizada</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url" data-url>agroserv.app/dashboard</div></div><div class="view"><div class="cam" data-cam><img src="screens/dashboard.jpg" alt="Dashboard" /></div><div class="layer" data-next style="opacity:0"><img src="screens/requests.jpg" alt="Solicitações" style="width:1000px;height:625px;object-fit:cover;object-position:top left;display:block" /></div></div></div>
+  </section>
+
+  <section class="slide" data-seed="900,140,880,800,40,#E6F0E8">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">12 · Responsividade</div>
+      <h2 class="title" data-a="mask" data-b="1">Do desktop ao celular.</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Grids viram uma coluna</li>
+        <li data-a="rise" data-b="5">Menu principal vira menu recolhível</li>
+        <li data-a="rise" data-b="6">Tabelas viram cartões</li>
+        <li data-a="rise" data-b="7">Sem rolagem horizontal em 375 px</li>
+      </ul>
+    </div>
+    <div class="phone" style="left:1010px;top:190px;--r:-4deg" data-a="phone" data-b="4"><img src="screens/mobile-home.jpg" alt="Página inicial no celular" /></div>
+    <div class="phone" style="left:1390px;top:230px;--r:4deg" data-a="phone" data-b="6"><img src="screens/mobile-services.jpg" alt="Serviços no celular" /></div>
+  </section>
+
+  <section class="slide" data-seed="1380,300,380,380,190,#E6F0E8">
+    <div class="eyebrow" data-a="rise" data-b="0">13 · Qualidade</div>
+    <h2 class="title" data-a="mask" data-b="1" style="width:1180px">Qualidade verificada a cada passo.</h2>
+    <div class="facts">
+      <div class="fact" data-a="rise" data-b="5"><div class="ic">✓</div><div><b>TDD</b><span>Cada funcionalidade começou por um teste falhando.</span></div></div>
+      <div class="fact" data-a="rise" data-b="6"><div class="ic">⌘</div><div><b>Tipagem e lint</b><span>TypeScript estrito, oxlint e build sem erros.</span></div></div>
+      <div class="fact" data-a="rise" data-b="7"><div class="ic">◎</div><div><b>Acessibilidade</b><span>HTML semântico, labels, foco visível, skip link e reduced motion.</span></div></div>
+      <div class="fact" data-a="rise" data-b="8"><div class="ic">⇄</div><div><b>Revisão independente</b><span>Revisão final de código; problemas importantes corrigidos com testes.</span></div></div>
+    </div>
+    <div class="big-count" data-a="pop" data-b="4"><strong data-a="count" data-b="5" data-to="115">115</strong><small>testes automatizados</small></div>
+  </section>
+
+  <section class="slide" data-seed="140,520,220,96,48,#2F6B45" data-script="toggle">
+    <div class="eyebrow" data-a="rise" data-b="0">14 · Próxima etapa</div>
+    <h2 class="title" data-a="mask" data-b="1">Pronto para conectar o back-end.</h2>
+    <div class="toggle-wrap" data-a="rise" data-b="3"><div class="toggle-label mono">VITE_API_MODE</div></div>
+    <div class="knob" data-knob data-a="pop" data-b="4"></div>
+    <div class="mode" data-a="rise" data-b="4"><div data-mode><span>mock</span><span>http</span></div></div>
+    <div class="source" data-a="rise" data-b="6">
+      <p class="lead" style="font-size:26px">Mesmo código de interface. Só muda a origem dos dados:</p>
+      <div class="env mono"><span class="k">VITE_API_MODE</span>=http<br><span class="k">VITE_API_URL</span>=http://localhost:3333</div>
+    </div>
+    <div class="endpoints">
+      <div class="toggle-label" style="margin-bottom:12px" data-a="rise" data-b="5">Contrato da API · docs/api-contract.md</div>
+      <div class="ep" data-a="rise" data-b="6"><i class="post">POST</i><code class="mono">/auth/login</code></div>
+      <div class="ep" data-a="rise" data-b="7"><i>GET</i><code class="mono">/auth/me</code></div>
+      <div class="ep" data-a="rise" data-b="8"><i>GET</i><code class="mono">/categories</code></div>
+      <div class="ep" data-a="rise" data-b="9"><i>GET</i><code class="mono">/services<small>?q &amp; location &amp; category &amp; page</small></code></div>
+      <div class="ep" data-a="rise" data-b="10"><i>GET</i><code class="mono">/services/featured</code></div>
+      <div class="ep" data-a="rise" data-b="11"><i>GET</i><code class="mono">/services/:id</code></div>
+      <div class="ep" data-a="rise" data-b="12"><i>GET</i><code class="mono">/requests<small>?status</small></code></div>
+      <div class="ep" data-a="rise" data-b="13"><i>GET</i><code class="mono">/dashboard</code></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">15 · Roteiro</div>
+    <h2 class="title" data-a="mask" data-b="1">Próximas etapas.</h2>
+    <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080"><path data-a="draw" data-b="4" d="M160 490 H1780" style="stroke-width:4"/></svg>
+    <div class="timeline">
+      <div class="tl-node now" style="left:0" data-a="rise" data-b="5"><div class="bubble"></div><em>Concluído</em><b>Front-end</b><span>Páginas, login, proteção de rotas e contrato da API.</span></div>
+      <div class="tl-node" style="left:420px" data-a="rise" data-b="7"><div class="bubble"></div><em>Etapa 2</em><b>Back-end REST</b><span>Implementar os 8 endpoints do contrato e ligar com VITE_API_MODE=http.</span></div>
+      <div class="tl-node" style="left:840px" data-a="rise" data-b="9"><div class="bubble"></div><em>Depois</em><b>Contratação</b><span>Cadastro, criação e cancelamento de solicitações.</span></div>
+      <div class="tl-node" style="left:1260px" data-a="rise" data-b="11"><div class="bubble"></div><em>Depois</em><b>Prestador</b><span>Painel do prestador, mapa, favoritos e dark mode.</span></div>
+    </div>
+  </section>
+
+  <section class="slide final" data-seed="0,0,1920,1080,0,#173F2A" data-dark-chrome="true">
+    <div class="eyebrow" data-a="rise" data-b="2">AgroServ · Etapa 1</div>
+    <div class="thanks" data-a="mask" data-b="3">Obrigado.</div>
+    <div class="final-grid">
+      <div data-a="rise" data-b="7"><small>Rodar o projeto</small><p><code class="mono">npm install<br>npm run dev</code></p></div>
+      <div data-a="rise" data-b="8"><small>Conta demo</small><p><code class="mono">produtor@agroserv.com<br>123456</code></p></div>
+      <div data-a="rise" data-b="9"><small>Documentação</small><p><code class="mono">docs/report.md<br>docs/flowcharts.md<br>docs/api-contract.md</code></p></div>
+    </div>
+  </section>
+
+  <div class="hint" id="hint">← → para navegar · F tela cheia</div>
+  <div class="chrome" id="chrome"><span>AGROSERV</span><span id="counter" class="counter">01 / 17</span></div>
+  <div class="progress"><i id="bar"></i></div>
+</div>
+</div>
+<script>
+(() => {
+  const stage = document.getElementById('stage')
+  const seed = document.getElementById('seed')
+  const slides = [...document.querySelectorAll('.slide')]
+  const counter = document.getElementById('counter')
+  const bar = document.getElementById('bar')
+  const chrome = document.getElementById('chrome')
+  const hint = document.getElementById('hint')
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const BEAT = 110
+  const SPRINGS = {
+    snappy: { stiffness: 380, damping: 30 },
+    smooth: { stiffness: 170, damping: 24 },
+    heavy: { stiffness: 120, damping: 22 },
+    playful: { stiffness: 260, damping: 15 },
+  }
+  const cache = new Map()
+  let current = -1
+  let timers = []
+  let loops = []
+
+  function spring(name) {
+    if (cache.has(name)) return cache.get(name)
+    const { stiffness, damping } = SPRINGS[name]
+    const w0 = Math.sqrt(stiffness)
+    const zeta = damping / (2 * Math.sqrt(stiffness))
+    const position = (t) => {
+      if (zeta < 1) {
+        const wd = w0 * Math.sqrt(1 - zeta * zeta)
+        return 1 - Math.exp(-zeta * w0 * t) * (Math.cos(wd * t) + ((zeta * w0) / wd) * Math.sin(wd * t))
+      }
+      return 1 - Math.exp(-w0 * t) * (1 + w0 * t)
+    }
+    let duration = 0.1
+    while (duration < 3) {
+      let settled = true
+      for (let t = duration; t < duration + 0.25; t += 0.01) if (Math.abs(1 - position(t)) > 0.002) settled = false
+      if (settled) break
+      duration += 0.02
+    }
+    const steps = 48
+    const points = []
+    for (let i = 0; i <= steps; i += 1) points.push(position((duration * i) / steps).toFixed(4))
+    points[steps] = '1'
+    const result = { easing: `linear(${points.join(', ')})`, duration: Math.round(duration * 1000) }
+    cache.set(name, result)
+    return result
+  }
+
+  function run(el, keyframes, { kind = 'smooth', delay = 0, duration, easing, iterations = 1 } = {}) {
+    const s = spring(kind)
+    return el.animate(keyframes, {
+      duration: reduce ? 1 : duration ?? s.duration,
+      easing: easing ?? s.easing,
+      delay: reduce ? 0 : delay,
+      fill: 'both',
+      iterations: reduce ? 1 : iterations,
+    })
+  }
+
+  function later(fn, ms) {
+    timers.push(setTimeout(fn, reduce ? 0 : ms))
+  }
+
+  function splitWords(el) {
+    if (el.dataset.split) return
+    el.dataset.split = '1'
+    const words = el.textContent.trim().split(/\s+/)
+    el.innerHTML = words.map((word) => `<span class="w"><span>${word}</span></span>`).join(' ')
+  }
+
+  function fmt(value, prefix) {
+    return `${prefix || ''}${Math.round(value).toLocaleString('pt-BR')}`
+  }
+
+  function countUp(el, delay) {
+    const to = Number(el.dataset.to)
+    const prefix = el.dataset.prefix
+    if (reduce) { el.textContent = fmt(to, prefix); return }
+    el.textContent = fmt(0, prefix)
+    later(() => {
+      const start = performance.now()
+      const step = (now) => {
+        const p = Math.min(1, (now - start) / 1100)
+        el.textContent = fmt(to * (1 - Math.pow(1 - p, 4)), prefix)
+        if (p < 1 && el.isConnected) loops.push(requestAnimationFrame(step))
+      }
+      loops.push(requestAnimationFrame(step))
+    }, delay)
+  }
+
+  function animateIn(slide) {
+    slide.querySelectorAll('[data-a]').forEach((el) => {
+      const type = el.dataset.a
+      const delay = Number(el.dataset.b || 0) * BEAT
+      if (type === 'rise') run(el, [{ opacity: 0, transform: 'translateY(46px)' }, { opacity: 1, transform: 'none' }], { delay })
+      if (type === 'pop') run(el, [{ opacity: 0, transform: 'scale(.86)' }, { opacity: 1, transform: 'none' }], { kind: 'playful', delay })
+      if (type === 'wipe') run(el, [{ clipPath: 'inset(0 0 0 100% round 16px)' }, { clipPath: 'inset(0 0 0 0% round 16px)' }], { kind: 'heavy', delay })
+      if (type === 'phone') run(el, [{ opacity: 0, transform: 'translateY(160px) rotate(0deg)' }, { opacity: 1, transform: 'translateY(0) rotate(var(--r))' }], { kind: 'heavy', delay })
+      if (type === 'mask') {
+        splitWords(el)
+        el.querySelectorAll('.w > span').forEach((word, i) => {
+          run(word, [{ transform: 'translateY(108%)' }, { transform: 'none' }], { kind: 'heavy', delay: delay + i * BEAT * 0.55 })
+        })
+      }
+      if (type === 'draw') {
+        const length = el.getTotalLength()
+        el.style.strokeDasharray = `${length}`
+        run(el, [{ strokeDashoffset: length }, { strokeDashoffset: 0 }], { delay, duration: 520, easing: 'cubic-bezier(.65,0,.35,1)' })
+      }
+      if (type === 'count') countUp(el, delay)
+    })
+  }
+
+  function reset(slide) {
+    slide.getAnimations({ subtree: true }).forEach((a) => a.cancel())
+  }
+
+  function travel(dot, path, { delay = 0, duration = 2600, iterations = Infinity } = {}) {
+    if (reduce) return
+    const length = path.getTotalLength()
+    const frames = []
+    const count = 60
+    for (let i = 0; i <= count; i += 1) {
+      const p = path.getPointAtLength((length * i) / count)
+      frames.push({ transform: `translate(${p.x}px, ${p.y}px)`, opacity: i === 0 || i === count ? 0 : 1 })
+    }
+    dot.animate(frames, { duration, delay, iterations, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'both' })
+  }
+
+  function focusFrame(cam, fx, fy, scale) {
+    const w = 1000
+    const h = 625
+    const tx = Math.min(0, Math.max(w * (1 - scale), w * 0.5 - fx * w * scale))
+    const ty = Math.min(0, Math.max(h * (1 - scale), h * 0.5 - fy * h * scale))
+    return `translate(${tx}px, ${ty}px) scale(${scale})`
+  }
+
+  function moveCamera(cam, to, delay, kind = 'heavy') {
+    const from = getComputedStyle(cam).transform
+    const a = run(cam, [{ transform: from === 'none' ? 'none' : from }, { transform: to }], { kind, delay })
+    return a
+  }
+
+  const scripts = {
+    arch(slide) {
+      travel(slide.querySelector('[data-packet]'), slide.querySelector('#arch-route'), { delay: 13 * BEAT, duration: 2800 })
+    },
+    auth(slide) {
+      travel(slide.querySelector('[data-packet]'), slide.querySelector('#auth-route'), { delay: 16 * BEAT, duration: 4200 })
+    },
+    home(slide) {
+      const cam = slide.querySelector('[data-cam]')
+      cam.style.transform = 'none'
+      later(() => { cam.style.transform = 'translateY(-625px)'; run(cam, [{ transform: 'none' }, { transform: 'translateY(-625px)' }], { kind: 'heavy' }) }, 2600)
+    },
+    services(slide) {
+      const cam = slide.querySelector('[data-cam]')
+      later(() => { const to = focusFrame(cam, 0.42, 0.62, 1.55); run(cam, [{ transform: 'none' }, { transform: to }], { kind: 'heavy' }) }, 1600)
+    },
+    detail(slide) {
+      const cam = slide.querySelector('[data-cam]')
+      later(() => { const to = focusFrame(cam, 0.8, 0.42, 1.7); run(cam, [{ transform: 'none' }, { transform: to }], { kind: 'heavy' }) }, 1600)
+    },
+    login(slide) {
+      const cursor = slide.querySelector('[data-cursor]')
+      const ripple = slide.querySelector('[data-ripple]')
+      const next = slide.querySelector('[data-next]')
+      const url = slide.querySelector('[data-url]')
+      url.textContent = 'agroserv.app/login'
+      const k = 1000 / 1440
+      const demo = { x: 1088 * k, y: 674 * k }
+      const enter = { x: 1088 * k, y: 578 * k }
+      if (reduce) { next.style.opacity = 1; url.textContent = 'agroserv.app/dashboard'; return }
+      const pos = (p) => `translate(${p.x - 6}px, ${p.y - 4}px)`
+      cursor.animate([{ opacity: 0, transform: pos({ x: 980, y: 600 }) }, { opacity: 1, transform: pos({ x: 980, y: 600 }) }], { duration: 200, delay: 1500, fill: 'both' })
+      const click = (p, at) => {
+        later(() => {
+          ripple.style.left = `${p.x}px`
+          ripple.style.top = `${p.y}px`
+          ripple.animate([{ opacity: 0.9, transform: 'scale(.3)' }, { opacity: 0, transform: 'scale(1.4)' }], { duration: 520, easing: 'cubic-bezier(.2,.7,.3,1)' })
+          cursor.animate([{ transform: pos(p) }, { transform: `${pos(p)} scale(.85)` }, { transform: pos(p) }], { duration: 220 })
+        }, at)
+      }
+      later(() => run(cursor, [{ opacity: 1, transform: pos({ x: 980, y: 600 }) }, { opacity: 1, transform: pos(demo) }], { kind: 'smooth' }), 1700)
+      click(demo, 2500)
+      slide.querySelectorAll('[data-typed]').forEach((el, i) => {
+        el.animate([{ opacity: 0, transform: 'translateX(-6px)' }, { opacity: 1, transform: 'none' }], { duration: 260, delay: 2650 + i * 120, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'both' })
+      })
+      later(() => run(cursor, [{ opacity: 1, transform: pos(demo) }, { opacity: 1, transform: pos(enter) }], { kind: 'snappy' }), 3000)
+      click(enter, 3600)
+      later(() => {
+        url.textContent = 'agroserv.app/dashboard'
+        next.animate([{ opacity: 0, transform: 'scale(1.02)' }, { opacity: 1, transform: 'none' }], { duration: 520, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'both' })
+        cursor.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, delay: 300, fill: 'forwards' })
+      }, 4100)
+    },
+    private(slide) {
+      const cam = slide.querySelector('[data-cam]')
+      const next = slide.querySelector('[data-next]')
+      const url = slide.querySelector('[data-url]')
+      url.textContent = 'agroserv.app/dashboard'
+      later(() => { const to = focusFrame(cam, 0.55, 0.32, 1.4); run(cam, [{ transform: 'none' }, { transform: to }], { kind: 'heavy' }) }, 1500)
+      later(() => {
+        url.textContent = 'agroserv.app/solicitacoes?status=completed'
+        next.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 560, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'both' })
+      }, 4300)
+    },
+    toggle(slide) {
+      const knob = slide.querySelector('[data-knob]')
+      const mode = slide.querySelector('[data-mode]')
+      later(() => {
+        run(knob, [{ transform: 'none' }, { transform: 'translateX(124px)' }], { kind: 'playful' })
+        run(mode, [{ transform: 'none' }, { transform: 'translateY(-96px)' }], { kind: 'snappy' })
+        run(seed, [{ background: '#2F6B45' }, { background: '#173F2A' }], { kind: 'snappy' })
+      }, 2400)
+    },
+  }
+
+  function parseSeed(slide) {
+    const [x, y, w, h, r, color] = slide.dataset.seed.split(',')
+    return { left: `${x}px`, top: `${y}px`, width: `${w}px`, height: `${h}px`, borderRadius: `${r}px`, background: color }
+  }
+
+  function morphSeed(slide, instant) {
+    const target = parseSeed(slide)
+    const style = getComputedStyle(seed)
+    const from = { left: style.left, top: style.top, width: style.width, height: style.height, borderRadius: style.borderRadius, background: style.backgroundColor }
+    seed.getAnimations().forEach((a) => a.cancel())
+    Object.assign(seed.style, target)
+    if (instant || reduce) return
+    run(seed, [from, target], { kind: 'heavy' })
+  }
+
+  function show(index, instant = false) {
+    const nextIndex = Math.max(0, Math.min(slides.length - 1, index))
+    if (nextIndex === current) return
+    const forward = nextIndex > current
+    timers.forEach(clearTimeout)
+    timers = []
+    loops.forEach(cancelAnimationFrame)
+    loops = []
+    const previous = slides[current]
+    if (previous) {
+      reset(previous)
+      previous.classList.remove('is-active')
+      if (!instant && !reduce) {
+        previous.classList.add('is-leaving')
+        const out = previous.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateX(${forward ? -60 : 60}px)` }], { duration: 260, easing: 'cubic-bezier(.4,0,1,1)' })
+        out.onfinish = () => previous.classList.remove('is-leaving')
+      }
+    }
+    current = nextIndex
+    const slide = slides[current]
+    slide.classList.add('is-active')
+    morphSeed(slide, instant)
+    animateIn(slide)
+    const script = scripts[slide.dataset.script]
+    if (script) script(slide)
+    counter.textContent = `${String(current + 1).padStart(2, '0')} / ${slides.length}`
+    bar.style.width = `${((current + 1) / slides.length) * 100}%`
+    chrome.classList.toggle('on-dark', slide.dataset.darkChrome === 'true')
+    history.replaceState(null, '', `#${current + 1}`)
+    if (current > 0) hint.style.opacity = '0'
+  }
+
+  function fit() {
+    const scale = Math.min(innerWidth / 1920, innerHeight / 1080)
+    stage.style.transform = `scale(${scale})`
+  }
+
+  addEventListener('resize', fit)
+  addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); show(current + 1) }
+    if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); show(current - 1) }
+    if (e.key === 'Home') show(0)
+    if (e.key === 'End') show(slides.length - 1)
+    if (e.key === 'r' || e.key === 'R') { const i = current; current = -1; show(i, true) }
+    if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen()
+      else document.documentElement.requestFullscreen?.()
+    }
+  })
+  addEventListener('click', (e) => {
+    if (e.clientX > innerWidth / 3) show(current + 1)
+    else show(current - 1)
+  })
+  let touchX = null
+  addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX }, { passive: true })
+  addEventListener('touchend', (e) => {
+    if (touchX === null) return
+    const dx = e.changedTouches[0].clientX - touchX
+    if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1))
+    touchX = null
+  })
+
+  fit()
+  const start = Number(location.hash.slice(1)) || 1
+  document.fonts.ready.then(() => show(start - 1, true))
+  window.deck = { show: (n) => show(n - 1), count: slides.length }
+})()
+</script>
+</body>
+</html>

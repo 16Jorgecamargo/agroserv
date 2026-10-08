@@ -4,6 +4,16 @@ Plataforma web para contratação de serviços agrícolas. Conecta produtores ru
 
 Projeto acadêmico: nesta etapa o front-end usa um back-end simulado que segue o mesmo contrato da API REST que será implementada na próxima etapa.
 
+## Documentação
+
+| Documento | Conteúdo |
+|---|---|
+| [`docs/report.md`](docs/report.md) | Relatório técnico do projeto |
+| [`docs/flowcharts.md`](docs/flowcharts.md) | Fluxogramas (Mermaid) e imagens em `docs/flowcharts/` |
+| [`docs/slides/index.html`](docs/slides/index.html) | Apresentação animada: abra no navegador, use ← → e `F` para tela cheia |
+| [`docs/api-contract.md`](docs/api-contract.md) | Contrato da API REST para a etapa de back-end |
+| [`docs/backlog.md`](docs/backlog.md) | Funcionalidades adiadas |
+
 ## Como executar
 
 ```bash
