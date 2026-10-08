@@ -460,7 +460,7 @@ URLs centralizadas em `routes/paths.ts`. Páginas carregadas com `React.lazy` + 
 ### ProtectedRoute
 
 1. `isLoading` → `FullScreenLoader`.
-2. Não autenticado → `<Navigate to="/login" replace state={{ from: location, reason: 'auth_required' }} />`.
+2. Não autenticado → `<Navigate to="/login" replace />`, passando no `state` a rota de origem (`from: location`) e o motivo (`reason: 'auth_required'`).
 3. Papel fora de `allowedRoles` → redireciona ao dashboard do próprio papel.
 4. Caso contrário → `<Outlet />`.
 
