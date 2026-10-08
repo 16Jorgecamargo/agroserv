@@ -18,7 +18,7 @@ export function Sidebar({ onLogout }: { onLogout: () => void }) {
       <div className="flex h-16 items-center px-4 lg:px-6">
         <Logo />
       </div>
-      <nav aria-label="Área do produtor" className="flex gap-1 overflow-x-auto px-2 pb-2 lg:flex-1 lg:flex-col lg:px-3 lg:pt-4 lg:pb-4">
+      <nav aria-label="Área do produtor" className="no-scrollbar flex gap-1 overflow-x-auto px-2 pb-2 lg:flex-1 lg:flex-col lg:px-3 lg:pt-4 lg:pb-4">
         {sidebarItems.map((item) => (
           <NavLink
             key={item.to}

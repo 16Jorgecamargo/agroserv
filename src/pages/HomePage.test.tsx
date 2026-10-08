@@ -26,7 +26,8 @@ describe('HomePage', () => {
     renderApp('/')
     await userEvent.type(screen.getByLabelText('Qual serviço você precisa?'), 'colheita')
     await userEvent.click(screen.getByRole('button', { name: 'Buscar' }))
-    expect(await screen.findByRole('heading', { level: 1, name: 'Página não encontrada' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: 'Encontre serviços agrícolas' })).toBeInTheDocument()
+    expect(await screen.findByText('Encontramos 2 serviços')).toBeInTheDocument()
   })
 
   it('shows the 404 page for unknown routes', () => {
