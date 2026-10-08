@@ -839,7 +839,7 @@ Expected: all PASS; no errors.
 
 - [ ] **Step 11: Look at it in the browser**
 
-Run `npm run dev` (background) and open `http://localhost:5173/` with Playwright (`browser_navigate`, `browser_take_screenshot`) at 1440px and 375px wide. Compare with `docs/reference/visual-reference.jpeg`: off-white background, white bordered cards, green only on actions/highlights, no horizontal scroll at 375px. Fix spacing issues before committing.
+Run `npm run dev` (background) and open `http://localhost:5173/` with Playwright (`browser_navigate`, `browser_take_screenshot`) at 1440px and 375px wide. Compare with the visual reference (agricultural marketplace in SaaS style; image not included in the repository): off-white background, white bordered cards, green only on actions/highlights, no horizontal scroll at 375px. Fix spacing issues before committing.
 
 - [ ] **Step 12: Commit**
 

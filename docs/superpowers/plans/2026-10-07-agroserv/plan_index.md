@@ -8,7 +8,7 @@
 
 **Tech Stack:** Vite, React 19, TypeScript (strict), React Router v7 (`react-router` package), Tailwind CSS v4, framer-motion, lucide-react, Manrope (`@fontsource-variable/manrope`), Vitest + Testing Library + jsdom.
 
-**Spec:** `docs/superpowers/specs/2026-10-07-agroserv-design.md` (section 14 overrides earlier sections). Visual target: `docs/reference/visual-reference.jpeg`.
+**Spec:** `docs/superpowers/specs/2026-10-07-agroserv-design.md` (section 14 overrides earlier sections). Visual target: the visual reference (agricultural marketplace in SaaS style; image not included in the repository).
 
 ## Execution order
 

@@ -222,7 +222,7 @@ Em telas pequenas os grids passam para uma coluna, o menu principal vira menu re
 
 - **Paleta:** verde escuro `#173F2A`, verde principal `#2F6B45`, verde claro `#7FB685`, off-white `#F7F8F5`, cinza `#667085`, preto `#17201A`. O verde é reservado a ações, estados positivos e identidade.
 - **Tipografia:** Manrope, com hierarquia clara (H1 forte, H2 médio, H3 para cartões, texto secundário em cinza).
-- **Componentes:** cartões brancos com borda fina e sombra mínima, raio de 10 px, inspirados na referência visual do projeto (`docs/reference/visual-reference.jpeg`).
+- **Componentes:** cartões brancos com borda fina e sombra mínima, raio de 10 px, inspirados em uma referência visual de marketplace agrícola em estilo SaaS.
 - **Animações (Framer Motion):** entrada do hero de baixo para cima, listas em sequência (*stagger*), elevação dos cartões no *hover*, transição suave entre páginas, menu móvel animado. As animações respeitam `prefers-reduced-motion`.
 - **Acessibilidade:** HTML semântico, `label` em todos os campos, mensagens de erro ligadas por `aria-describedby`, `aria-pressed` nos filtros, foco visível, link "Pular para o conteúdo" e botões reais para ações.
 

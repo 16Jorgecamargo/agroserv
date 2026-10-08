@@ -68,7 +68,7 @@ Projeto acadêmico em duas etapas:
 
 - Fluxo completo navegável: Home → Serviços → Detalhes → Login → (volta ao serviço) → Solicitar → Dashboard → Solicitações → Perfil → Logout.
 - Rotas privadas protegidas, com retorno à rota original após login e controle por papel (produtor/prestador).
-- Visual de SaaS B2B profissional, fiel à imagem de referência `docs/reference/visual-reference.jpeg`.
+- Visual de SaaS B2B profissional, fiel à referência visual escolhida (marketplace agrícola em estilo SaaS; imagem não incluída no repositório).
 - Arquitetura em camadas visível: `types → services/api → services → hooks → components/pages`.
 - `docs/api-contract.md` completo, servindo de especificação para o back-end.
 - `tsc`, `eslint`, `vitest` e `vite build` sem erros; console do navegador limpo.
@@ -102,7 +102,6 @@ Imagens: fotos curadas baixadas em `src/assets/images/` (funciona offline). Só 
 agroserv/
 ├── docs/
 │   ├── api-contract.md
-│   ├── reference/visual-reference.jpeg
 │   └── superpowers/specs/
 ├── public/
 ├── src/
@@ -666,7 +665,7 @@ Verificação final:
 
 1. `npx tsc --noEmit`, `npm run lint`, `npx vitest run`, `npm run build` sem erros.
 2. Playwright (MCP) no `npm run dev`: fluxo completo; `/dashboard` deslogado; papel errado; logout; favoritos; criação e cancelamento de solicitação; empty/loading/error; dark mode; 375/768/1440 px; console sem erros.
-3. Screenshots comparados com `docs/reference/visual-reference.jpeg`.
+3. Screenshots comparados com a referência visual.
 4. Remoção de código morto e imports quebrados.
 
 ## 14. Fora de escopo nesta versão

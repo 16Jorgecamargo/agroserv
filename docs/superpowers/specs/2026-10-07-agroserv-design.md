@@ -29,7 +29,7 @@ Projeto acadêmico em duas etapas:
 - Fluxo navegável: Home → Serviços → Detalhe → tentar abrir Dashboard → Login → volta ao Dashboard → Solicitações → Logout.
 - Acessar rota privada deslogado redireciona para `/login` com a mensagem "Faça login para acessar esta área."
 - Após login, o usuário volta para a rota que tentou abrir.
-- Visual fiel ao estilo de `docs/reference/visual-reference.jpeg`.
+- Visual fiel ao estilo da referência visual escolhida (marketplace agrícola em estilo SaaS; imagem não incluída no repositório).
 - Camadas visíveis: `types → services/api → services → hooks → pages/components`.
 - `tsc`, `eslint`, `vitest` e `vite build` sem erros; console do navegador limpo.
 
@@ -60,7 +60,6 @@ Imagens: fotos curadas em `src/assets/images/` (funciona offline).
 agroserv/
 ├── docs/
 │   ├── api-contract.md
-│   ├── reference/visual-reference.jpeg
 │   └── superpowers/specs/
 ├── src/
 │   ├── assets/images/

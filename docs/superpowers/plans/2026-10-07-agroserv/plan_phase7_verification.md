@@ -171,7 +171,7 @@ Start `npm run dev` in the background. Using the Playwright MCP tools, run each 
 
 - [ ] **Step 5: Visual comparison**
 
-Put the 1440px screenshots of `/` and `/servicos` side by side with `docs/reference/visual-reference.jpeg`. Check: same off-white background, white cards with thin borders and minimal shadow, green only on actions and highlights, generous spacing, consistent radius. Adjust classes where the result drifts (too much green, heavy shadows, cramped cards).
+Put the 1440px screenshots of `/` and `/servicos` side by side with the visual reference (agricultural marketplace in SaaS style; image not included in the repository). Check: same off-white background, white cards with thin borders and minimal shadow, green only on actions and highlights, generous spacing, consistent radius. Adjust classes where the result drifts (too much green, heavy shadows, cramped cards).
 
 - [ ] **Step 6: Re-run static checks after any fix**
 

@@ -2,7 +2,7 @@
 
 > Part of `plan_index.md`. Read its Global Constraints first. Depends on Phases 1–3.
 
-Visual rules (from the spec, matching `docs/reference/visual-reference.jpeg`): off-white page, white cards with 1px border and almost no shadow, 10px card radius, 8px inputs/buttons, green only for primary actions, active items, "Disponível" and focus.
+Visual rules (from the spec, matching the visual reference (agricultural marketplace in SaaS style; image not included in the repository)): off-white page, white cards with 1px border and almost no shadow, 10px card radius, 8px inputs/buttons, green only for primary actions, active items, "Disponível" and focus.
 
 ### Task 4.1: UI primitives
 
