@@ -14,6 +14,14 @@ Projeto acadêmico: nesta etapa o front-end usa um back-end simulado que segue o
 | [`docs/api-contract.md`](docs/api-contract.md) | Contrato da API REST para a etapa de back-end |
 | [`docs/backlog.md`](docs/backlog.md) | Funcionalidades adiadas |
 
+## Demonstração online
+
+- **App:** https://16jorgecamargo.github.io/agroserv/app/ (entre com `produtor@agroserv.com` / `123456`)
+- **Apresentação:** https://16jorgecamargo.github.io/agroserv/slides/
+- **Documentação:** https://16jorgecamargo.github.io/agroserv/
+
+O GitHub Pages é publicado pelo workflow `.github/workflows/pages.yml`, que gera a documentação, roda os testes e compila o app a cada push na `master`.
+
 ## Como executar
 
 ```bash

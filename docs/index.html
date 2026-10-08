@@ -78,7 +78,7 @@ h1 { margin-top: 22px; font-size: clamp(42px, 6vw, 72px); line-height: 1.02; fon
 .meta span { font-size: 13px; color: var(--muted); }
 
 .visual { position: relative; }
-.frame { border-radius: 14px; overflow: hidden; background: var(--white); border: 1px solid rgb(23 32 26 / .08); box-shadow: 0 40px 80px -46px rgb(16 24 20 / .55); }
+.frame { display: block; border-radius: 14px; overflow: hidden; background: var(--white); border: 1px solid rgb(23 32 26 / .08); box-shadow: 0 40px 80px -46px rgb(16 24 20 / .55); }
 .frame .bar { height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 14px; background: #EEF1EC; border-bottom: 1px solid var(--line); }
 .frame .bar i { width: 10px; height: 10px; border-radius: 50%; background: #D3D9D0; display: block; }
 .frame .bar span { margin-left: 12px; height: 20px; flex: 1; max-width: 260px; border-radius: 6px; background: var(--white); font-size: 11px; color: var(--muted); display: flex; align-items: center; padding: 0 10px; }
@@ -185,6 +185,7 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
       AGROSERV
     </a>
     <nav aria-label="Principal">
+      <a class="link" href="app/">App</a>
       <a class="link" href="#documentacao">Documentação</a>
       <a class="link" href="#telas">Telas</a>
       <a class="link" href="#equipe">Equipe</a>
@@ -204,11 +205,14 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
         <h1 data-reveal="mask" data-b="1">O jeito moderno de contratar serviços agrícolas.</h1>
         <p class="lead" data-reveal="rise" data-b="7">AgroServ é uma plataforma web que conecta produtores rurais a prestadores de máquinas, equipamentos e mão de obra. Projeto da disciplina Projeto e Desenvolvimento de Sistemas Web — etapa 1, front-end.</p>
         <div class="actions" data-reveal="rise" data-b="9">
-          <a class="btn btn-primary" href="slides/">
+          <a class="btn btn-primary" href="app/">
+            Abrir o app
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-secondary" href="slides/">
             <svg class="icon" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>
             Assistir à apresentação
           </a>
-          <a class="btn btn-secondary" href="report.html">Ler o relatório</a>
         </div>
         <div class="meta" data-reveal="rise" data-b="11">
           <div><b data-count="13">13</b><span>slides animados</span></div>
@@ -218,13 +222,13 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
       </div>
       <div class="visual" data-reveal="scale" data-b="3">
         <div class="backdrop"></div>
-        <div class="frame">
+        <a class="frame" href="app/" aria-label="Abrir o app">
           <div class="bar"><i></i><i></i><i></i><span id="url">agroserv.app</span></div>
           <div class="screen" id="screen">
             <img src="slides/screens/home.jpg" alt="Página inicial do AgroServ" />
             <img src="slides/screens/dashboard.jpg" alt="Painel do produtor" />
           </div>
-        </div>
+        </a>
         <div class="chip chip-a" data-reveal="pop" data-b="9" data-float="0">
           <div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
           <div><b>Rotas protegidas</b><small><span class="dot"></span>login + ProtectedRoute</small></div>
@@ -294,13 +298,13 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
           <span class="eyebrow">Telas</span>
           <h2>O app em funcionamento</h2>
         </div>
-        <p data-reveal="rise" data-b="1">Páginas públicas, login com proteção de rotas e área privada do produtor.</p>
+        <p data-reveal="rise" data-b="1">Páginas públicas, login com proteção de rotas e área privada do produtor. <a href="app/" style="color:var(--green);font-weight:700">Abra o app</a> e entre com <code style="font-size:14px">produtor@agroserv.com</code> / <code style="font-size:14px">123456</code>.</p>
       </div>
       <div class="gallery" data-stagger>
-        <a class="shot" href="slides/screens/home.jpg" data-reveal="rise"><div class="img"><img src="slides/screens/home.jpg" alt="Página inicial" loading="lazy" /></div><div class="cap"><b>Página inicial</b><code>/</code></div></a>
-        <a class="shot" href="slides/screens/services.jpg" data-reveal="rise"><div class="img"><img src="slides/screens/services.jpg" alt="Listagem de serviços" loading="lazy" /></div><div class="cap"><b>Serviços</b><code>/servicos</code></div></a>
-        <a class="shot" href="slides/screens/service-detail.jpg" data-reveal="rise"><div class="img"><img src="slides/screens/service-detail.jpg" alt="Detalhes do serviço" loading="lazy" /></div><div class="cap"><b>Detalhes</b><code>/servicos/:id</code></div></a>
-        <a class="shot" href="slides/screens/dashboard.jpg" data-reveal="rise"><div class="img"><img src="slides/screens/dashboard.jpg" alt="Painel do produtor" loading="lazy" /></div><div class="cap"><b>Painel</b><code>/dashboard</code></div></a>
+        <a class="shot" href="app/#/" data-reveal="rise"><div class="img"><img src="slides/screens/home.jpg" alt="Página inicial" loading="lazy" /></div><div class="cap"><b>Página inicial</b><code>/</code></div></a>
+        <a class="shot" href="app/#/servicos" data-reveal="rise"><div class="img"><img src="slides/screens/services.jpg" alt="Listagem de serviços" loading="lazy" /></div><div class="cap"><b>Serviços</b><code>/servicos</code></div></a>
+        <a class="shot" href="app/#/servicos/svc-1" data-reveal="rise"><div class="img"><img src="slides/screens/service-detail.jpg" alt="Detalhes do serviço" loading="lazy" /></div><div class="cap"><b>Detalhes</b><code>/servicos/:id</code></div></a>
+        <a class="shot" href="app/#/dashboard" data-reveal="rise"><div class="img"><img src="slides/screens/dashboard.jpg" alt="Painel do produtor" loading="lazy" /></div><div class="cap"><b>Painel</b><code>/dashboard</code></div></a>
       </div>
     </div>
   </section>
