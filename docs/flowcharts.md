@@ -1,6 +1,6 @@
 # AgroServ — Fluxogramas
 
-Diagramas em [Mermaid](https://mermaid.js.org/). O GitHub, o GitLab e o VS Code (com a extensão *Markdown Preview Mermaid Support*) renderizam os blocos automaticamente. Cada diagrama também está exportado como imagem em [`flowcharts/`](flowcharts/) (`01-navigation.svg` a `08-ui-states.svg`).
+Oito diagramas que explicam a navegação, a autenticação e a arquitetura do AgroServ. Cada um aparece como imagem; o código-fonte em [Mermaid](https://mermaid.js.org/) fica logo abaixo, em "Ver código Mermaid".
 
 1. [Mapa de navegação](#1-mapa-de-navegação)
 2. [Proteção de rotas (ProtectedRoute)](#2-proteção-de-rotas-protectedroute)
@@ -16,6 +16,11 @@ Diagramas em [Mermaid](https://mermaid.js.org/). O GitHub, o GitLab e o VS Code 
 ## 1. Mapa de navegação
 
 Páginas públicas em verde-claro, área privada em verde-escuro.
+
+![Mapa de navegação](flowcharts/01-navigation.png)
+
+<details markdown="1">
+<summary>Ver código Mermaid</summary>
 
 ```mermaid
 flowchart LR
@@ -46,9 +51,16 @@ flowchart LR
     class notfound neutral
 ```
 
+</details>
+
 ## 2. Proteção de rotas (ProtectedRoute)
 
 Implementado em `src/routes/ProtectedRoute.tsx`. Envolve todas as rotas privadas.
+
+![Proteção de rotas (ProtectedRoute)](flowcharts/02-protected-route.png)
+
+<details markdown="1">
+<summary>Ver código Mermaid</summary>
 
 ```mermaid
 flowchart TD
@@ -64,9 +76,16 @@ flowchart TD
     doLogin --> back[Volta para a rota original guardada]
 ```
 
+</details>
+
 ## 3. Fluxo de login
 
 Implementado em `src/pages/LoginPage.tsx` e `src/contexts/AuthProvider.tsx`.
+
+![Fluxo de login](flowcharts/03-login.png)
+
+<details markdown="1">
+<summary>Ver código Mermaid</summary>
 
 ```mermaid
 flowchart TD
@@ -89,9 +108,16 @@ flowchart TD
     state --> goFrom
 ```
 
+</details>
+
 ## 4. Restauração da sessão ao abrir o app
 
 Implementado em `src/contexts/AuthProvider.tsx`.
+
+![Restauração da sessão ao abrir o app](flowcharts/04-session-restore.png)
+
+<details markdown="1">
+<summary>Ver código Mermaid</summary>
 
 ```mermaid
 flowchart TD
@@ -110,9 +136,16 @@ flowchart TD
     done --> ready
 ```
 
+</details>
+
 ## 5. Arquitetura em camadas
 
 A interface nunca acessa os dados diretamente. Trocar dados simulados por API real é uma variável de ambiente.
+
+![Arquitetura em camadas](flowcharts/05-architecture.png)
+
+<details markdown="1">
+<summary>Ver código Mermaid</summary>
 
 ```mermaid
 flowchart TB
@@ -148,9 +181,16 @@ flowchart TB
     http --> backend
 ```
 
+</details>
+
 ## 6. Caminho de uma requisição de dados
 
 Exemplo: abrir a listagem de serviços.
+
+![Caminho de uma requisição de dados](flowcharts/06-data-request.png)
+
+<details markdown="1">
+<summary>Ver código Mermaid</summary>
 
 ```mermaid
 sequenceDiagram
@@ -174,9 +214,16 @@ sequenceDiagram
     P-->>U: grid de cards, estado vazio ou estado de erro
 ```
 
+</details>
+
 ## 7. Busca e filtros de serviços
 
 Implementado em `src/pages/ServicesPage.tsx` (estado na URL) e `src/services/api/mockRoutes.ts` (regras do "servidor").
+
+![Busca e filtros de serviços](flowcharts/07-service-search.png)
+
+<details markdown="1">
+<summary>Ver código Mermaid</summary>
 
 ```mermaid
 flowchart TD
@@ -198,9 +245,16 @@ flowchart TD
     clear --> url
 ```
 
+</details>
+
 ## 8. Estados de interface de uma listagem
 
 Padrão aplicado em todas as páginas com dados (home, serviços, detalhe, dashboard, solicitações).
+
+![Estados de interface de uma listagem](flowcharts/08-ui-states.png)
+
+<details markdown="1">
+<summary>Ver código Mermaid</summary>
 
 ```mermaid
 stateDiagram-v2
@@ -220,3 +274,5 @@ stateDiagram-v2
     Erro: ErrorState
     Recarregando: Conteúdo anterior esmaecido
 ```
+
+</details>
