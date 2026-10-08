@@ -57,7 +57,7 @@ flowchart LR
 
 Implementado em `src/routes/ProtectedRoute.tsx`. Envolve todas as rotas privadas.
 
-<p align="center"><img src="flowcharts/02-protected-route.png" alt="Proteção de rotas (ProtectedRoute)" width="777"></p>
+<p align="center"><img src="flowcharts/02-protected-route.png" alt="Proteção de rotas (ProtectedRoute)" width="413"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -82,7 +82,7 @@ flowchart TD
 
 Implementado em `src/pages/LoginPage.tsx` e `src/contexts/AuthProvider.tsx`.
 
-<p align="center"><img src="flowcharts/03-login.png" alt="Fluxo de login" width="960"></p>
+<p align="center"><img src="flowcharts/03-login.png" alt="Fluxo de login" width="429"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -114,7 +114,7 @@ flowchart TD
 
 Implementado em `src/contexts/AuthProvider.tsx`.
 
-<p align="center"><img src="flowcharts/04-session-restore.png" alt="Restauração da sessão ao abrir o app" width="960"></p>
+<p align="center"><img src="flowcharts/04-session-restore.png" alt="Restauração da sessão ao abrir o app" width="607"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -142,7 +142,7 @@ flowchart TD
 
 A interface nunca acessa os dados diretamente. Trocar dados simulados por API real é uma variável de ambiente.
 
-<p align="center"><img src="flowcharts/05-architecture.png" alt="Arquitetura em camadas" width="960"></p>
+<p align="center"><img src="flowcharts/05-architecture.png" alt="Arquitetura em camadas" width="933"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
@@ -220,7 +220,7 @@ sequenceDiagram
 
 Implementado em `src/pages/ServicesPage.tsx` (estado na URL) e `src/services/api/mockRoutes.ts` (regras do "servidor").
 
-<p align="center"><img src="flowcharts/07-service-search.png" alt="Busca e filtros de serviços" width="783"></p>
+<p align="center"><img src="flowcharts/07-service-search.png" alt="Busca e filtros de serviços" width="297"></p>
 
 <details markdown="1">
 <summary>Ver código Mermaid</summary>
