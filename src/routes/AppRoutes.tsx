@@ -5,6 +5,7 @@ import { DashboardPage } from '../pages/DashboardPage'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
+import { RequestsPage } from '../pages/RequestsPage'
 import { ServiceDetailPage } from '../pages/ServiceDetailPage'
 import { ServicesPage } from '../pages/ServicesPage'
 import { paths, routePatterns } from './paths'
@@ -23,6 +24,7 @@ export function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<PrivateLayout />}>
           <Route path={paths.dashboard} element={<DashboardPage />} />
+          <Route path={paths.requests} element={<RequestsPage />} />
         </Route>
       </Route>
     </Routes>
