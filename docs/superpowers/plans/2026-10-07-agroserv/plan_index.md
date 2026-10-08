@@ -28,7 +28,7 @@ All commands run from the project root: `/Users/jorgecamargo/Desktop/Mesa - MacB
 
 - No comments in code (no `//`, `/* */`, JSX comments or triple-slash directives).
 - Variables, functions, types and file names in English. UI copy and URLs in PT-BR.
-- Commit messages must NOT contain `Co-Authored-By` or any Claude/Claude Code attribution.
+- Commit messages must NOT contain `Co-Authored-By` or any AI tool attribution.
 - Imports use relative paths (no path aliases).
 - `tsconfig` from the Vite template has `verbatimModuleSyntax` and `erasableSyntaxOnly`: use `import type` for types; no enums, no constructor parameter properties.
 - Router imports come from `react-router` (not `react-router-dom`).

@@ -119,7 +119,7 @@ Expected: zero type errors, zero lint errors, all tests PASS, build succeeds. Fi
 grep -rnE "//|/\*" src --include=*.ts --include=*.tsx | grep -vE "https?://" || echo "no comments"
 grep -rn "from '../data\|from '../../data" src/pages src/components src/layouts src/hooks src/contexts src/routes || echo "no data imports in UI"
 grep -rn "services/api" src/pages src/components src/layouts || echo "check: only apiError imports allowed"
-grep -rni "claude\|co-authored" $(git ls-files) || echo "no attribution"
+grep -rni "co-authored" $(git ls-files) || echo "no attribution"
 ```
 
 Expected: "no comments" (the only allowed match is the regex `/^\//` in `httpAdapter.ts`), "no data imports in UI", only `isApiError` imports from `services/api/apiError` in pages, "no attribution". Fix anything else.
