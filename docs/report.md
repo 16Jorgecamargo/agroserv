@@ -1,8 +1,14 @@
 # AgroServ — Relatório técnico
 
-**Projeto:** AgroServ — plataforma de contratação de serviços agrícolas
-**Etapa:** 1 — Front-end (o back-end é a próxima etapa da disciplina)
-**Data:** outubro de 2026
+| | |
+|---|---|
+| **Instituição** | Universidade Tecnológica Federal do Paraná (UTFPR) — Campus Santa Helena |
+| **Disciplina** | CC6PDSW — Projeto e Desenvolvimento de Sistemas Web |
+| **Professor** | Prof. B.Sc. Wellington de Souza Ferreira |
+| **Alunos** | Jorge Daniel Ristow de Camargo (RA 2521679)<br>Felipe Fonseca (RA 2651394)<br>Pedro Luca de Lacerda Alves (RA 2651416) |
+| **Projeto** | AgroServ — plataforma de contratação de serviços agrícolas |
+| **Etapa** | 1 — Front-end (o back-end é a próxima etapa da disciplina) |
+| **Data** | Outubro de 2026 |
 
 Documentos complementares:
 

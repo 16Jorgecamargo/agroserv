@@ -176,10 +176,22 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
 .tl-node span { font-size: 22px; color: var(--muted); line-height: 1.45; }
 .tl-node em { display: inline-block; margin-bottom: 14px; font-style: normal; font-size: 17px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--green); }
 
+.ident { position: absolute; left: 140px; top: 420px; width: 780px; display: flex; flex-direction: column; gap: 34px; }
+.ident div { border-top: 2px solid var(--line); padding-top: 18px; }
+.ident small, .final-credits small { font-size: 18px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
+.ident p { margin-top: 10px; font-size: 32px; line-height: 1.35; font-weight: 600; }
+.ident b { font-weight: 800; color: var(--dark); }
+.students { position: absolute; left: 1060px; top: 450px; width: 660px; display: flex; flex-direction: column; gap: 18px; }
+.student { display: grid; grid-template-columns: 76px 1fr; gap: 22px; align-items: center; background: var(--white); border: 1px solid var(--line); border-radius: 18px; padding: 22px 26px; }
+.student .av { width: 76px; height: 76px; border-radius: 50%; background: var(--green); color: var(--white); display: grid; place-items: center; font-size: 26px; font-weight: 800; letter-spacing: .04em; }
+.student b { display: block; font-size: 28px; letter-spacing: -.01em; }
+.student small { display: block; margin-top: 4px; font-size: 22px; color: var(--muted); font-family: ui-monospace, 'SF Mono', Menlo, monospace; }
+.final-credits { position: absolute; left: 140px; top: 800px; width: 1640px; display: flex; gap: 60px; font-size: 22px; line-height: 1.5; color: rgb(255 255 255 / .85); }
+.final-credits small { color: var(--light); display: block; margin-bottom: 6px; }
 .final { color: var(--white); }
 .final .eyebrow { color: var(--light); }
-.thanks { position: absolute; left: 140px; top: 240px; font-size: 200px; line-height: 1; font-weight: 800; letter-spacing: -.05em; }
-.final-grid { position: absolute; left: 140px; top: 600px; display: grid; grid-template-columns: repeat(3, 520px); gap: 40px; }
+.thanks { position: absolute; left: 140px; top: 220px; font-size: 200px; line-height: 1; font-weight: 800; letter-spacing: -.05em; }
+.final-grid { position: absolute; left: 140px; top: 500px; display: grid; grid-template-columns: repeat(3, 520px); gap: 40px; }
 .final-grid div { border-top: 2px solid rgb(255 255 255 / .2); padding-top: 24px; }
 .final-grid small { font-size: 18px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--light); }
 .final-grid p { margin-top: 12px; font-size: 28px; line-height: 1.45; }
@@ -192,7 +204,7 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
   <div id="seed"></div>
 
   <section class="slide" data-seed="1000,0,920,1080,0,#173F2A" data-dark-chrome="false">
-    <div class="eyebrow" data-a="rise" data-b="0">Projeto da disciplina · Etapa 1 — Front-end</div>
+    <div class="eyebrow" data-a="rise" data-b="0">UTFPR · Campus Santa Helena · CC6PDSW</div>
     <div class="logo" style="position:absolute;left:140px;top:300px" data-a="pop" data-b="1">
       <div class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></div>
       AGROSERV
@@ -200,7 +212,7 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
     <h1 data-a="mask" data-b="2" style="position:absolute;left:140px;top:420px;width:840px;font-size:86px;line-height:1.04;font-weight:800;letter-spacing:-.04em">O jeito moderno de contratar serviços agrícolas.</h1>
     <p class="lead" data-a="rise" data-b="9" style="position:absolute;left:140px;top:770px;width:760px">Plataforma web que conecta produtores rurais a prestadores de máquinas, equipamentos e mão de obra.</p>
     <div data-a="rise" data-b="11" style="position:absolute;left:140px;top:930px;display:flex;gap:14px">
-      <span class="pill">React · TypeScript · Vite</span><span class="pill">Outubro de 2026</span>
+      <span class="pill">Projeto e Desenvolvimento de Sistemas Web</span><span class="pill">Etapa 1 · Front-end</span>
     </div>
     <div class="cover-photo" data-a="wipe" data-b="2"><img src="screens/hero-field.jpg" alt="" /></div>
     <div class="float-chip" style="left:920px;top:700px" data-a="pop" data-b="8">
@@ -210,6 +222,22 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
     <div class="float-chip" style="left:1460px;top:160px" data-a="pop" data-b="10">
       <div class="ic" style="background:#FBF1E2;color:var(--warn)"><svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></div>
       <div><b>4,9 de 5</b><small>128 serviços avaliados</small></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="1000,330,780,600,24,#E6F0E8">
+    <div class="eyebrow" data-a="rise" data-b="0">Identificação</div>
+    <h2 class="title" data-a="mask" data-b="1">Equipe e disciplina.</h2>
+    <div class="ident">
+      <div data-a="rise" data-b="5"><small>Disciplina</small><p><b>CC6PDSW</b> · Projeto e Desenvolvimento de Sistemas Web</p></div>
+      <div data-a="rise" data-b="6"><small>Instituição</small><p>Universidade Tecnológica Federal do Paraná<br>UTFPR · Campus Santa Helena</p></div>
+      <div data-a="rise" data-b="7"><small>Professor</small><p>Prof. B.Sc. Wellington de Souza Ferreira</p></div>
+    </div>
+    <div class="col-title" style="left:1060px;top:380px;color:var(--green)" data-a="rise" data-b="6">Alunos</div>
+    <div class="students">
+      <div class="student" data-a="rise" data-b="8"><span class="av">JC</span><div><b>Jorge Daniel Ristow de Camargo</b><small>RA 2521679</small></div></div>
+      <div class="student" data-a="rise" data-b="9"><span class="av">FF</span><div><b>Felipe Fonseca</b><small>RA 2651394</small></div></div>
+      <div class="student" data-a="rise" data-b="10"><span class="av">PA</span><div><b>Pedro Luca de Lacerda Alves</b><small>RA 2651416</small></div></div>
     </div>
   </section>
 
@@ -459,10 +487,14 @@ body { font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif; color: var(
       <div data-a="rise" data-b="8"><small>Conta demo</small><p><code class="mono">produtor@agroserv.com<br>123456</code></p></div>
       <div data-a="rise" data-b="9"><small>Documentação</small><p><code class="mono">docs/report.md<br>docs/flowcharts.md<br>docs/api-contract.md</code></p></div>
     </div>
+    <div class="final-credits" data-a="rise" data-b="11">
+      <div><small>UTFPR · Campus Santa Helena</small>CC6PDSW · Projeto e Desenvolvimento de Sistemas Web<br>Prof. B.Sc. Wellington de Souza Ferreira</div>
+      <div><small>Alunos</small>Jorge Daniel Ristow de Camargo · RA 2521679<br>Felipe Fonseca · RA 2651394<br>Pedro Luca de Lacerda Alves · RA 2651416</div>
+    </div>
   </section>
 
   <div class="hint" id="hint">← → para navegar · F tela cheia</div>
-  <div class="chrome" id="chrome"><span>AGROSERV</span><span id="counter" class="counter">01 / 17</span></div>
+  <div class="chrome" id="chrome"><span>AGROSERV</span><span id="counter" class="counter">01 / 18</span></div>
   <div class="progress"><i id="bar"></i></div>
 </div>
 </div>
