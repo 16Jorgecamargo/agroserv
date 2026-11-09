@@ -2,6 +2,8 @@
 
 Oito diagramas que explicam a navegação, a autenticação e a arquitetura do AgroServ. Cada um aparece como imagem; o código-fonte em [Mermaid](https://mermaid.js.org/) fica logo abaixo, em "Ver código Mermaid".
 
+Veja também: [fluxograma único do sistema atual](system-flowchart.md) e [fluxogramas do sistema futuro](future-flowcharts.md), com produtor, prestador e administrador.
+
 1. [Mapa de navegação](#1-mapa-de-navegação)
 2. [Proteção de rotas (ProtectedRoute)](#2-proteção-de-rotas-protectedroute)
 3. [Fluxo de login](#3-fluxo-de-login)

@@ -10,9 +10,11 @@ Projeto acadêmico: nesta etapa o front-end usa um back-end simulado que segue o
 |---|---|
 | [`docs/report.md`](docs/report.md) | Relatório técnico do projeto |
 | [`docs/flowcharts.md`](docs/flowcharts.md) | Fluxogramas (Mermaid) e imagens em `docs/flowcharts/` |
+| [`docs/system-flowchart.md`](docs/system-flowchart.md) | Fluxograma único do sistema atual: telas, autenticação e dados |
+| [`docs/future-flowcharts.md`](docs/future-flowcharts.md) | Fluxogramas do sistema futuro: produtor, prestador e administrador |
 | [`docs/slides/index.html`](docs/slides/index.html) | Apresentação animada: abra no navegador, use ← → e `F` para tela cheia |
-| [`docs/api-contract.md`](docs/api-contract.md) | Contrato da API REST para a etapa de back-end |
-| [`docs/backlog.md`](docs/backlog.md) | Funcionalidades adiadas |
+| [`docs/api-contract.md`](docs/api-contract.md) | Contrato da API REST: endpoints atuais e planejados, tipos, erros e permissões |
+| [`docs/backlog.md`](docs/backlog.md) | Backlog da ampliação: tarefas por fase, dependências e critérios de aceite |
 
 ## Demonstração online
 
@@ -97,4 +99,4 @@ Nenhum componente, hook ou service precisa mudar.
 
 ## Próximas etapas
 
-Itens adiados estão em `docs/backlog.md`.
+As tarefas da ampliação estão em `docs/backlog.md`. O que o sistema deve ter nas próximas etapas está em `docs/future-flowcharts.md` e em `docs/api-contract.md`.

@@ -13,9 +13,11 @@
 Documentos complementares:
 
 - Fluxogramas: [`flowcharts.md`](flowcharts.md)
+- Fluxograma único do sistema atual: [`system-flowchart.md`](system-flowchart.md)
+- Fluxogramas do sistema futuro: [`future-flowcharts.md`](future-flowcharts.md)
 - Apresentação: [`slides/index.html`](slides/index.html) (abrir no navegador; setas para navegar, `F` para tela cheia)
 - Contrato da API REST: [`api-contract.md`](api-contract.md)
-- Itens adiados: [`backlog.md`](backlog.md)
+- Backlog da ampliação: [`backlog.md`](backlog.md)
 
 ---
 
@@ -288,7 +290,7 @@ Além dos testes automatizados, os fluxos foram verificados em navegador no buil
 3. **Prestador:** painel próprio, serviços, agenda e aceite de solicitações.
 4. **Experiência:** mapa de prestadores, favoritos, notificações e modo escuro.
 
-Lista completa em [`backlog.md`](backlog.md).
+Lista completa em [`backlog.md`](backlog.md). A ampliação com os três papéis (produtor, prestador e administrador) está desenhada em [`future-flowcharts.md`](future-flowcharts.md) e detalhada em [`api-contract.md`](api-contract.md).
 
 ## 13. Como executar
 
