@@ -1,4 +1,5 @@
 import type { VerificationStatus } from '../common/types.js';
+import { roundRating } from '../reviews/ratings.js';
 import type { User } from '../users/entities/user.entity.js';
 import type { ProviderProfile } from './entities/provider-profile.entity.js';
 
@@ -39,7 +40,7 @@ export function toProviderProfileView(profile: ProviderProfile): ProviderProfile
     description: profile.description,
     verificationStatus: profile.verificationStatus,
     ...(reason ? { verificationRejectionReason: reason } : {}),
-    rating: profile.rating,
+    rating: roundRating(profile.rating),
     reviewCount: profile.reviewCount,
   };
 }
@@ -52,7 +53,7 @@ export function toProviderView(user: User, profile?: ProviderProfile | null): Pr
     ...(user.avatarUrl ? { avatarUrl: user.avatarUrl } : {}),
     city: user.city,
     state: user.state,
-    rating: profile?.rating ?? 0,
+    rating: roundRating(profile?.rating ?? 0),
     reviewCount: profile?.reviewCount ?? 0,
     yearsOfExperience: profile?.yearsOfExperience ?? 0,
     verified: profile?.verificationStatus === 'approved',

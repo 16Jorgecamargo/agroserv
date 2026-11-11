@@ -90,6 +90,11 @@ export class RequestLifecycleService {
     });
   }
 
+  async attachReview(requestId: string, reviewId: string): Promise<void> {
+    // Guarda na solicitação a avaliação feita pelo produtor
+    await this.requests.update(requestId, { reviewId });
+  }
+
   async transition(
     request: ServiceRequest,
     name: TransitionName,

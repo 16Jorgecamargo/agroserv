@@ -3,6 +3,7 @@ import { validationError } from '../common/app.exception.js';
 import { addDays, brasiliaDay, ClockService } from '../common/clock.service.js';
 import { roundMoney } from '../common/text.js';
 import { ProviderProfilesRepository } from '../providers/provider-profiles.repository.js';
+import { roundRating } from '../reviews/ratings.js';
 import type { User } from '../users/entities/user.entity.js';
 import { DATE_MESSAGE } from './dto/producer-request.dto.js';
 import type { CounterOfferDto, ProviderCancelDto, RejectRequestDto } from './dto/provider-request.dto.js';
@@ -148,7 +149,7 @@ export class ProviderRequestsService {
       upcoming: upcoming.length,
       inProgress: requests.filter((item) => item.status === 'in_progress').length,
       acceptanceRate: this.acceptanceRate(events),
-      averageRating: profile?.rating ?? 0,
+      averageRating: roundRating(profile?.rating ?? 0),
       monthEstimatedValue: roundMoney(monthValue),
     };
     return {
