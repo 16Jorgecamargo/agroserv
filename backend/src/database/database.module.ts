@@ -3,9 +3,15 @@ import { dirname } from 'node:path';
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BlockedDaysRepository } from '../agenda/blocked-days.repository.js';
 import { LoginAttemptsRepository } from '../auth/login-attempts.repository.js';
 import { PasswordResetTokensRepository } from '../auth/password-reset-tokens.repository.js';
+import { CategoriesRepository } from '../categories/categories.repository.js';
+import { NotificationsRepository } from '../notifications/notifications.repository.js';
+import { PropertiesRepository } from '../properties/properties.repository.js';
 import { ProviderProfilesRepository } from '../providers/provider-profiles.repository.js';
+import { RequestsRepository } from '../requests/requests.repository.js';
+import { ServicesRepository } from '../services/services.repository.js';
 import { UploadRulesService } from '../uploads/upload-rules.service.js';
 import { UploadsRepository } from '../uploads/uploads.repository.js';
 import { UsersRepository } from '../users/users.repository.js';
@@ -18,6 +24,12 @@ const REPOSITORIES = [
   PasswordResetTokensRepository,
   UploadsRepository,
   UploadRulesService,
+  CategoriesRepository,
+  ServicesRepository,
+  PropertiesRepository,
+  BlockedDaysRepository,
+  NotificationsRepository,
+  RequestsRepository,
 ];
 import { SeedService } from './seed.service.js';
 

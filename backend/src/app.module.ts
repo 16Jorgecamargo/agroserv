@@ -12,7 +12,11 @@ import { createValidationPipe, TrimPipe } from './common/validation.pipe.js';
 import { loadConfig } from './config.js';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthController } from './health/health.controller.js';
+import { NotificationsModule } from './notifications/notifications.module.js';
+import { PropertiesModule } from './properties/properties.module.js';
 import { ProvidersModule } from './providers/providers.module.js';
+import { RequestsModule } from './requests/requests.module.js';
+import { CatalogModule } from './services/catalog.module.js';
 import { UploadsModule } from './uploads/uploads.module.js';
 import { UsersModule } from './users/users.module.js';
 
@@ -29,6 +33,10 @@ import { UsersModule } from './users/users.module.js';
     UsersModule,
     ProvidersModule,
     UploadsModule,
+    NotificationsModule,
+    CatalogModule,
+    PropertiesModule,
+    RequestsModule,
   ],
   controllers: [HealthController],
   providers: [
