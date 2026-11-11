@@ -2,6 +2,8 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { AuthModule } from './auth/auth.module.js';
+import { AuthGuard, RolesGuard } from './common/auth.guard.js';
 import { CommonModule } from './common/common.module.js';
 import { HttpExceptionFilter } from './common/http-exception.filter.js';
 import { LoggerMiddleware } from './common/logger.middleware.js';
@@ -10,6 +12,8 @@ import { createValidationPipe, TrimPipe } from './common/validation.pipe.js';
 import { loadConfig } from './config.js';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthController } from './health/health.controller.js';
+import { ProvidersModule } from './providers/providers.module.js';
+import { UsersModule } from './users/users.module.js';
 
 @Module({
   imports: [
@@ -20,10 +24,15 @@ import { HealthController } from './health/health.controller.js';
     }),
     CommonModule,
     DatabaseModule,
+    AuthModule,
+    UsersModule,
+    ProvidersModule,
   ],
   controllers: [HealthController],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
     { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
     { provide: APP_PIPE, useClass: TrimPipe },
