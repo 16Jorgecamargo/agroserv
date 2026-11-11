@@ -16,7 +16,6 @@ const MAX_REQUESTS_PER_WINDOW = 3;
 
 export interface ForgotPasswordView {
   message: string;
-  resetToken?: string;
 }
 
 function hashToken(token: string): string {
@@ -57,10 +56,9 @@ export class PasswordRecoveryService {
       createdAt: now,
     });
 
-    // Envia o link; o token só volta na resposta com a flag de demonstração
+    // Envia o e-mail sem esperar, para a resposta não revelar se a conta existe
     const frontendUrl = this.config.getOrThrow<string>('frontendUrl');
-    this.mail.sendPasswordReset(user.email, `${frontendUrl}/redefinir-senha?token=${token}`);
-    if (this.config.getOrThrow<boolean>('exposeResetToken')) response.resetToken = token;
+    void this.mail.sendPasswordReset(user.email, user.name, `${frontendUrl}/redefinir-senha?token=${token}`);
     return response;
   }
 
