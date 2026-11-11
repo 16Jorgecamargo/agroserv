@@ -48,7 +48,28 @@ Todas estão descritas em [`.env.example`](.env.example). As principais:
 | `JWT_SECRET` | segredo de desenvolvimento | **Troque** fora do ambiente local |
 | `CORS_ORIGIN` | `*` | Origens liberadas, separadas por vírgula |
 | `PUBLIC_URL` | `http://localhost:<PORT>` | Base das URLs dos arquivos enviados |
-| `EXPOSE_RESET_TOKEN` | `false` | Devolve o `resetToken` na resposta, só para demonstração sem e-mail |
+| `FRONTEND_URL` | `http://localhost:5173` | Base do link de redefinição de senha enviado por e-mail |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | vazio, `587` | Servidor SMTP que envia os e-mails |
+| `MAIL_FROM` | `AgroServ <SMTP_USER>` | Remetente dos e-mails |
+
+### E-mail (recuperação de senha)
+
+O link de redefinição de senha é enviado por e-mail de verdade, via SMTP (nodemailer). Sem `SMTP_HOST`, a API sobe normalmente, avisa no log e não envia nada.
+
+Com Gmail:
+
+1. Ative a verificação em duas etapas na conta Google.
+2. Crie uma senha de app em <https://myaccount.google.com/apppasswords>.
+3. Preencha no `.env`:
+
+```
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=voce@gmail.com
+SMTP_PASS=<senha de app de 16 letras>
+```
+
+Qualquer outro provedor SMTP funciona do mesmo jeito (porta 465 usa TLS direto).
 
 ## Formato das respostas
 
@@ -129,7 +150,7 @@ Os repositories ficam na pasta do seu assunto e são registrados em `database/da
 - **Solicitações:** toda mudança de status passa por `applyTransition` (`src/requests/request-lifecycle.ts`), que segue a tabela da seção 6 do contrato.
 - **Segurança:** helmet, CORS, limite de 300 requisições por minuto por IP e bloqueio de login após 5 tentativas erradas em 15 minutos.
 - **Arquivos:** `multipart/form-data` em `POST /uploads`, guardados em `uploads/`. Documentos de verificação só abrem para o dono, para administradores ou por URL assinada de 10 minutos.
-- **E-mail:** não há servidor de e-mail nesta etapa. O link de redefinição de senha sai no log da API (`[Mail]`).
+- **E-mail:** o link de redefinição de senha é enviado por SMTP (`src/mail/mail.service.ts`). A resposta nunca revela se a conta existe nem devolve o token.
 
 ## Testes
 

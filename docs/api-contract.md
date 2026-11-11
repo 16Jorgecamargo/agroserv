@@ -1549,8 +1549,9 @@ Nada disso foi alterado no front-end. Fica para quem cuida dele:
 
 ### Recuperação de senha
 
-- Não há servidor de e-mail nesta etapa: o link de redefinição é registrado no log da API.
-- `resetToken` **não** é devolvido. Para demonstrar o fluxo sem e-mail, a variável `EXPOSE_RESET_TOKEN=true` faz a resposta incluir `resetToken`, como no mock. O padrão é `false`.
+- O link `<FRONTEND_URL>/redefinir-senha?token=<token>` é enviado por e-mail de verdade, via SMTP (variáveis `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` e `MAIL_FROM`, descritas no README do back-end).
+- `resetToken` **nunca** é devolvido na resposta. Esse campo existe só no mock.
+- Se o envio falhar ou o SMTP não estiver configurado, a resposta continua sendo a mesma (200) e a falha fica registrada no log da API.
 
 ### Outros detalhes
 

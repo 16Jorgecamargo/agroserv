@@ -8,7 +8,12 @@ export interface AppConfig {
   publicUrl: string;
   frontendUrl: string;
   uploadDir: string;
-  exposeResetToken: boolean;
+  smtpHost: string;
+  smtpPort: number;
+  smtpSecure: boolean;
+  smtpUser: string;
+  smtpPass: string;
+  mailFrom: string;
   bcryptRounds: number;
   seedOnStart: boolean;
 }
@@ -23,6 +28,7 @@ export function loadConfig(): AppConfig {
   const env = process.env;
   const port = Number(env.PORT ?? 3333);
   const isTest = env.NODE_ENV === 'test';
+  const smtpPort = Number(env.SMTP_PORT ?? 587);
   return {
     port,
     databasePath: env.DATABASE_PATH ?? (isTest ? ':memory:' : 'data/agroserv.sqlite'),
@@ -33,7 +39,12 @@ export function loadConfig(): AppConfig {
     publicUrl: env.PUBLIC_URL ?? `http://localhost:${port}`,
     frontendUrl: env.FRONTEND_URL ?? 'http://localhost:5173',
     uploadDir: env.UPLOAD_DIR ?? (isTest ? 'node_modules/.tmp/test-uploads' : 'uploads'),
-    exposeResetToken: flag(env.EXPOSE_RESET_TOKEN, false),
+    smtpHost: env.SMTP_HOST ?? '',
+    smtpPort,
+    smtpSecure: flag(env.SMTP_SECURE, smtpPort === 465),
+    smtpUser: env.SMTP_USER ?? '',
+    smtpPass: env.SMTP_PASS ?? '',
+    mailFrom: env.MAIL_FROM ?? `AgroServ <${env.SMTP_USER || 'no-reply@agroserv.local'}>`,
     bcryptRounds: Number(env.BCRYPT_ROUNDS ?? (isTest ? 4 : 10)),
     seedOnStart: flag(env.SEED_ON_START, true),
   };
