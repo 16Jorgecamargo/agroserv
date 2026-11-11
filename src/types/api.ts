@@ -34,6 +34,7 @@ export interface ApiErrorBody {
   status: number
   code: string
   message: string
+  fields?: Record<string, string>
 }
 
 export interface LoginPayload {
