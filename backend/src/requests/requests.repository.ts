@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsRelations, In, Repository } from 'typeorm';
+import { Between, FindOptionsRelations, In, Repository } from 'typeorm';
 import { OPEN_STATUSES } from '../common/types.js';
 import type { RequestStatus } from '../common/types.js';
 import { RequestEvent } from './entities/request-event.entity.js';
@@ -39,6 +39,18 @@ export class RequestsRepository {
     return this.requests.find({
       where: status ? { providerId, status } : { providerId },
       order: { createdAt: 'DESC' },
+    });
+  }
+
+  findForAgenda(providerId: string, from: string, to: string): Promise<ServiceRequest[]> {
+    // Agendadas, em andamento e concluídas do período, por data
+    return this.requests.find({
+      where: {
+        providerId,
+        status: In(['accepted', 'in_progress', 'completed']),
+        scheduledDate: Between(from, to),
+      },
+      order: { scheduledDate: 'ASC', createdAt: 'ASC' },
     });
   }
 
