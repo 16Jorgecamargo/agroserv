@@ -13,6 +13,7 @@ import { loadConfig } from './config.js';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthController } from './health/health.controller.js';
 import { ProvidersModule } from './providers/providers.module.js';
+import { UploadsModule } from './uploads/uploads.module.js';
 import { UsersModule } from './users/users.module.js';
 
 @Module({
@@ -27,6 +28,7 @@ import { UsersModule } from './users/users.module.js';
     AuthModule,
     UsersModule,
     ProvidersModule,
+    UploadsModule,
   ],
   controllers: [HealthController],
   providers: [

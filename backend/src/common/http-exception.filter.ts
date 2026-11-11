@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import type { Response } from 'express';
-import { AppException, ErrorBody } from './app.exception.js';
+import { AppException, DEFAULT_VALIDATION_MESSAGE, ErrorBody } from './app.exception.js';
 
 const STATUS_CODES: Record<number, [string, string]> = {
   400: ['validation_error', 'Requisição inválida.'],
@@ -15,7 +15,6 @@ const STATUS_CODES: Record<number, [string, string]> = {
   403: ['forbidden', 'Você não tem permissão para esta ação.'],
   404: ['route_not_found', 'Rota não encontrada.'],
   409: ['conflict', 'Não foi possível concluir a ação.'],
-  413: ['validation_error', 'O arquivo deve ter no máximo 5 MB.'],
   429: [
     'too_many_attempts',
     'Muitas tentativas. Aguarde alguns minutos e tente de novo.',
@@ -37,6 +36,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
     // Erros de negócio já chegam no formato do contrato
     if (exception instanceof AppException) {
       return exception.getResponse() as ErrorBody;
+    }
+
+    // Arquivo acima do limite vira erro de formulário no campo do arquivo
+    if (exception instanceof HttpException && exception.getStatus() === 413) {
+      const fields = { file: 'O arquivo deve ter no máximo 5 MB.' };
+      return { status: 422, code: 'validation_error', message: DEFAULT_VALIDATION_MESSAGE, fields };
     }
 
     // Exceções HTTP do framework recebem código e mensagem padrão
