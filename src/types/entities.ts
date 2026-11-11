@@ -1,11 +1,19 @@
+export type Role = 'producer' | 'provider' | 'admin'
+export type UserStatus = 'active' | 'suspended' | 'deleted'
+export type VerificationStatus = 'not_sent' | 'under_review' | 'approved' | 'rejected'
+
 export interface User {
   id: string
   name: string
   email: string
-  role: 'producer'
+  role: Role
+  phone?: string
   avatarUrl?: string
   city: string
   state: string
+  status: UserStatus
+  mustChangePassword?: boolean
+  createdAt: string
 }
 
 export interface Category {
@@ -15,6 +23,18 @@ export interface Category {
   icon: string
 }
 
+export interface ProviderProfile {
+  userId: string
+  document: string
+  serviceRadiusKm: number
+  yearsOfExperience: number
+  description: string
+  verificationStatus: VerificationStatus
+  verificationRejectionReason?: string
+  rating: number
+  reviewCount: number
+}
+
 export interface Provider {
   id: string
   name: string
@@ -22,7 +42,11 @@ export interface Provider {
   city: string
   state: string
   rating: number
+  reviewCount: number
   yearsOfExperience: number
+  verified: boolean
+  serviceRadiusKm: number
+  description: string
 }
 
 export type PriceUnit = 'hour' | 'hectare' | 'day' | 'trip'

@@ -1,6 +1,6 @@
 import type { Paginated, QueryValue } from '../../../types/api'
 import type { ServiceRecord } from '../../../data/services'
-import type { Service, ServiceRequest, User } from '../../../types/entities'
+import type { Role, Service, ServiceRequest, User } from '../../../types/entities'
 import { getMockDatabase } from '../mockDatabase'
 import { ApiError } from '../apiError'
 
@@ -50,11 +50,23 @@ export function findUserByToken(token: string | null): User {
   const userId = token?.startsWith(TOKEN_PREFIX) ? token.slice(TOKEN_PREFIX.length) : null
   const user = userId ? getMockDatabase().users.find((candidate) => candidate.id === userId) : undefined
 
-  if (!user) {
+  if (!user || user.status === 'suspended' || user.status === 'deleted') {
     throw new ApiError({
       status: 401,
       code: 'unauthorized',
       message: 'Sessão inválida. Faça login novamente.',
+    })
+  }
+
+  return user
+}
+
+export function requireRole(user: User, role: Role): User {
+  if (user.role !== role) {
+    throw new ApiError({
+      status: 403,
+      code: 'forbidden',
+      message: 'Você não tem permissão para esta ação.',
     })
   }
 

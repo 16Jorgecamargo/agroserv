@@ -22,6 +22,8 @@ const user: User = {
   role: 'producer',
   city: 'Santa Helena',
   state: 'PR',
+  status: 'active',
+  createdAt: '2026-01-01T00:00:00.000Z',
 }
 
 function wrapper({ children }: { children: ReactNode }) {
@@ -87,7 +89,9 @@ describe('AuthProvider', () => {
 
   it('clears the session when the stored token is rejected', async () => {
     saveSession('mock.usr-1', user)
-    mockedAuthService.me.mockRejectedValue(new ApiError({ status: 401, code: 'unauthorized', message: 'Sessão inválida.' }))
+    mockedAuthService.me.mockRejectedValue(
+      new ApiError({ status: 401, code: 'unauthorized', message: 'Sessão inválida.' }),
+    )
     const { result } = renderHook(() => useAuth(), { wrapper })
     await waitFor(() => expect(result.current.isLoading).toBe(false))
     expect(result.current.isAuthenticated).toBe(false)

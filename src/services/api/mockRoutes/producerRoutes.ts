@@ -2,7 +2,7 @@ import type { ProducerDashboard } from '../../../types/api'
 import type { RequestStatus, ServiceRequest } from '../../../types/entities'
 import { isRequestStatus } from '../../../utils/requestStatus'
 import { ApiError } from '../apiError'
-import { findUserByToken, getUserRequests, toOptionalString } from './shared'
+import { findUserByToken, getUserRequests, requireRole, toOptionalString } from './shared'
 import type { MockRoute, RouteContext } from './types'
 
 const RECENT_REQUESTS_LIMIT = 5
@@ -10,7 +10,7 @@ const OPEN_STATUSES: RequestStatus[] = ['pending', 'accepted']
 const CONTRACTED_STATUSES: RequestStatus[] = ['accepted', 'in_progress', 'completed']
 
 function listRequests({ token, query }: RouteContext): ServiceRequest[] {
-  const user = findUserByToken(token)
+  const user = requireRole(findUserByToken(token), 'producer')
   const status = toOptionalString(query.status)
 
   if (status && status !== 'all' && !isRequestStatus(status)) {
@@ -29,7 +29,7 @@ function listRequests({ token, query }: RouteContext): ServiceRequest[] {
 }
 
 function getDashboard({ token }: RouteContext): ProducerDashboard {
-  const user = findUserByToken(token)
+  const user = requireRole(findUserByToken(token), 'producer')
   const userRequests = getUserRequests(user.id)
   const countBy = (statuses: RequestStatus[]) =>
     userRequests.filter((request) => statuses.includes(request.status)).length

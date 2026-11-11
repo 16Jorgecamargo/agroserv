@@ -38,7 +38,16 @@ describe('Navbar', () => {
     mockAuth({
       isAuthenticated: true,
       logout,
-      user: { id: 'usr-1', name: 'Carlos Souza', email: 'a@b.c', role: 'producer', city: 'X', state: 'PR' },
+      user: {
+        id: 'usr-1',
+        name: 'Carlos Souza',
+        email: 'a@b.c',
+        role: 'producer',
+        city: 'X',
+        state: 'PR',
+        status: 'active',
+        createdAt: '2026-01-01T00:00:00.000Z',
+      },
     })
     render(
       <MemoryRouter>
