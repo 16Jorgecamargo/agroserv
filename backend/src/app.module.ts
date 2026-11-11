@@ -8,6 +8,7 @@ import { LoggerMiddleware } from './common/logger.middleware.js';
 import { ResponseInterceptor } from './common/response.interceptor.js';
 import { createValidationPipe, TrimPipe } from './common/validation.pipe.js';
 import { loadConfig } from './config.js';
+import { DatabaseModule } from './database/database.module.js';
 import { HealthController } from './health/health.controller.js';
 
 @Module({
@@ -18,6 +19,7 @@ import { HealthController } from './health/health.controller.js';
       skipIf: () => process.env.NODE_ENV === 'test',
     }),
     CommonModule,
+    DatabaseModule,
   ],
   controllers: [HealthController],
   providers: [
