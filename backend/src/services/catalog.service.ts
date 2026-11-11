@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { notFound } from '../common/app.exception.js';
+import { isValidDay } from '../common/clock.service.js';
 import { Paginated, paginate, parsePage } from '../common/pagination.js';
 import { searchTerms } from '../common/text.js';
+import { PRICE_UNITS } from '../common/types.js';
+import type { PriceUnit } from '../common/types.js';
 import type { User } from '../users/entities/user.entity.js';
 import type { Service } from './entities/service.entity.js';
 import {
@@ -10,6 +13,9 @@ import {
 import { ServiceSearch, ServicesRepository } from './services.repository.js';
 
 export type Query = Record<string, unknown>;
+
+const SORTS = ['relevance', 'price_asc', 'price_desc', 'rating'] as const;
+type Sort = (typeof SORTS)[number];
 
 @Injectable()
 export class CatalogService {
@@ -22,9 +28,31 @@ export class CatalogService {
       terms: searchTerms(query.q),
       locationTerms: searchTerms(query.location),
       categorySlug: typeof query.category === 'string' && query.category ? query.category : undefined,
+      ...this.advancedFilters(query),
     };
     const [services, total] = await this.services.search(filters, page);
     return paginate(services.map((service) => toServiceView(service)), total, page);
+  }
+
+  private advancedFilters(query: Query): Partial<ServiceSearch> {
+    // Valores inválidos nos filtros avançados são ignorados, sem erro
+    const number = (value: unknown, min: number, max = Infinity) => {
+      const parsed = typeof value === 'string' && value.trim() !== '' ? Number(value) : NaN;
+      return Number.isFinite(parsed) && parsed >= min && parsed <= max ? parsed : undefined;
+    };
+    const priceUnit = PRICE_UNITS.includes(query.priceUnit as PriceUnit) ? (query.priceUnit as PriceUnit) : undefined;
+    const sort = SORTS.includes(query.sort as Sort) ? (query.sort as Sort) : undefined;
+
+    // A faixa de preço só vale junto com a unidade de cobrança
+    return {
+      priceUnit,
+      minPrice: priceUnit ? number(query.minPrice, 0) : undefined,
+      maxPrice: priceUnit ? number(query.maxPrice, 0) : undefined,
+      minRating: number(query.minRating, 1, 5),
+      verifiedOnly: query.verified === 'true',
+      availableOn: isValidDay(query.date) ? query.date : undefined,
+      sort,
+    };
   }
 
   async featured(query: Query): Promise<ServiceView[]> {

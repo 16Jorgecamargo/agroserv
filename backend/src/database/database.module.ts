@@ -9,6 +9,7 @@ import { LoginAttemptsRepository } from '../auth/login-attempts.repository.js';
 import { PasswordResetTokensRepository } from '../auth/password-reset-tokens.repository.js';
 import { CategoriesRepository } from '../categories/categories.repository.js';
 import { EquipmentRepository } from '../equipment/equipment.repository.js';
+import { FavoritesRepository } from '../favorites/favorites.repository.js';
 import { MessagesRepository } from '../messages/messages.repository.js';
 import { NotificationsRepository } from '../notifications/notifications.repository.js';
 import { PropertiesRepository } from '../properties/properties.repository.js';
@@ -40,6 +41,7 @@ const REPOSITORIES = [
   ReviewsRepository,
   ReportsRepository,
   AdminActionsRepository,
+  FavoritesRepository,
 ];
 import { SeedService } from './seed.service.js';
 

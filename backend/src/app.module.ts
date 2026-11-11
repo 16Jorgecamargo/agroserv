@@ -14,6 +14,7 @@ import { createValidationPipe, TrimPipe } from './common/validation.pipe.js';
 import { loadConfig } from './config.js';
 import { DatabaseModule } from './database/database.module.js';
 import { EquipmentModule } from './equipment/equipment.module.js';
+import { FavoritesModule } from './favorites/favorites.module.js';
 import { HealthController } from './health/health.controller.js';
 import { MessagesModule } from './messages/messages.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
@@ -48,6 +49,7 @@ import { UsersModule } from './users/users.module.js';
     EquipmentModule,
     AgendaModule,
     AdminModule,
+    FavoritesModule,
     ReportsModule,
   ],
   controllers: [HealthController],
