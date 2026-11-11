@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
+import { MailService } from '../mail/mail.service.js';
+import { PasswordRecoveryService } from './password-recovery.service.js';
 
 @Global()
 @Module({
@@ -18,7 +20,7 @@ import { AuthService } from './auth.service.js';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, PasswordRecoveryService, MailService],
   exports: [AuthService],
 })
 export class AuthModule {}
