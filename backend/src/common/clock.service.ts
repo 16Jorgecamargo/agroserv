@@ -22,6 +22,11 @@ export function addDays(day: string, amount: number): string {
   return date.toISOString().slice(0, 10);
 }
 
+export function brasiliaDay(moment: string | Date): string {
+  // Dia de Brasília de um momento qualquer
+  return BRASILIA_DAY.format(typeof moment === 'string' ? new Date(moment) : moment);
+}
+
 @Injectable()
 export class ClockService {
   now(): Date {
