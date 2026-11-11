@@ -3,7 +3,20 @@ import { dirname } from 'node:path';
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoginAttemptsRepository } from '../auth/login-attempts.repository.js';
+import { ProviderProfilesRepository } from '../providers/provider-profiles.repository.js';
+import { UploadRulesService } from '../uploads/upload-rules.service.js';
+import { UploadsRepository } from '../uploads/uploads.repository.js';
+import { UsersRepository } from '../users/users.repository.js';
 import { ENTITIES } from './entities.js';
+
+const REPOSITORIES = [
+  UsersRepository,
+  ProviderProfilesRepository,
+  LoginAttemptsRepository,
+  UploadsRepository,
+  UploadRulesService,
+];
 import { SeedService } from './seed.service.js';
 
 @Global()
@@ -27,7 +40,7 @@ import { SeedService } from './seed.service.js';
     }),
     TypeOrmModule.forFeature(ENTITIES),
   ],
-  providers: [SeedService],
-  exports: [TypeOrmModule, SeedService],
+  providers: [SeedService, ...REPOSITORIES],
+  exports: [TypeOrmModule, SeedService, ...REPOSITORIES],
 })
 export class DatabaseModule {}
