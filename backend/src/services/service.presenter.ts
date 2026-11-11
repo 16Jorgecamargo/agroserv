@@ -2,6 +2,7 @@ import { CategoryView, toCategoryView } from '../categories/category.presenter.j
 import type { PriceUnit, ServiceStatus } from '../common/types.js';
 import { EquipmentView, toEquipmentView } from '../equipment/equipment.presenter.js';
 import { ProviderView, toProviderView } from '../providers/provider.presenter.js';
+import { roundRating } from '../reviews/ratings.js';
 import type { Service } from './entities/service.entity.js';
 
 export interface ServiceView {
@@ -56,7 +57,7 @@ export function toServiceView(service: Service, showHiddenReason = false): Servi
     state: service.state,
     price: service.price,
     priceUnit: service.priceUnit,
-    rating: service.rating,
+    rating: roundRating(service.rating),
     reviewCount: service.reviewCount,
     available: service.available,
     imageUrl: service.photos[0] ?? '',

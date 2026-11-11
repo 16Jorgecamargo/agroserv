@@ -8,10 +8,13 @@ import { LoginAttemptsRepository } from '../auth/login-attempts.repository.js';
 import { PasswordResetTokensRepository } from '../auth/password-reset-tokens.repository.js';
 import { CategoriesRepository } from '../categories/categories.repository.js';
 import { EquipmentRepository } from '../equipment/equipment.repository.js';
+import { MessagesRepository } from '../messages/messages.repository.js';
 import { NotificationsRepository } from '../notifications/notifications.repository.js';
 import { PropertiesRepository } from '../properties/properties.repository.js';
 import { ProviderProfilesRepository } from '../providers/provider-profiles.repository.js';
+import { ReportsRepository } from '../reports/reports.repository.js';
 import { RequestsRepository } from '../requests/requests.repository.js';
+import { ReviewsRepository } from '../reviews/reviews.repository.js';
 import { ServicesRepository } from '../services/services.repository.js';
 import { UploadRulesService } from '../uploads/upload-rules.service.js';
 import { UploadsRepository } from '../uploads/uploads.repository.js';
@@ -32,6 +35,9 @@ const REPOSITORIES = [
   NotificationsRepository,
   RequestsRepository,
   EquipmentRepository,
+  MessagesRepository,
+  ReviewsRepository,
+  ReportsRepository,
 ];
 import { SeedService } from './seed.service.js';
 
