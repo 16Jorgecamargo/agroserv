@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, FindOptionsRelations, In, Repository } from 'typeorm';
-import { OPEN_STATUSES } from '../common/types.js';
+import { OPEN_STATUSES, REQUEST_STATUSES } from '../common/types.js';
 import type { RequestStatus } from '../common/types.js';
 import { RequestEvent } from './entities/request-event.entity.js';
 import { ServiceRequest } from './entities/service-request.entity.js';
@@ -73,9 +73,35 @@ export class RequestsRepository {
     });
   }
 
-  findAll(): Promise<ServiceRequest[]> {
-    // Todas as solicitações, para os totais do painel administrativo
-    return this.requests.find({ relations: { service: { category: true } } });
+  async countByStatus(): Promise<Record<RequestStatus, number>> {
+    // Total de solicitações em cada status, com zero onde não houver
+    const rows = await this.requests
+      .createQueryBuilder('request')
+      .select('request.status', 'status')
+      .addSelect('COUNT(*)', 'total')
+      .groupBy('request.status')
+      .getRawMany<{ status: RequestStatus; total: number }>();
+    const totals = Object.fromEntries(REQUEST_STATUSES.map((status) => [status, 0])) as Record<RequestStatus, number>;
+    for (const row of rows) totals[row.status] = Number(row.total);
+    return totals;
+  }
+
+  async topCategories(limit: number): Promise<{ categoryId: string; name: string; requests: number }[]> {
+    // Categorias com mais solicitações em todas as épocas
+    const rows = await this.requests
+      .createQueryBuilder('request')
+      .innerJoin('request.service', 'service')
+      .innerJoin('service.category', 'category')
+      .select('category.id', 'categoryId')
+      .addSelect('category.name', 'name')
+      .addSelect('COUNT(*)', 'requests')
+      .groupBy('category.id')
+      .addGroupBy('category.name')
+      .orderBy('requests', 'DESC')
+      .addOrderBy('category.name', 'ASC')
+      .limit(limit)
+      .getRawMany<{ categoryId: string; name: string; requests: number }>();
+    return rows.map((row) => ({ ...row, requests: Number(row.requests) }));
   }
 
   findEventsByProvider(providerId: string): Promise<RequestEvent[]> {
