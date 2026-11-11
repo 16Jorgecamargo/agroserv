@@ -2,6 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { AgendaModule } from './agenda/agenda.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { AuthGuard, RolesGuard } from './common/auth.guard.js';
 import { CommonModule } from './common/common.module.js';
@@ -11,6 +12,7 @@ import { ResponseInterceptor } from './common/response.interceptor.js';
 import { createValidationPipe, TrimPipe } from './common/validation.pipe.js';
 import { loadConfig } from './config.js';
 import { DatabaseModule } from './database/database.module.js';
+import { EquipmentModule } from './equipment/equipment.module.js';
 import { HealthController } from './health/health.controller.js';
 import { MessagesModule } from './messages/messages.module.js';
 import { NotificationsModule } from './notifications/notifications.module.js';
@@ -41,6 +43,8 @@ import { UsersModule } from './users/users.module.js';
     RequestsModule,
     MessagesModule,
     ReviewsModule,
+    EquipmentModule,
+    AgendaModule,
   ],
   controllers: [HealthController],
   providers: [
