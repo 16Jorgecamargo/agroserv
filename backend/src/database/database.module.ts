@@ -3,6 +3,7 @@ import { dirname } from 'node:path';
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdminActionsRepository } from '../admin/admin-actions.repository.js';
 import { BlockedDaysRepository } from '../agenda/blocked-days.repository.js';
 import { LoginAttemptsRepository } from '../auth/login-attempts.repository.js';
 import { PasswordResetTokensRepository } from '../auth/password-reset-tokens.repository.js';
@@ -38,6 +39,7 @@ const REPOSITORIES = [
   MessagesRepository,
   ReviewsRepository,
   ReportsRepository,
+  AdminActionsRepository,
 ];
 import { SeedService } from './seed.service.js';
 

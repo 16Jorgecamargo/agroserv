@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { defined } from '../common/objects.js';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, In, IsNull, Not, Repository } from 'typeorm';
+import { DataSource, In, IsNull, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { BlockedDay } from '../agenda/entities/blocked-day.entity.js';
+import type { PageRequest } from '../common/pagination.js';
 import { OPEN_STATUSES } from '../common/types.js';
 import type { Role } from '../common/types.js';
 import { Equipment } from '../equipment/entities/equipment.entity.js';
@@ -44,6 +45,44 @@ export class UsersRepository {
     const query = this.users.createQueryBuilder('user').addSelect('user.passwordHash');
     const user = await query.where('user.id = :id', { id }).getOne();
     return user?.passwordHash ?? null;
+  }
+
+  search(
+    filters: { terms: string[]; role?: Role; status?: 'active' | 'suspended' },
+    page: PageRequest,
+  ): Promise<[User[], number]> {
+    // Busca administrativa por nome ou e-mail, sem contas excluídas
+    const query = this.users.createQueryBuilder('user').where("user.status != 'deleted'");
+    filters.terms.forEach((term, index) => {
+      query.andWhere(`user.searchText LIKE :term${index}`, { [`term${index}`]: `%${term}%` });
+    });
+    if (filters.role) query.andWhere('user.role = :role', { role: filters.role });
+    if (filters.status) query.andWhere('user.status = :status', { status: filters.status });
+    return query.orderBy('user.createdAt', 'DESC').skip(page.skip).take(page.pageSize).getManyAndCount();
+  }
+
+  async countByRole(): Promise<Record<Role, number>> {
+    // Contas não excluídas de cada papel
+    const rows = await this.users
+      .createQueryBuilder('user')
+      .select('user.role', 'role')
+      .addSelect('COUNT(*)', 'total')
+      .where("user.status != 'deleted'")
+      .groupBy('user.role')
+      .getRawMany<{ role: Role; total: number }>();
+    const totals: Record<Role, number> = { producer: 0, provider: 0, admin: 0 };
+    for (const row of rows) totals[row.role] = Number(row.total);
+    return totals;
+  }
+
+  countCreatedSince(since: string): Promise<number> {
+    // Cadastros recentes, sem contas excluídas
+    return this.users.countBy({ createdAt: MoreThanOrEqual(since), status: Not('deleted') });
+  }
+
+  countActiveAdmins(): Promise<number> {
+    // Administradores que ainda conseguem entrar
+    return this.users.countBy({ role: 'admin', status: 'active' });
   }
 
   create(data: Partial<User>): Promise<User> {
