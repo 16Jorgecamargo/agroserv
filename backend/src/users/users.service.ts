@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service.js';
 import { conflict, forbidden, validationError } from '../common/app.exception.js';
 import { ClockService } from '../common/clock.service.js';
 import { normalizeText, onlyDigits } from '../common/text.js';
+import { ServicesRepository } from '../services/services.repository.js';
 import { UploadRulesService } from '../uploads/upload-rules.service.js';
 import type { ChangePasswordDto } from './dto/change-password.dto.js';
 import type { UpdateMeDto } from './dto/update-me.dto.js';
@@ -17,6 +18,7 @@ export class UsersService {
     private readonly users: UsersRepository,
     private readonly auth: AuthService,
     private readonly uploadRules: UploadRulesService,
+    private readonly services: ServicesRepository,
     private readonly clock: ClockService,
   ) {}
 
@@ -32,7 +34,13 @@ export class UsersService {
     if (dto.state !== undefined) changes.state = dto.state;
     if (dto.avatarUrl !== undefined) changes.avatarUrl = dto.avatarUrl;
     if (changes.name) changes.searchText = normalizeText(`${changes.name} ${user.email}`);
-    return toUserView(await this.users.update(user.id, changes));
+    const updated = await this.users.update(user.id, changes);
+
+    // O nome do prestador faz parte do texto de busca dos anúncios
+    if (changes.name && user.role === 'provider') {
+      await this.services.refreshSearchTextWhere({ providerId: user.id });
+    }
+    return toUserView(updated);
   }
 
   async changePassword(user: User, dto: ChangePasswordDto): Promise<{ message: string }> {
