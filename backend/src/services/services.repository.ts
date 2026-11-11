@@ -150,6 +150,11 @@ export class ServicesRepository {
     return new Map(rows.map((row) => [row.categoryId, Number(row.total)]));
   }
 
+  countAllByCategory(categoryId: string): Promise<number> {
+    // Anúncios ligados à categoria, incluindo os excluídos logicamente
+    return this.services.countBy({ categoryId });
+  }
+
   async save(service: Service): Promise<Service> {
     // Grava o anúncio com os textos de busca atualizados
     const saved = await this.services.save(service);
