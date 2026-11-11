@@ -1,6 +1,7 @@
 import { MotionConfig } from 'framer-motion'
 import { BrowserRouter, HashRouter } from 'react-router'
 import { ScrollToTop } from './components/layout/ScrollToTop'
+import { ToastProvider } from './components/ui/ToastProvider'
 import { AuthProvider } from './contexts/AuthProvider'
 import { AppRoutes } from './routes/AppRoutes'
 
@@ -10,10 +11,12 @@ export default function App() {
   return (
     <Router>
       <MotionConfig reducedMotion="user">
-        <AuthProvider>
-          <ScrollToTop />
-          <AppRoutes />
-        </AuthProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <ScrollToTop />
+            <AppRoutes />
+          </AuthProvider>
+        </ToastProvider>
       </MotionConfig>
     </Router>
   )
