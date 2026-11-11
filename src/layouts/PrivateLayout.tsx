@@ -3,9 +3,10 @@ import { startTransition } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 import { Sidebar } from '../components/layout/Sidebar'
 import { SkipLink } from '../components/layout/SkipLink'
+import { Alert } from '../components/ui/Alert'
 import { Avatar } from '../components/ui/Avatar'
 import { useAuth } from '../hooks/useAuth'
-import { paths } from '../routes/paths'
+import { paths, type LoginLocationState } from '../routes/paths'
 import { formatLocation } from '../utils/format'
 import { pageTransition } from '../utils/motion'
 
@@ -13,6 +14,7 @@ export function PrivateLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const routeState = (location.state ?? null) as LoginLocationState | null
 
   function handleLogout() {
     startTransition(() => {
@@ -45,6 +47,11 @@ export function PrivateLayout() {
           className="flex-1 px-4 py-8 sm:px-6 lg:px-8 lg:py-10"
         >
           <div className="mx-auto max-w-6xl">
+            {routeState?.reason === 'forbidden' && (
+              <Alert tone="warning" className="mb-6">
+                Você não tem acesso a esta área.
+              </Alert>
+            )}
             <Outlet />
           </div>
         </motion.main>

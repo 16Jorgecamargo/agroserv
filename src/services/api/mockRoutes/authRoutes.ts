@@ -21,11 +21,19 @@ function login({ body }: RouteContext): LoginResponse {
     ? database.userCredentials.find((candidate) => candidate.userId === user.id)
     : undefined
 
-  if (!user || credential?.password !== password) {
+  if (!user || credential?.password !== password || user.status === 'deleted') {
     throw new ApiError({
       status: 401,
       code: 'invalid_credentials',
       message: 'E-mail ou senha inválidos.',
+    })
+  }
+
+  if (user.status === 'suspended') {
+    throw new ApiError({
+      status: 403,
+      code: 'account_suspended',
+      message: 'Sua conta está suspensa. Entre em contato com o suporte.',
     })
   }
 

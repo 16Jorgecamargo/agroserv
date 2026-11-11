@@ -5,14 +5,13 @@ import { Link, Navigate, useLocation } from 'react-router'
 import loginImage from '../assets/images/login-field.jpg'
 import { Logo } from '../components/layout/Logo'
 import { Alert } from '../components/ui/Alert'
-import { Badge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { useAuth } from '../hooks/useAuth'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { paths, type LoginLocationState } from '../routes/paths'
+import { canReturnToPath, getRoleHomePath, paths, type LoginLocationState } from '../routes/paths'
 import { isApiError } from '../services/api/apiError'
-import { demoAccount } from '../services/authService'
+import { demoAccounts, type DemoAccount } from '../services/authService'
 import { validateLoginForm, type LoginFormErrors } from '../utils/validators'
 
 const loginHighlights = [
@@ -23,7 +22,7 @@ const loginHighlights = [
 
 export function LoginPage() {
   usePageTitle('Entrar')
-  const { login, isAuthenticated } = useAuth()
+  const { login, isAuthenticated, user } = useAuth()
   const location = useLocation()
   const state = (location.state ?? null) as LoginLocationState | null
   const [email, setEmail] = useState('')
@@ -33,32 +32,42 @@ export function LoginPage() {
   const [formError, setFormError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  if (isAuthenticated) {
-    const redirectTo = state?.from ? `${state.from.pathname}${state.from.search}` : paths.dashboard
+  if (isAuthenticated && user) {
+    const returnTo = state?.from
+    const redirectTo =
+      returnTo && canReturnToPath(returnTo.pathname, user.role)
+        ? `${returnTo.pathname}${returnTo.search}`
+        : getRoleHomePath(user.role)
+
     return <Navigate to={redirectTo} replace />
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (isSubmitting) return
+
     const errors = validateLoginForm({ email, password })
     setFieldErrors(errors)
     setFormError(null)
     if (Object.keys(errors).length > 0) return
+
     setIsSubmitting(true)
     try {
       await login(email, password)
     } catch (error) {
-      setFormError(isApiError(error) ? error.message : 'Não foi possível entrar. Tente novamente.')
+      if (isApiError(error) && error.code === 'account_suspended') {
+        setFormError('Sua conta está suspensa. Entre em contato com o suporte.')
+      } else {
+        setFormError(isApiError(error) ? error.message : 'Não foi possível entrar. Tente novamente.')
+      }
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  function fillDemoAccount() {
-    if (!demoAccount) return
-    setEmail(demoAccount.email)
-    setPassword(demoAccount.password)
+  function fillDemoAccount(account: DemoAccount) {
+    setEmail(account.email)
+    setPassword(account.password)
     setFieldErrors({})
     setFormError(null)
   }
@@ -96,10 +105,15 @@ export function LoginPage() {
           <div className="mb-8 lg:hidden">
             <Logo />
           </div>
-          <Link to={paths.home} className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text">
+
+          <Link
+            to={paths.home}
+            className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text"
+          >
             <ArrowLeft className="size-4" aria-hidden />
             Voltar para o site
           </Link>
+
           <h1 className="mt-6 text-3xl/[38px] font-bold tracking-[-0.01em] text-text">Bem-vindo de volta</h1>
           <p className="mt-2 text-text-muted">Entre para acompanhar suas solicitações de serviço.</p>
 
@@ -115,6 +129,7 @@ export function LoginPage() {
             className="mt-6 space-y-4 rounded-card border border-border bg-surface p-6 shadow-card"
           >
             {formError && <Alert tone="danger">{formError}</Alert>}
+
             <Input
               label="E-mail"
               type="email"
@@ -125,6 +140,7 @@ export function LoginPage() {
               onChange={(event) => setEmail(event.target.value)}
               error={fieldErrors.email}
             />
+
             <Input
               label="Senha"
               type={showPassword ? 'text' : 'password'}
@@ -146,34 +162,53 @@ export function LoginPage() {
                 </button>
               }
             />
-            <p className="flex items-center justify-end gap-2 text-sm text-text-muted">
-              Esqueci minha senha
-              <Badge>Em breve</Badge>
-            </p>
+
+            <div className="flex justify-end">
+              <Link
+                to={paths.forgotPassword}
+                className="text-sm font-medium text-primary transition-colors hover:text-primary-strong"
+              >
+                Esqueci minha senha
+              </Link>
+            </div>
+
             <Button type="submit" size="lg" className="w-full" isLoading={isSubmitting}>
               Entrar
             </Button>
-            {demoAccount && (
+
+            {demoAccounts.length > 0 && (
               <>
                 <div className="flex items-center gap-3 text-xs text-text-muted">
                   <span className="h-px flex-1 bg-border" />
-                  ou
+                  ou use uma conta demo
                   <span className="h-px flex-1 bg-border" />
                 </div>
-                <Button variant="secondary" size="lg" className="w-full" onClick={fillDemoAccount}>
-                  Usar conta demo
-                </Button>
-                <p className="text-center text-xs text-text-muted">
-                  {demoAccount.email} · {demoAccount.password}
-                </p>
+
+                <div className="grid gap-2">
+                  {demoAccounts.map((account) => (
+                    <Button
+                      key={account.label}
+                      type="button"
+                      variant="secondary"
+                      size="lg"
+                      className="w-full"
+                      onClick={() => fillDemoAccount(account)}
+                    >
+                      Usar conta demo: {account.label}
+                    </Button>
+                  ))}
+                </div>
+
+                <p className="text-center text-xs text-text-muted">As contas demo usam a senha 123456.</p>
               </>
             )}
           </form>
 
           <p className="mt-6 flex items-center justify-center gap-2 text-sm text-text-muted">
             Ainda não tem conta?
-            <span className="font-medium text-text">Criar conta</span>
-            <Badge>Em breve</Badge>
+            <Link to={paths.register} className="font-medium text-primary transition-colors hover:text-primary-strong">
+              Criar conta
+            </Link>
           </p>
         </motion.div>
       </main>
