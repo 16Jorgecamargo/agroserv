@@ -7,6 +7,7 @@ import { BlockedDaysRepository } from '../agenda/blocked-days.repository.js';
 import { LoginAttemptsRepository } from '../auth/login-attempts.repository.js';
 import { PasswordResetTokensRepository } from '../auth/password-reset-tokens.repository.js';
 import { CategoriesRepository } from '../categories/categories.repository.js';
+import { EquipmentRepository } from '../equipment/equipment.repository.js';
 import { NotificationsRepository } from '../notifications/notifications.repository.js';
 import { PropertiesRepository } from '../properties/properties.repository.js';
 import { ProviderProfilesRepository } from '../providers/provider-profiles.repository.js';
@@ -30,6 +31,7 @@ const REPOSITORIES = [
   BlockedDaysRepository,
   NotificationsRepository,
   RequestsRepository,
+  EquipmentRepository,
 ];
 import { SeedService } from './seed.service.js';
 
