@@ -4,11 +4,16 @@ import type { User } from '../users/entities/user.entity.js';
 import type { UserView } from '../users/user.presenter.js';
 import { AuthService, SessionView } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
+import { ForgotPasswordDto, ResetPasswordDto } from './dto/password-recovery.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
+import { ForgotPasswordView, PasswordRecoveryService } from './password-recovery.service.js';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly auth: AuthService) {}
+  constructor(
+    private readonly auth: AuthService,
+    private readonly recovery: PasswordRecoveryService,
+  ) {}
 
   @Public()
   @Post('register')
@@ -29,5 +34,21 @@ export class AuthController {
   me(@CurrentUser() user: User): UserView {
     // Conta da sessão atual
     return this.auth.me(user);
+  }
+
+  @Public()
+  @Post('forgot-password')
+  @HttpCode(200)
+  forgotPassword(@Body() dto: ForgotPasswordDto): Promise<ForgotPasswordView> {
+    // Pede o link de redefinição de senha
+    return this.recovery.forgot(dto);
+  }
+
+  @Public()
+  @Post('reset-password')
+  @HttpCode(200)
+  resetPassword(@Body() dto: ResetPasswordDto): Promise<{ message: string }> {
+    // Define a nova senha a partir do link recebido
+    return this.recovery.reset(dto);
   }
 }

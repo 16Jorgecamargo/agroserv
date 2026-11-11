@@ -4,6 +4,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoginAttemptsRepository } from '../auth/login-attempts.repository.js';
+import { PasswordResetTokensRepository } from '../auth/password-reset-tokens.repository.js';
 import { ProviderProfilesRepository } from '../providers/provider-profiles.repository.js';
 import { UploadRulesService } from '../uploads/upload-rules.service.js';
 import { UploadsRepository } from '../uploads/uploads.repository.js';
@@ -14,6 +15,7 @@ const REPOSITORIES = [
   UsersRepository,
   ProviderProfilesRepository,
   LoginAttemptsRepository,
+  PasswordResetTokensRepository,
   UploadsRepository,
   UploadRulesService,
 ];
