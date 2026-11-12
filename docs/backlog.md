@@ -618,6 +618,8 @@ Critérios de aceite:
 
 Para a etapa seguinte da disciplina. O back-end implementa `api-contract.md`. O front-end passa a usá-lo com `VITE_API_MODE=http`.
 
+**Situação:** B-01 a B-07, B-09 e B-10 estão implementados em [`backend/`](../backend/README.md), na branch `backend`. B-08 depende de ajustes no front-end, listados na seção 17 do contrato.
+
 | ID | Item | Critérios de aceite |
 |---|---|---|
 | B-01 | Base do projeto | API REST com o formato de erro da seção 3, CORS liberado para o front-end, variáveis de ambiente documentadas. |

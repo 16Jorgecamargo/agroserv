@@ -29,6 +29,7 @@ A divisão do trabalho em tarefas está em [`backlog.md`](backlog.md). Cada endp
 14. [Administrador](#14-administrador)
 15. [Notificações geradas](#15-notificações-geradas)
 16. [Dados demo](#16-dados-demo)
+17. [Back-end real](#17-back-end-real)
 
 ---
 
@@ -46,6 +47,7 @@ Para usar a API real, crie `.env` com `VITE_API_MODE=http` e `VITE_API_URL=<url>
 ## 2. Convenções
 
 - **Formato:** JSON em requisições e respostas (exceto upload, seção 9). Campos em `camelCase`.
+- **Envelope (back-end real):** toda resposta com corpo vem embrulhada em `{ "success": true, "data": ... }` ou `{ "success": false, "error": ... }`. Os corpos descritos neste contrato são o conteúdo de `data` e de `error`. Detalhes e motivo na [seção 17](#17-back-end-real). O mock continua devolvendo o corpo direto.
 - **IDs:** `string`. O formato é livre (`usr-1`, UUID etc.).
 - **Datas:** dia em `YYYY-MM-DD` (`2026-10-15`). Momentos em ISO 8601 UTC (`2026-11-09T14:30:00Z`).
 - **"Hoje":** toda regra que usa a data de hoje (agendamento, início do serviço, dias bloqueados, painéis) usa o horário de Brasília (`America/Sao_Paulo`), não UTC. Assim, às 22h de 10/11 em Brasília, "hoje" ainda é 10/11.
@@ -64,7 +66,7 @@ Para usar a API real, crie `.env` com `VITE_API_MODE=http` e `VITE_API_URL=<url>
 
 ## 3. Erros
 
-Corpo de todo erro:
+Corpo de todo erro (no back-end real, este objeto vem dentro de `error`, conforme a [seção 17](#17-back-end-real)):
 
 ```json
 {
@@ -1490,3 +1492,173 @@ A senha `123456` das contas demo tem menos de 8 caracteres de propósito, para f
 - O produtor demo tem ao menos uma propriedade e ao menos uma solicitação em cada status com o prestador demo.
 - Ao menos uma denúncia aberta e uma verificação em análise, para o painel do administrador.
 - No mock, "Restaurar dados demo" (no perfil de cada papel) apaga o que foi salvo no navegador e volta a estes dados.
+
+---
+
+## 17. Back-end real
+
+O back-end fica em [`backend/`](../backend/README.md) (NestJS + TypeORM + SQLite) e implementa todos os endpoints do índice da seção 7. Esta seção registra o que ele faz além ou diferente do mock.
+
+### Envelope de resposta
+
+**Motivo:** a descrição do trabalho de back-end da disciplina exige "respostas padronizadas de sucesso e de erro (interceptor e filtro global)". Por isso o back-end embrulha toda resposta com corpo, em vez de devolver o corpo direto como o mock faz.
+
+Sucesso (qualquer 200 ou 201):
+
+```json
+{ "success": true, "data": { "token": "...", "user": { } } }
+```
+
+Erro (qualquer 4xx ou 5xx):
+
+```json
+{
+  "success": false,
+  "error": {
+    "status": 422,
+    "code": "validation_error",
+    "message": "Revise os campos destacados.",
+    "fields": { "email": "Este e-mail já está cadastrado." }
+  }
+}
+```
+
+- `data` é exatamente o corpo descrito em cada endpoint. Em listas paginadas, `data` é o objeto `{ data, meta }` inteiro.
+- `error` é exatamente o objeto da seção 3.
+- Respostas `204` continuam sem corpo.
+- `GET /uploads/:id/file` devolve o arquivo, sem envelope.
+
+### O que o front-end precisa ajustar para usar `VITE_API_MODE=http`
+
+O back-end já está pronto. O front-end **não** foi alterado nesta entrega, porque estava com outra pessoa. Os ajustes abaixo ficam para quem for ligar o front ao back. Sem eles, o modo `mock` continua funcionando como antes, e o modo `http` não funciona.
+
+| # | Problema | Onde | O que fazer |
+|---|---|---|---|
+| 1 | Sucesso vem em `{ success, data }`, e o front lê o corpo direto | `src/services/api/httpAdapter.ts` | Devolver `body.data` |
+| 2 | Erro vem em `{ success, error }`, e o front lê `code` e `message` no topo | `httpAdapter.ts` | Ler `body.error.code`, `body.error.message` e `body.error.fields` |
+| 3 | O `ApiError` não recebe `fields`, então erros 422 não aparecem nos campos | `httpAdapter.ts`, `apiError.ts`, `src/types/api.ts` | Repassar `fields` (previsto em F1-01; conferir se já foi feito) |
+| 4 | `HttpMethod` não tem `PUT`, e o `apiClient` só expõe `get` e `post` | `src/types/api.ts`, `apiClient.ts` | Acrescentar `PUT` e os métodos `patch`, `put` e `delete` |
+| 5 | Todo corpo é enviado como JSON, mas `POST /uploads` exige `multipart/form-data` | `httpAdapter.ts` e o serviço de upload (F3-01) | Mandar `FormData` sem definir `Content-Type` |
+
+Só o `httpAdapter` muda de comportamento. O mock **não** deve passar a usar o envelope: ele continua devolvendo o corpo direto, e o adaptador HTTP é quem desembrulha.
+
+#### Passo 1 a 3 — `httpAdapter.ts`
+
+Trecho final de `request`, depois do `fetch` (exemplo sobre a versão da etapa 1; adapte se F1-01 já mudou o arquivo):
+
+```ts
+if (response.status === 204) return undefined as T
+const body: unknown = await response.json().catch(() => null)
+const envelope = (body ?? {}) as { success?: boolean; data?: unknown; error?: Partial<ApiErrorBody> }
+if (!response.ok || envelope.success === false) {
+  const error = envelope.error ?? {}
+  throw new ApiError({
+    status: error.status ?? response.status,
+    code: error.code ?? 'http_error',
+    message: error.message ?? 'Erro inesperado no servidor.',
+    fields: error.fields,
+  })
+}
+return envelope.data as T
+```
+
+E em `src/types/api.ts`, `ApiErrorBody` ganha `fields?: Record<string, string>`. O construtor de `ApiError` precisa guardar esse campo.
+
+#### Passo 4 — métodos HTTP
+
+```ts
+export type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
+```
+
+No objeto devolvido por `createApiClient`:
+
+```ts
+patch<T>(path: string, body?: unknown): Promise<T> {
+  return send<T>({ method: 'PATCH', path, body, token: getAuthToken() })
+},
+put<T>(path: string, body?: unknown): Promise<T> {
+  return send<T>({ method: 'PUT', path, body, token: getAuthToken() })
+},
+delete<T>(path: string): Promise<T> {
+  return send<T>({ method: 'DELETE', path, token: getAuthToken() })
+},
+```
+
+O mock também precisa responder a esses métodos (parte de F1-01).
+
+#### Passo 5 — upload
+
+No `httpAdapter`, quando o corpo for `FormData`, enviar como está e não definir `Content-Type` (o navegador põe o `boundary`):
+
+```ts
+const isForm = body instanceof FormData
+if (body !== undefined && !isForm) headers['Content-Type'] = 'application/json'
+const payload = body === undefined ? undefined : isForm ? body : JSON.stringify(body)
+```
+
+No serviço de upload, montar o formulário só no modo `http`:
+
+```ts
+const form = new FormData()
+form.append('file', file)
+form.append('purpose', purpose)
+return apiClient.post<Upload>('/uploads', form)
+```
+
+No modo `mock`, continua o JSON com `dataUrl` da seção 9. A URL devolvida pelo back-end (`http://…/uploads/<id>/file`) já abre direto em `<img src>`, sem o tratamento de `mockfile:`.
+
+#### Como rodar e conferir
+
+1. Back-end: `cd backend && pnpm install && cp .env.example .env && pnpm start:dev` (sobe em `http://localhost:3333`). No `.env` do back, `CORS_ORIGIN` e `FRONTEND_URL` precisam apontar para o endereço do front (padrão `http://localhost:5173`).
+2. Front-end: criar `.env` na raiz com `VITE_API_MODE=http` e `VITE_API_URL=http://localhost:3333`, e rodar `npm run dev`.
+3. Conferir:
+   - [ ] Login das três contas demo leva à área de cada papel.
+   - [ ] Busca, destaques e detalhe do serviço carregam, com as fotos.
+   - [ ] Um cadastro com e-mail repetido mostra o erro **no campo** de e-mail (prova que `fields` chegou).
+   - [ ] Editar perfil (`PATCH`), responder avaliação (`PUT`) e remover propriedade (`DELETE`) funcionam.
+   - [ ] Trocar a foto de perfil (upload) funciona e a imagem aparece.
+   - [ ] Sem token, ou com conta suspensa, o front volta ao login (401).
+   - [ ] "Esqueci minha senha" envia o e-mail (exige SMTP configurado no `.env` do back; ver o README do back-end).
+
+### Arquivos
+
+- `POST /uploads` aceita só `multipart/form-data` (o formato JSON com `dataUrl` é exclusivo do mock).
+- A URL devolvida tem o formato `<PUBLIC_URL>/uploads/<id>/file` e pode ser usada direto em `<img src>`.
+- Uploads `verification` devolvem a URL com `?token=<assinatura>`, válida por 10 minutos. Sem a assinatura, o arquivo só abre com o `Authorization` do próprio prestador ou de um administrador. Os demais recebem 404 `upload_not_found`.
+- As URLs dos documentos em `GET /provider/verification` e `GET /admin/verifications` são assinadas de novo a cada resposta.
+- Usar a URL de outro usuário, ou de um upload `verification`, em `avatarUrl` ou `photos` responde 422 com `Use apenas imagens enviadas por você.`
+
+### Recuperação de senha
+
+- O link `<FRONTEND_URL>/redefinir-senha?token=<token>` é enviado por e-mail de verdade, via SMTP (variáveis `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` e `MAIL_FROM`, descritas no README do back-end).
+- `resetToken` **nunca** é devolvido na resposta. Esse campo existe só no mock.
+- Se o envio falhar ou o SMTP não estiver configurado, a resposta continua sendo a mesma (200) e a falha fica registrada no log da API.
+
+### Outros detalhes
+
+- **Limite geral:** 300 requisições por minuto por IP. Acima disso, 429 `too_many_attempts`.
+- **Médias:** `rating` sai com no máximo 2 casas decimais.
+- **Busca:** quando o prestador muda de nome ou a categoria é renomeada, a busca por texto já reflete o novo nome.
+- **Mensagens que o contrato não fixava:**
+
+| Situação | Resposta |
+|---|---|
+| Pausar anúncio já pausado | 409 `invalid_transition`, `Este anúncio já está pausado.` |
+| Ativar anúncio já ativo | 409 `invalid_transition`, `Este anúncio já está ativo.` |
+| Ocultar anúncio já oculto | 409 `invalid_transition`, `Este anúncio já está oculto.` |
+| Mostrar anúncio que não está oculto | 409 `invalid_transition`, `Este anúncio não está oculto.` |
+| Decidir verificação fora de análise | 409 `invalid_transition`, `Esta verificação não está em análise.` |
+| Resolver denúncia já analisada | 409 `invalid_transition`, `Esta denúncia já foi analisada.` |
+| Reativar conta excluída | 409 `conflict`, `Contas excluídas não podem ser reativadas.` |
+| Contraproposta sem mudança de data ou valor | 422 em `fields.date`, `Proponha uma nova data ou um novo valor.` |
+| Ação de denúncia não permitida para o alvo | 422 em `fields.action`, `Ação não permitida para esta denúncia.` |
+| Resolver denúncia sem a mensagem obrigatória | 422 em `fields.message`, `Escreva a mensagem para o usuário.` |
+| Denúncia de solicitação sem `targetUserId` válido | 422 em `fields.targetUserId`, `Escolha o produtor ou o prestador da solicitação.` |
+| Documento de verificação inválido | 422 em `fields.identityUploadId` ou `fields.addressUploadId`, `Envie o documento novamente.` |
+| Nota de avaliação fora de 1 a 5 | 422 em `fields.rating`, `Escolha uma nota de 1 a 5.` |
+| Slug de categoria em formato inválido | 422 em `fields.slug`, `Use apenas letras minúsculas, números e hífen.` |
+
+### Dados demo no back-end
+
+Além do que a seção 16 exige, o seed cria: 13 solicitações (as 8 originais mais 5 entre o produtor demo e o prestador demo, uma em cada status), uma avaliação registrada (`rev-1`), dois equipamentos do prestador demo, uma conversa, um favorito, um dia bloqueado e a denúncia `rep-1`. As datas são relativas ao dia em que o seed roda, para sempre haver solicitações futuras e passadas.
+
