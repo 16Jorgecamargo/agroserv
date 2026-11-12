@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:site": "node scripts/build-site.mjs && tsc -b && VITE_ROUTER=hash vite build --base=/app/ --outDir=site/app",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest",
@@ -33,6 +34,7 @@
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "jsdom": "^30.1.2",
+    "marked": "^15.0.12",
     "oxlint": "^1.81.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",

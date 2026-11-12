@@ -610,7 +610,7 @@ Critérios de aceite:
 - [ ] `api-contract.md`: todos os endpoints marcados como **Implementado**.
 - [ ] `system-flowchart.md` descreve o sistema completo. `future-flowcharts.md` vira histórico ou é removido.
 - [ ] README atualizado com as contas demo e as novas áreas.
-- [ ] Imagens dos fluxogramas regeneradas para o GitHub Pages.
+- [ ] Imagens dos fluxogramas regeneradas para o site publicado.
 
 ---
 

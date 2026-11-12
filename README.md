@@ -27,11 +27,11 @@ Projeto acadêmico em duas etapas:
 
 ## Demonstração online
 
-- **App:** https://16jorgecamargo.github.io/agroserv/app/
-- **Apresentação:** https://16jorgecamargo.github.io/agroserv/slides/
-- **Documentação:** https://16jorgecamargo.github.io/agroserv/
+- **App:** https://agroserv-bay.vercel.app/app/
+- **Apresentações:** https://agroserv-bay.vercel.app/slides/
+- **Documentação:** https://agroserv-bay.vercel.app/
 
-O app publicado roda em modo `mock`, com os dados demo no navegador. O GitHub Pages é publicado pelo workflow `.github/workflows/pages.yml`, que gera a documentação, roda os testes e compila o app a cada push na `master`.
+O site é hospedado na Vercel. O app publicado roda em modo `mock`, com os dados demo no navegador. O comando `npm run build:site` monta tudo em `site/`: a página inicial, os documentos de `docs/` convertidos de Markdown para HTML (com os diagramas Mermaid), as apresentações e o app em `/app/`. A configuração fica em `vercel.json`.
 
 ## Contas de demonstração
 
@@ -77,7 +77,8 @@ e rode `npm run dev`. O banco SQLite é criado e recebe os dados demo na primeir
 | Comando | O que faz |
 |---|---|
 | `npm run dev` | Servidor de desenvolvimento |
-| `npm run build` | Build de produção |
+| `npm run build` | Build de produção do app |
+| `npm run build:site` | Monta o site completo publicado na Vercel em `site/` |
 | `npm run test:run` | Testes automatizados do front-end |
 | `npm run lint` | Lint |
 | `cd backend && pnpm test` e `pnpm test:e2e` | Testes unitários e de integração da API |
