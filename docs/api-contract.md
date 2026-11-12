@@ -1530,14 +1530,95 @@ Erro (qualquer 4xx ou 5xx):
 
 ### O que o front-end precisa ajustar para usar `VITE_API_MODE=http`
 
-Nada disso foi alterado no front-end. Fica para quem cuida dele:
+O back-end já está pronto. O front-end **não** foi alterado nesta entrega, porque estava com outra pessoa. Os ajustes abaixo ficam para quem for ligar o front ao back. Sem eles, o modo `mock` continua funcionando como antes, e o modo `http` não funciona.
 
-| Ajuste | Onde |
-|---|---|
-| Ler `data` nas respostas de sucesso e `error` nas de erro | `src/services/api/httpAdapter.ts` |
-| Repassar `error.fields` para o `ApiError` (já previsto em F1-01) | `httpAdapter.ts`, `apiError.ts` |
-| Enviar `PATCH`, `PUT` e `DELETE` | `src/types/api.ts`, `apiClient.ts` |
-| Enviar uploads como `multipart/form-data` (campos `file` e `purpose`), sem `Content-Type: application/json` | `httpAdapter.ts` |
+| # | Problema | Onde | O que fazer |
+|---|---|---|---|
+| 1 | Sucesso vem em `{ success, data }`, e o front lê o corpo direto | `src/services/api/httpAdapter.ts` | Devolver `body.data` |
+| 2 | Erro vem em `{ success, error }`, e o front lê `code` e `message` no topo | `httpAdapter.ts` | Ler `body.error.code`, `body.error.message` e `body.error.fields` |
+| 3 | O `ApiError` não recebe `fields`, então erros 422 não aparecem nos campos | `httpAdapter.ts`, `apiError.ts`, `src/types/api.ts` | Repassar `fields` (previsto em F1-01; conferir se já foi feito) |
+| 4 | `HttpMethod` não tem `PUT`, e o `apiClient` só expõe `get` e `post` | `src/types/api.ts`, `apiClient.ts` | Acrescentar `PUT` e os métodos `patch`, `put` e `delete` |
+| 5 | Todo corpo é enviado como JSON, mas `POST /uploads` exige `multipart/form-data` | `httpAdapter.ts` e o serviço de upload (F3-01) | Mandar `FormData` sem definir `Content-Type` |
+
+Só o `httpAdapter` muda de comportamento. O mock **não** deve passar a usar o envelope: ele continua devolvendo o corpo direto, e o adaptador HTTP é quem desembrulha.
+
+#### Passo 1 a 3 — `httpAdapter.ts`
+
+Trecho final de `request`, depois do `fetch` (exemplo sobre a versão da etapa 1; adapte se F1-01 já mudou o arquivo):
+
+```ts
+if (response.status === 204) return undefined as T
+const body: unknown = await response.json().catch(() => null)
+const envelope = (body ?? {}) as { success?: boolean; data?: unknown; error?: Partial<ApiErrorBody> }
+if (!response.ok || envelope.success === false) {
+  const error = envelope.error ?? {}
+  throw new ApiError({
+    status: error.status ?? response.status,
+    code: error.code ?? 'http_error',
+    message: error.message ?? 'Erro inesperado no servidor.',
+    fields: error.fields,
+  })
+}
+return envelope.data as T
+```
+
+E em `src/types/api.ts`, `ApiErrorBody` ganha `fields?: Record<string, string>`. O construtor de `ApiError` precisa guardar esse campo.
+
+#### Passo 4 — métodos HTTP
+
+```ts
+export type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
+```
+
+No objeto devolvido por `createApiClient`:
+
+```ts
+patch<T>(path: string, body?: unknown): Promise<T> {
+  return send<T>({ method: 'PATCH', path, body, token: getAuthToken() })
+},
+put<T>(path: string, body?: unknown): Promise<T> {
+  return send<T>({ method: 'PUT', path, body, token: getAuthToken() })
+},
+delete<T>(path: string): Promise<T> {
+  return send<T>({ method: 'DELETE', path, token: getAuthToken() })
+},
+```
+
+O mock também precisa responder a esses métodos (parte de F1-01).
+
+#### Passo 5 — upload
+
+No `httpAdapter`, quando o corpo for `FormData`, enviar como está e não definir `Content-Type` (o navegador põe o `boundary`):
+
+```ts
+const isForm = body instanceof FormData
+if (body !== undefined && !isForm) headers['Content-Type'] = 'application/json'
+const payload = body === undefined ? undefined : isForm ? body : JSON.stringify(body)
+```
+
+No serviço de upload, montar o formulário só no modo `http`:
+
+```ts
+const form = new FormData()
+form.append('file', file)
+form.append('purpose', purpose)
+return apiClient.post<Upload>('/uploads', form)
+```
+
+No modo `mock`, continua o JSON com `dataUrl` da seção 9. A URL devolvida pelo back-end (`http://…/uploads/<id>/file`) já abre direto em `<img src>`, sem o tratamento de `mockfile:`.
+
+#### Como rodar e conferir
+
+1. Back-end: `cd backend && pnpm install && cp .env.example .env && pnpm start:dev` (sobe em `http://localhost:3333`). No `.env` do back, `CORS_ORIGIN` e `FRONTEND_URL` precisam apontar para o endereço do front (padrão `http://localhost:5173`).
+2. Front-end: criar `.env` na raiz com `VITE_API_MODE=http` e `VITE_API_URL=http://localhost:3333`, e rodar `npm run dev`.
+3. Conferir:
+   - [ ] Login das três contas demo leva à área de cada papel.
+   - [ ] Busca, destaques e detalhe do serviço carregam, com as fotos.
+   - [ ] Um cadastro com e-mail repetido mostra o erro **no campo** de e-mail (prova que `fields` chegou).
+   - [ ] Editar perfil (`PATCH`), responder avaliação (`PUT`) e remover propriedade (`DELETE`) funcionam.
+   - [ ] Trocar a foto de perfil (upload) funciona e a imagem aparece.
+   - [ ] Sem token, ou com conta suspensa, o front volta ao login (401).
+   - [ ] "Esqueci minha senha" envia o e-mail (exige SMTP configurado no `.env` do back; ver o README do back-end).
 
 ### Arquivos
 
