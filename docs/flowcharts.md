@@ -108,7 +108,7 @@ flowchart LR
 
 ## 2. Proteção de rotas (ProtectedRoute)
 
-Implementado em `src/routes/ProtectedRoute.tsx`. Cada área privada declara os papéis aceitos.
+Implementado em `frontend/src/routes/ProtectedRoute.tsx`. Cada área privada declara os papéis aceitos.
 
 <p align="center"><img src="flowcharts/02-protected-route.png" alt="Proteção de rotas (ProtectedRoute)" width="520"></p>
 
@@ -135,7 +135,7 @@ flowchart TD
 
 ## 3. Fluxo de login
 
-Implementado em `src/pages/LoginPage.tsx` e `src/contexts/AuthProvider.tsx`.
+Implementado em `frontend/src/pages/LoginPage.tsx` e `frontend/src/contexts/AuthProvider.tsx`.
 
 <p align="center"><img src="flowcharts/03-login.png" alt="Fluxo de login" width="640"></p>
 
@@ -168,7 +168,7 @@ flowchart TD
 
 ## 4. Restauração da sessão ao abrir o app
 
-Implementado em `src/contexts/AuthProvider.tsx`.
+Implementado em `frontend/src/contexts/AuthProvider.tsx`.
 
 <p align="center"><img src="flowcharts/04-session-restore.png" alt="Restauração da sessão ao abrir o app" width="560"></p>
 
@@ -285,7 +285,7 @@ sequenceDiagram
 
 ## 7. Busca, filtros e mapa de serviços
 
-Implementado em `src/pages/ServicesPage.tsx` (estado na URL), `src/components/domain/ServicesMapPanel.tsx` e no endpoint `GET /services`.
+Implementado em `frontend/src/pages/ServicesPage.tsx` (estado na URL), `frontend/src/components/domain/ServicesMapPanel.tsx` e no endpoint `GET /services`.
 
 <p align="center"><img src="flowcharts/07-service-search.png" alt="Busca, filtros e mapa de serviços" width="480"></p>
 

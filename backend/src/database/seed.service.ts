@@ -4,24 +4,24 @@ import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import bcrypt from 'bcrypt';
 import { DataSource, EntityManager } from 'typeorm';
-import { AdminAction } from '../admin/entities/admin-action.entity.js';
-import { BlockedDay } from '../agenda/entities/blocked-day.entity.js';
-import { Category } from '../categories/entities/category.entity.js';
-import { addDays, ClockService } from '../common/clock.service.js';
-import { normalizeText, roundMoney } from '../common/text.js';
-import { Equipment } from '../equipment/entities/equipment.entity.js';
-import { Favorite } from '../favorites/entities/favorite.entity.js';
-import { Message } from '../messages/entities/message.entity.js';
-import { Notification } from '../notifications/entities/notification.entity.js';
-import { Property } from '../properties/entities/property.entity.js';
-import { ProviderProfile } from '../providers/entities/provider-profile.entity.js';
-import { Report } from '../reports/entities/report.entity.js';
-import { RequestEvent } from '../requests/entities/request-event.entity.js';
-import { ServiceRequest } from '../requests/entities/service-request.entity.js';
-import { Review } from '../reviews/entities/review.entity.js';
-import { Service } from '../services/entities/service.entity.js';
-import { Upload } from '../uploads/entities/upload.entity.js';
-import { User } from '../users/entities/user.entity.js';
+import { AdminAction } from '../entities/admin-action.entity.js';
+import { BlockedDay } from '../entities/blocked-day.entity.js';
+import { Category } from '../entities/category.entity.js';
+import { addDays, ClockService } from '../services/clock.service.js';
+import { normalizeText, roundMoney } from '../utils/text.js';
+import { Equipment } from '../entities/equipment.entity.js';
+import { Favorite } from '../entities/favorite.entity.js';
+import { Message } from '../entities/message.entity.js';
+import { Notification } from '../entities/notification.entity.js';
+import { Property } from '../entities/property.entity.js';
+import { ProviderProfile } from '../entities/provider-profile.entity.js';
+import { Report } from '../entities/report.entity.js';
+import { RequestEvent } from '../entities/request-event.entity.js';
+import { ServiceRequest } from '../entities/service-request.entity.js';
+import { Review } from '../entities/review.entity.js';
+import { Service } from '../entities/service.entity.js';
+import { Upload } from '../entities/upload.entity.js';
+import { User } from '../entities/user.entity.js';
 import {
   DEMO_PASSWORD, SEED_CATEGORIES, SEED_PROFILES, SEED_PROPERTIES, SEED_REQUESTS,
   SEED_SERVICES, SEED_USERS,
@@ -139,7 +139,7 @@ export class SeedService implements OnApplicationBootstrap {
   private seedImages(): Map<string, string> {
     // Reaproveita as fotos do front-end como uploads públicos, quando existirem
     const urls = new Map<string, string>();
-    const source = resolve(import.meta.dirname, '../../../src/assets/images');
+    const source = resolve(import.meta.dirname, '../../../frontend/src/assets/images');
     if (process.env.NODE_ENV === 'test' || !existsSync(source)) return urls;
     for (const image of new Set(SEED_SERVICES.map((service) => service.image))) {
       if (existsSync(join(source, image))) urls.set(image, image.replace('.jpg', ''));
@@ -158,7 +158,7 @@ export class SeedService implements OnApplicationBootstrap {
 
     // Fotos dos serviços registradas como uploads do prestador
     const images = this.seedImages();
-    const source = resolve(import.meta.dirname, '../../../src/assets/images');
+    const source = resolve(import.meta.dirname, '../../../frontend/src/assets/images');
     const uploads = SEED_SERVICES.filter((service) => images.has(service.image)).map((service) => {
       const id = `upl-${service.id}`;
       return {

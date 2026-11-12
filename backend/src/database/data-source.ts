@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { DataSource } from 'typeorm';
-import { loadConfig } from '../config.js';
+import { loadConfig } from '../config/index.js';
 import { ENTITIES } from './entities.js';
 import { MIGRATIONS } from './migrations/index.js';
 

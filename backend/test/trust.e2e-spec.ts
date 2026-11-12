@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { ClockService } from '../src/common/clock.service.js';
+import { ClockService } from '../src/services/clock.service.js';
 import { ADMIN, api, createApp, login, PRODUCER, PROVIDER } from './helpers.js';
 
 describe('trust and communication', () => {

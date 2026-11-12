@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { addDays, ClockService } from '../src/common/clock.service.js';
+import { addDays, ClockService } from '../src/services/clock.service.js';
 import { api, createApp, login, PRODUCER, PROVIDER } from './helpers.js';
 
 describe('producer journey', () => {
@@ -133,7 +133,7 @@ describe('producer journey', () => {
     });
 
     it('notifies the provider about new and cancelled requests', async () => {
-      const { NotificationsRepository } = await import('../src/notifications/notifications.repository.js');
+      const { NotificationsRepository } = await import('../src/repositories/notifications.repository.js');
       const [notifications] = await app.get(NotificationsRepository).findPage('prv-1', false, { page: 1, pageSize: 50, skip: 0 });
       const titles = notifications.map((notification) => notification.title);
       expect(titles).toContain('Contraproposta aceita');

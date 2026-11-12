@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
-import { addDays, ClockService } from '../src/common/clock.service.js';
-import { NotificationsRepository } from '../src/notifications/notifications.repository.js';
+import { addDays, ClockService } from '../src/services/clock.service.js';
+import { NotificationsRepository } from '../src/repositories/notifications.repository.js';
 import { api, createApp, login, PRODUCER, PROVIDER } from './helpers.js';
 
 const newService = {
