@@ -12,7 +12,7 @@ describe('RequestsPage', () => {
     expect(await screen.findByText('8 solicitações')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Todas' })).toHaveAttribute('aria-pressed', 'true')
     await userEvent.click(screen.getByRole('button', { name: 'Concluídas' }))
-    expect(await screen.findByText('3 solicitações')).toBeInTheDocument()
+    expect(await screen.findByText('2 solicitações')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Concluídas' })).toHaveAttribute('aria-pressed', 'true')
   })
 
@@ -43,6 +43,6 @@ describe('RequestsPage', () => {
     await userEvent.type(screen.getByLabelText('Senha'), '123456')
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }))
     expect(await screen.findByRole('heading', { level: 1, name: 'Minhas solicitações' })).toBeInTheDocument()
-    expect(await screen.findByText('3 solicitações')).toBeInTheDocument()
+    expect(await screen.findByText('2 solicitações')).toBeInTheDocument()
   })
 })

@@ -28,7 +28,7 @@ describe('mock database', () => {
     reloadMockDatabase()
 
     expect(getMockDatabase().categories[0].name).toBe('Plantio')
-    expect(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}').version).toBe(2)
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}').version).toBe(3)
   })
 
   it('recreates the seed when the stored version is old', () => {
@@ -43,7 +43,7 @@ describe('mock database', () => {
     reloadMockDatabase()
 
     expect(getMockDatabase().categories[0].name).toBe('Plantio')
-    expect(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}').version).toBe(2)
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}').version).toBe(3)
   })
 
   it('keeps saved changes after reloading the database', () => {

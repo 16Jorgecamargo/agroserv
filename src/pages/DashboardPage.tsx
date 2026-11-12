@@ -28,7 +28,7 @@ function buildStatItems(stats: ProducerDashboardStats): StatItem[] {
     { label: 'Em andamento', value: String(stats.inProgress), description: 'Serviços em execução', icon: Timer },
     { label: 'Concluídos', value: String(stats.completed), description: 'Finalizados com sucesso', icon: CheckCircle2 },
     {
-      label: 'Total contratado',
+      label: 'Total estimado contratado',
       value: formatCurrency(stats.totalSpent),
       description: 'Aceitos, em andamento e concluídos',
       icon: Wallet,

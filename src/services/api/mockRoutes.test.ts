@@ -144,14 +144,14 @@ describe('private routes', () => {
   })
 
   it('filters requests by status and rejects invalid status', () => {
-    expect(get<ServiceRequest[]>('/requests', { status: 'completed' }, TOKEN)).toHaveLength(3)
+    expect(get<ServiceRequest[]>('/requests', { status: 'completed' }, TOKEN)).toHaveLength(2)
     expect(get<ServiceRequest[]>('/requests', { status: 'all' }, TOKEN)).toHaveLength(8)
     expect(captureError(() => get('/requests', { status: 'invalido' }, TOKEN)).status).toBe(400)
   })
 
   it('builds the producer dashboard', () => {
     const dashboard = get<ProducerDashboard>('/dashboard', undefined, TOKEN)
-    expect(dashboard.stats).toEqual({ open: 3, inProgress: 1, completed: 3, totalSpent: 10260 })
+    expect(dashboard.stats).toEqual({ open: 3, inProgress: 1, completed: 2, totalSpent: 8500 })
     expect(dashboard.recentRequests.map((request) => request.id)).toEqual(['req-8', 'req-3', 'req-1', 'req-2', 'req-4'])
   })
 })
