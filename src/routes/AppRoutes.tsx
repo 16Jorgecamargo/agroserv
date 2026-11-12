@@ -14,8 +14,7 @@ import { MyServicesPage } from '../pages/MyServicesPage'
 import { ProviderRequestDetailPage } from '../pages/ProviderRequestDetailPage'
 import { ProviderRequestsPage } from '../pages/ProviderRequestsPage'
 import { ServiceFormPage } from '../pages/ServiceFormPage'
-import { DemoRestoreAction } from '../components/domain/DemoRestoreAction'
-import type { ReactNode } from 'react'
+import { AdminDashboardPage } from '../pages/AdminDashboardPage'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
 import { PrivacyPage, TermsPage } from '../pages/LegalPages'
@@ -30,22 +29,6 @@ import { ServiceDetailPage } from '../pages/ServiceDetailPage'
 import { ServicesPage } from '../pages/ServicesPage'
 import { paths, routePatterns } from './paths'
 import { ProtectedRoute } from './ProtectedRoute'
-
-interface RoleDashboardPlaceholderProps {
-  title: string
-  description: string
-  children?: ReactNode
-}
-
-function RoleDashboardPlaceholder({ title, description, children }: RoleDashboardPlaceholderProps) {
-  return (
-    <section className="rounded-card border border-border bg-surface p-6 shadow-card">
-      <h1 className="text-3xl font-bold text-text">{title}</h1>
-      <p className="mt-3 text-text-muted">{description}</p>
-      {children}
-    </section>
-  )
-}
 
 export function AppRoutes() {
   return (
@@ -95,17 +78,7 @@ export function AppRoutes() {
 
       <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
         <Route path={paths.adminDashboard} element={<PrivateLayout />}>
-          <Route
-            index
-            element={
-              <RoleDashboardPlaceholder
-                title="Painel do administrador"
-                description="O painel completo do administrador será disponibilizado em uma próxima etapa."
-              >
-                <DemoRestoreAction />
-              </RoleDashboardPlaceholder>
-            }
-          />
+          <Route index element={<AdminDashboardPage />} />
           <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

@@ -40,6 +40,6 @@ describe('ProviderProfilePage', () => {
     saveSession(`mock.${admin.id}`, admin)
     renderApp('/admin')
     expect(await screen.findByRole('heading', { name: 'Painel do administrador' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Restaurar dados demo' })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: 'Restaurar dados demo' })).toBeInTheDocument()
   })
 })

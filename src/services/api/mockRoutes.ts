@@ -3,6 +3,7 @@ import { ApiError } from './apiError'
 import { authRoutes } from './mockRoutes/authRoutes'
 import { catalogRoutes } from './mockRoutes/catalogRoutes'
 import { accountRoutes } from './mockRoutes/accountRoutes'
+import { adminRoutes } from './mockRoutes/adminRoutes'
 import { demoRoutes } from './mockRoutes/demoRoutes'
 import { agendaRoutes } from './mockRoutes/agendaRoutes'
 import { equipmentRoutes } from './mockRoutes/equipmentRoutes'
@@ -57,6 +58,7 @@ const routes: MockRoute[] = [
   ...equipmentRoutes,
   ...agendaRoutes,
   ...verificationRoutes,
+  ...adminRoutes,
   ...demoRoutes,
 ]
 
