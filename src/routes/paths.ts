@@ -9,6 +9,7 @@ export const paths = {
   register: '/cadastro',
   dashboard: '/dashboard',
   requests: '/solicitacoes',
+  providerRoot: '/prestador',
   providerDashboard: '/prestador/dashboard',
   adminDashboard: '/admin',
 }
@@ -41,7 +42,7 @@ export function getRequiredRole(pathname: string): Role | null {
     return 'producer'
   }
 
-  if (pathname === '/prestador' || pathname.startsWith('/prestador/')) {
+  if (pathname === paths.providerRoot || pathname.startsWith(`${paths.providerRoot}/`)) {
     return 'provider'
   }
 
