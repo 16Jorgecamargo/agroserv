@@ -7,16 +7,16 @@ import { useAsync } from './useAsync'
 
 type ServicePageFilters = Omit<ServiceFilters, 'page' | 'pageSize'>
 
-export function useServicePages({ q, location, category }: ServicePageFilters, pageSize: number, pageCount: number) {
+export function useServicePages(filters: ServicePageFilters, pageSize: number, pageCount: number) {
+  const filterKey = JSON.stringify(filters)
   const fetcher = useCallback(async (): Promise<Paginated<Service>> => {
+    const parsed = JSON.parse(filterKey) as ServicePageFilters
     const pages = await Promise.all(
-      Array.from({ length: pageCount }, (_, index) =>
-        serviceService.list({ q, location, category, page: index + 1, pageSize }),
-      ),
+      Array.from({ length: pageCount }, (_, index) => serviceService.list({ ...parsed, page: index + 1, pageSize })),
     )
     const last = pages[pages.length - 1]
     return { data: pages.flatMap((page) => page.data), meta: last.meta }
-  }, [q, location, category, pageSize, pageCount])
+  }, [filterKey, pageSize, pageCount])
   return useAsync(fetcher)
 }
 
