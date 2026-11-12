@@ -36,6 +36,7 @@ function mockAuth(overrides: Partial<AuthContextValue>) {
     isAuthenticated: false,
     isLoading: false,
     login: vi.fn(),
+    updateUser: vi.fn(),
     logout: vi.fn(),
     ...overrides,
   })
@@ -119,6 +120,7 @@ describe('Sidebar', () => {
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page')
     expect(screen.getByRole('link', { name: 'Solicitações' })).toHaveAttribute('href', '/solicitacoes')
     expect(screen.getByRole('link', { name: 'Ver serviços' })).toHaveAttribute('href', '/servicos')
+    expect(screen.getByRole('link', { name: 'Perfil' })).toHaveAttribute('href', '/perfil')
 
     await userEvent.click(screen.getByRole('button', { name: 'Sair' }))
     expect(onLogout).toHaveBeenCalledTimes(1)
@@ -136,6 +138,7 @@ describe('Sidebar', () => {
 
     expect(screen.getByRole('link', { name: label })).toHaveAttribute('href', href)
     expect(screen.getByRole('navigation', { name: `Área do ${labels[role]}` })).toBeInTheDocument()
+    if (role === 'provider') expect(screen.getByRole('link', { name: 'Perfil' })).toHaveAttribute('href', '/prestador/perfil')
   })
 })
 

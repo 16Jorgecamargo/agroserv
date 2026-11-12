@@ -6,20 +6,21 @@ import { Textarea } from './Textarea'
 interface ConfirmDialogProps {
   isOpen: boolean
   onClose: () => void
-  onConfirm: (reason: string) => void
+  onConfirm: (reason: string) => void | Promise<void>
   title: string
   description: string
   confirmLabel?: string
   cancelLabel?: string
   reasonLabel?: string
   reasonRequired?: boolean
+  showReason?: boolean
   isLoading?: boolean
 }
 
 type ConfirmDialogBodyProps = Required<
   Pick<
     ConfirmDialogProps,
-    'onClose' | 'onConfirm' | 'confirmLabel' | 'cancelLabel' | 'reasonLabel' | 'reasonRequired' | 'isLoading'
+    'onClose' | 'onConfirm' | 'confirmLabel' | 'cancelLabel' | 'reasonLabel' | 'reasonRequired' | 'showReason' | 'isLoading'
   >
 >
 
@@ -33,6 +34,7 @@ export function ConfirmDialog({
   cancelLabel = 'Cancelar',
   reasonLabel = 'Motivo',
   reasonRequired = false,
+  showReason = true,
   isLoading = false,
 }: ConfirmDialogProps) {
   return (
@@ -44,6 +46,7 @@ export function ConfirmDialog({
         cancelLabel={cancelLabel}
         reasonLabel={reasonLabel}
         reasonRequired={reasonRequired}
+        showReason={showReason}
         isLoading={isLoading}
       />
     </Modal>
@@ -57,41 +60,44 @@ function ConfirmDialogBody({
   cancelLabel,
   reasonLabel,
   reasonRequired,
+  showReason,
   isLoading,
 }: ConfirmDialogBodyProps) {
   const [reason, setReason] = useState('')
   const [reasonError, setReasonError] = useState<string>()
 
-  function handleConfirm() {
-    if (reasonRequired && !reason.trim()) {
+  async function handleConfirm() {
+    if (showReason && reasonRequired && !reason.trim()) {
       setReasonError('Informe o motivo.')
       return
     }
 
-    onConfirm(reason.trim())
+    await onConfirm(reason.trim())
     onClose()
   }
 
   return (
     <div className="space-y-5">
-      <Textarea
-        label={reasonRequired ? `${reasonLabel} (obrigatório)` : `${reasonLabel} (opcional)`}
-        value={reason}
-        onChange={(event) => {
-          setReason(event.target.value)
-          if (event.target.value.trim()) setReasonError(undefined)
-        }}
-        error={reasonError}
-        required={reasonRequired}
-        rows={3}
-      />
+      {showReason && (
+        <Textarea
+          label={reasonRequired ? `${reasonLabel} (obrigatório)` : `${reasonLabel} (opcional)`}
+          value={reason}
+          onChange={(event) => {
+            setReason(event.target.value)
+            if (event.target.value.trim()) setReasonError(undefined)
+          }}
+          error={reasonError}
+          required={reasonRequired}
+          rows={3}
+        />
+      )}
       <div className="flex justify-end gap-3">
         <Button variant="secondary" onClick={onClose} disabled={isLoading}>
           {cancelLabel}
         </Button>
         <Button
           onClick={handleConfirm}
-          disabled={isLoading || (reasonRequired && !reason.trim())}
+          disabled={isLoading || (showReason && reasonRequired && !reason.trim())}
           isLoading={isLoading}
           className="bg-danger hover:bg-danger/90"
         >

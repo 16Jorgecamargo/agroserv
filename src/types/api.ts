@@ -1,4 +1,4 @@
-import type { RequestStatus, ServiceRequest, User } from './entities'
+import type { ProviderProfile, RequestStatus, ServiceRequest, User } from './entities'
 
 export type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE'
 
@@ -45,6 +45,27 @@ export interface LoginPayload {
 export interface LoginResponse {
   token: string
   user: User
+}
+
+export type UpdateProfilePayload = Partial<Pick<User, 'name' | 'phone' | 'city' | 'state'>> & {
+  avatarUrl?: string | null
+}
+
+export interface ChangePasswordPayload {
+  currentPassword: string
+  newPassword: string
+}
+
+export interface MessageResponse {
+  message: string
+}
+
+export type ProviderProfilePayload = Partial<
+  Pick<ProviderProfile, 'document' | 'serviceRadiusKm' | 'yearsOfExperience' | 'description'>
+>
+
+export interface DemoRestoreResponse {
+  message: string
 }
 
 export type ServiceFilters = {

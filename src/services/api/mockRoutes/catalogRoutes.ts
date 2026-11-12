@@ -30,7 +30,10 @@ function listServices({ query }: RouteContext): Paginated<Service> {
 
   if (categorySlug && !category) return paginate([], page, pageSize)
 
-  const filtered = database.services.map(toService).filter((service) => {
+  const filtered = database.services
+    .filter((record) => database.users.find((user) => user.id === record.providerId)?.status !== 'deleted')
+    .map(toService)
+    .filter((service) => {
     if (category && service.categoryId !== category.id) return false
 
     if (
@@ -56,7 +59,7 @@ function listFeaturedServices({ query }: RouteContext): Service[] {
   const limit = toPositiveInt(query.limit, DEFAULT_FEATURED_LIMIT, MAX_FEATURED_LIMIT)
 
   return database.services
-    .filter((service) => service.available)
+    .filter((service) => service.available && database.users.find((user) => user.id === service.providerId)?.status !== 'deleted')
     .sort((a, b) => b.rating - a.rating || b.reviewCount - a.reviewCount)
     .slice(0, limit)
     .map(toService)
@@ -72,7 +75,9 @@ function getService({ params }: RouteContext): ServiceDetail {
     ? database.categories.find((candidate) => candidate.id === record.categoryId)
     : undefined
 
-  if (!record || !provider || !category) {
+  const providerUser = record ? database.users.find((candidate) => candidate.id === record.providerId) : undefined
+
+  if (!record || !provider || !category || providerUser?.status === 'deleted') {
     throw new ApiError({
       status: 404,
       code: 'service_not_found',

@@ -14,6 +14,21 @@ describe('createApiClient', () => {
     expect(request).toHaveBeenNthCalledWith(2, { method: 'POST', path: '/auth/login', body: { email: 'a' }, token: 'token-1' })
   })
 
+  it('forwards profile updates and account deletion with the current token', async () => {
+    const request = vi.fn().mockResolvedValue({ message: 'ok' })
+    const client = createApiClient({ request }, () => 'token-2')
+    await client.patch('/me', { name: 'Maria' })
+    await client.delete('/me')
+
+    expect(request).toHaveBeenNthCalledWith(1, {
+      method: 'PATCH',
+      path: '/me',
+      body: { name: 'Maria' },
+      token: 'token-2',
+    })
+    expect(request).toHaveBeenNthCalledWith(2, { method: 'DELETE', path: '/me', token: 'token-2' })
+  })
+
   it('reports 401 responses on authenticated requests', async () => {
     const unauthorized = new ApiError({ status: 401, code: 'unauthorized', message: 'Sessão inválida.' })
     const adapter: HttpAdapter = { request: vi.fn().mockRejectedValue(unauthorized) }
