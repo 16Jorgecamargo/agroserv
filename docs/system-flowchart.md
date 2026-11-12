@@ -233,38 +233,38 @@ stateDiagram-v2
 
 | Rota | Tela | Acesso | Arquivo |
 |---|---|---|---|
-| `/` | Página inicial | Pública | `src/pages/HomePage.tsx` |
-| `/servicos` | Serviços, lista ou mapa | Pública | `src/pages/ServicesPage.tsx` |
-| `/servicos/:id` | Detalhe do serviço | Pública | `src/pages/ServiceDetailPage.tsx` |
-| `/prestadores/:id` | Perfil público do prestador | Pública | `src/pages/ProviderPublicProfilePage.tsx` |
-| `/termos`, `/privacidade` | Termos de uso e privacidade | Pública | `src/pages/TermsPage.tsx`, `src/pages/PrivacyPage.tsx` |
-| `/login` | Login | Pública | `src/pages/LoginPage.tsx` |
-| `/cadastro` | Cadastro | Pública | `src/pages/RegisterPage.tsx` |
-| `/esqueci-senha`, `/redefinir-senha` | Recuperação de senha | Pública | `src/pages/ForgotPasswordPage.tsx`, `src/pages/ResetPasswordPage.tsx` |
-| `/dashboard` | Painel do produtor | Produtor | `src/pages/DashboardPage.tsx` |
-| `/solicitacoes`, `/solicitacoes/:id` | Solicitações e detalhe | Produtor | `src/pages/RequestsPage.tsx`, `src/pages/RequestDetailPage.tsx` |
-| `/propriedades` | Propriedades | Produtor | `src/pages/PropertiesPage.tsx` |
-| `/favoritos` | Favoritos | Produtor | `src/pages/FavoritesPage.tsx` |
-| `/perfil` | Perfil e conta | Produtor | `src/pages/ProfilePage.tsx` |
-| `/prestador/dashboard` | Painel do prestador | Prestador | `src/pages/ProviderDashboardPage.tsx` |
-| `/prestador/servicos`, `/novo`, `/:id/editar` | Anúncios | Prestador | `src/pages/MyServicesPage.tsx`, `src/pages/ServiceFormPage.tsx` |
-| `/prestador/solicitacoes`, `/:id` | Pedidos recebidos | Prestador | `src/pages/ProviderRequestsPage.tsx`, `src/pages/ProviderRequestDetailPage.tsx` |
-| `/prestador/agenda` | Agenda | Prestador | `src/pages/AgendaPage.tsx` |
-| `/prestador/avaliacoes` | Avaliações | Prestador | `src/pages/ProviderReviewsPage.tsx` |
-| `/prestador/equipamentos` | Equipamentos | Prestador | `src/pages/EquipmentPage.tsx` |
-| `/prestador/verificacao` | Verificação | Prestador | `src/pages/VerificationPage.tsx` |
-| `/prestador/perfil` | Perfil profissional | Prestador | `src/pages/ProviderProfilePage.tsx` |
-| `/admin` | Painel do administrador | Administrador | `src/pages/AdminDashboardPage.tsx` |
-| `/admin/usuarios`, `/:id` | Usuários | Administrador | `src/pages/AdminUsersPage.tsx`, `src/pages/AdminUserDetailPage.tsx` |
-| `/admin/solicitacoes/:id` | Solicitação (somente leitura) | Administrador | `src/pages/AdminRequestDetailPage.tsx` |
-| `/admin/verificacoes` | Verificações | Administrador | `src/pages/AdminVerificationsPage.tsx` |
-| `/admin/anuncios` | Anúncios | Administrador | `src/pages/AdminServicesPage.tsx` |
-| `/admin/denuncias`, `/:id` | Denúncias | Administrador | `src/pages/AdminReportsPage.tsx`, `src/pages/AdminReportDetailPage.tsx` |
-| `/admin/categorias` | Categorias | Administrador | `src/pages/AdminCategoriesPage.tsx` |
-| `/admin/historico` | Histórico de ações | Administrador | `src/pages/AdminActionsPage.tsx` |
-| `/admin/conta` | Minha conta | Administrador | `src/pages/AdminAccountPage.tsx` |
-| `/notificacoes`, `/prestador/notificacoes`, `/admin/notificacoes` | Notificações | Cada papel | `src/pages/NotificationsPage.tsx` |
-| `*` | Página não encontrada | Pública | `src/pages/NotFoundPage.tsx` |
+| `/` | Página inicial | Pública | `frontend/src/pages/HomePage.tsx` |
+| `/servicos` | Serviços, lista ou mapa | Pública | `frontend/src/pages/ServicesPage.tsx` |
+| `/servicos/:id` | Detalhe do serviço | Pública | `frontend/src/pages/ServiceDetailPage.tsx` |
+| `/prestadores/:id` | Perfil público do prestador | Pública | `frontend/src/pages/ProviderPublicProfilePage.tsx` |
+| `/termos`, `/privacidade` | Termos de uso e privacidade | Pública | `frontend/src/pages/TermsPage.tsx`, `frontend/src/pages/PrivacyPage.tsx` |
+| `/login` | Login | Pública | `frontend/src/pages/LoginPage.tsx` |
+| `/cadastro` | Cadastro | Pública | `frontend/src/pages/RegisterPage.tsx` |
+| `/esqueci-senha`, `/redefinir-senha` | Recuperação de senha | Pública | `frontend/src/pages/ForgotPasswordPage.tsx`, `frontend/src/pages/ResetPasswordPage.tsx` |
+| `/dashboard` | Painel do produtor | Produtor | `frontend/src/pages/DashboardPage.tsx` |
+| `/solicitacoes`, `/solicitacoes/:id` | Solicitações e detalhe | Produtor | `frontend/src/pages/RequestsPage.tsx`, `frontend/src/pages/RequestDetailPage.tsx` |
+| `/propriedades` | Propriedades | Produtor | `frontend/src/pages/PropertiesPage.tsx` |
+| `/favoritos` | Favoritos | Produtor | `frontend/src/pages/FavoritesPage.tsx` |
+| `/perfil` | Perfil e conta | Produtor | `frontend/src/pages/ProfilePage.tsx` |
+| `/prestador/dashboard` | Painel do prestador | Prestador | `frontend/src/pages/ProviderDashboardPage.tsx` |
+| `/prestador/servicos`, `/novo`, `/:id/editar` | Anúncios | Prestador | `frontend/src/pages/MyServicesPage.tsx`, `frontend/src/pages/ServiceFormPage.tsx` |
+| `/prestador/solicitacoes`, `/:id` | Pedidos recebidos | Prestador | `frontend/src/pages/ProviderRequestsPage.tsx`, `frontend/src/pages/ProviderRequestDetailPage.tsx` |
+| `/prestador/agenda` | Agenda | Prestador | `frontend/src/pages/AgendaPage.tsx` |
+| `/prestador/avaliacoes` | Avaliações | Prestador | `frontend/src/pages/ProviderReviewsPage.tsx` |
+| `/prestador/equipamentos` | Equipamentos | Prestador | `frontend/src/pages/EquipmentPage.tsx` |
+| `/prestador/verificacao` | Verificação | Prestador | `frontend/src/pages/VerificationPage.tsx` |
+| `/prestador/perfil` | Perfil profissional | Prestador | `frontend/src/pages/ProviderProfilePage.tsx` |
+| `/admin` | Painel do administrador | Administrador | `frontend/src/pages/AdminDashboardPage.tsx` |
+| `/admin/usuarios`, `/:id` | Usuários | Administrador | `frontend/src/pages/AdminUsersPage.tsx`, `frontend/src/pages/AdminUserDetailPage.tsx` |
+| `/admin/solicitacoes/:id` | Solicitação (somente leitura) | Administrador | `frontend/src/pages/AdminRequestDetailPage.tsx` |
+| `/admin/verificacoes` | Verificações | Administrador | `frontend/src/pages/AdminVerificationsPage.tsx` |
+| `/admin/anuncios` | Anúncios | Administrador | `frontend/src/pages/AdminServicesPage.tsx` |
+| `/admin/denuncias`, `/:id` | Denúncias | Administrador | `frontend/src/pages/AdminReportsPage.tsx`, `frontend/src/pages/AdminReportDetailPage.tsx` |
+| `/admin/categorias` | Categorias | Administrador | `frontend/src/pages/AdminCategoriesPage.tsx` |
+| `/admin/historico` | Histórico de ações | Administrador | `frontend/src/pages/AdminActionsPage.tsx` |
+| `/admin/conta` | Minha conta | Administrador | `frontend/src/pages/AdminAccountPage.tsx` |
+| `/notificacoes`, `/prestador/notificacoes`, `/admin/notificacoes` | Notificações | Cada papel | `frontend/src/pages/NotificationsPage.tsx` |
+| `*` | Página não encontrada | Pública | `frontend/src/pages/NotFoundPage.tsx` |
 
 ---
 

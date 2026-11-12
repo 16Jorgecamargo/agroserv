@@ -4,6 +4,7 @@ import { createServer } from 'node:net'
 import { join } from 'node:path'
 
 const root = process.cwd()
+const frontendDir = join(root, 'frontend')
 const backendDir = join(root, 'backend')
 const isWindows = process.platform === 'win32'
 const colors = { api: '\x1b[32m', web: '\x1b[36m', dev: '\x1b[33m' }
@@ -116,7 +117,7 @@ async function waitForApi(url, timeoutMs) {
 }
 
 async function main() {
-  if (!existsSync(join(root, 'node_modules'))) runOnce('npm', ['install'], root)
+  if (!existsSync(join(frontendDir, 'node_modules'))) runOnce('npm', ['install'], frontendDir)
 
   if (!existsSync(join(backendDir, 'node_modules'))) {
     const [command, ...prefix] = hasCommand('pnpm') ? ['pnpm'] : ['npx', '-y', 'pnpm@10']
@@ -150,7 +151,7 @@ async function main() {
     return
   }
 
-  start('web', [join(root, 'node_modules', 'vite', 'bin', 'vite.js'), '--port', String(webPort), '--strictPort'], root, {
+  start('web', [join(frontendDir, 'node_modules', 'vite', 'bin', 'vite.js'), '--port', String(webPort), '--strictPort'], frontendDir, {
     VITE_API_MODE: 'http',
     VITE_API_URL: apiUrl,
   })

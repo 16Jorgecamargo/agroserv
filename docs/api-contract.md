@@ -5,7 +5,7 @@ Este é o contrato entre o front-end e o back-end do AgroServ. Ele cobre:
 - todos os endpoints que o front-end consome, marcados como **Implementado**;
 - as regras de validação, permissão, transição e notificação de cada um.
 
-Os endpoints existem em dois lugares com o mesmo comportamento: no adaptador mock do front-end (`src/services/api/mockRoutes.ts`) e no back-end real em [`backend/`](../backend/README.md) (NestJS + TypeORM + SQLite). Os fluxos estão em [`system-flowchart.md`](system-flowchart.md) e [`flowcharts.md`](flowcharts.md).
+Os endpoints existem em dois lugares com o mesmo comportamento: no adaptador mock do front-end (`frontend/src/services/api/mockRoutes.ts`) e no back-end real em [`backend/`](../backend/README.md) (NestJS + TypeORM + SQLite). Os fluxos estão em [`system-flowchart.md`](system-flowchart.md) e [`flowcharts.md`](flowcharts.md).
 
 Este contrato é autossuficiente: tudo o que front-end e back-end precisam implementar está aqui.
 
@@ -136,7 +136,7 @@ Papel errado → 403 `forbidden`. Sem token → 401 `unauthorized`.
 
 ## 5. Tipos
 
-Os tipos atuais estão em `src/types/entities.ts` e `src/types/api.ts`. Abaixo, a versão completa após a ampliação. Campos marcados com `?` são opcionais.
+Os tipos atuais estão em `frontend/src/types/entities.ts` e `frontend/src/types/api.ts`. Abaixo, a versão completa após a ampliação. Campos marcados com `?` são opcionais.
 
 ### Usuários e prestadores
 
@@ -1489,7 +1489,7 @@ O mock e o ambiente de desenvolvimento do back-end devem ter estes dados iniciai
 
 A senha `123456` das contas demo tem menos de 8 caracteres de propósito, para facilitar a demonstração. Ela é gravada direto na semente e não passa pela regra de senha mínima.
 
-- Os 6 prestadores e os 12 serviços atuais (`src/data`) continuam com os mesmos ids, notas e números de avaliações.
+- Os 6 prestadores e os 12 serviços atuais (`frontend/src/data`) continuam com os mesmos ids, notas e números de avaliações.
 - Verificação: `prv-1`, `prv-2` e `prv-6` aprovados; `prv-3` em análise; `prv-4` e `prv-5` sem envio.
 - O produtor demo tem ao menos uma propriedade e ao menos uma solicitação em cada status com o prestador demo.
 - Ao menos uma denúncia aberta e uma verificação em análise, para o painel do administrador.
@@ -1536,10 +1536,10 @@ Erro (qualquer 4xx ou 5xx):
 
 | # | Problema | Onde | O que fazer |
 |---|---|---|---|
-| 1 | Sucesso vem em `{ success, data }`, e o front lê o corpo direto | `src/services/api/httpAdapter.ts` | Devolver `body.data` |
+| 1 | Sucesso vem em `{ success, data }`, e o front lê o corpo direto | `frontend/src/services/api/httpAdapter.ts` | Devolver `body.data` |
 | 2 | Erro vem em `{ success, error }`, e o front lê `code` e `message` no topo | `httpAdapter.ts` | Ler `body.error.code`, `body.error.message` e `body.error.fields` |
-| 3 | O `ApiError` não recebe `fields`, então erros 422 não aparecem nos campos | `httpAdapter.ts`, `apiError.ts`, `src/types/api.ts` | Repassar `fields` (previsto em F1-01; conferir se já foi feito) |
-| 4 | `HttpMethod` não tem `PUT`, e o `apiClient` só expõe `get` e `post` | `src/types/api.ts`, `apiClient.ts` | Acrescentar `PUT` e os métodos `patch`, `put` e `delete` |
+| 3 | O `ApiError` não recebe `fields`, então erros 422 não aparecem nos campos | `httpAdapter.ts`, `apiError.ts`, `frontend/src/types/api.ts` | Repassar `fields` (previsto em F1-01; conferir se já foi feito) |
+| 4 | `HttpMethod` não tem `PUT`, e o `apiClient` só expõe `get` e `post` | `frontend/src/types/api.ts`, `apiClient.ts` | Acrescentar `PUT` e os métodos `patch`, `put` e `delete` |
 | 5 | Todo corpo é enviado como JSON, mas `POST /uploads` exige `multipart/form-data` | `httpAdapter.ts` e o serviço de upload (F3-01) | Mandar `FormData` sem definir `Content-Type` |
 
 Só o `httpAdapter` muda de comportamento. O mock **não** deve passar a usar o envelope: ele continua devolvendo o corpo direto, e o adaptador HTTP é quem desembrulha.
@@ -1564,7 +1564,7 @@ if (!response.ok || envelope.success === false) {
 return envelope.data as T
 ```
 
-E em `src/types/api.ts`, `ApiErrorBody` ganha `fields?: Record<string, string>`. O construtor de `ApiError` precisa guardar esse campo.
+E em `frontend/src/types/api.ts`, `ApiErrorBody` ganha `fields?: Record<string, string>`. O construtor de `ApiError` precisa guardar esse campo.
 
 #### Passo 4 — métodos HTTP
 

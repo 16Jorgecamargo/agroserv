@@ -169,7 +169,7 @@ Os repositories ficam na pasta do seu assunto e são registrados em `database/da
 - `pnpm test`: regras puras e services com repository simulado (máquina de status, médias de avaliação, login, relógio).
 - `pnpm test:e2e`: 113 casos sobre a API real com banco em memória. Cobrem sucesso, validação (422), permissão (401/403/404) e transição inválida (409) de cada endpoint.
 
-Os arquivos de teste usam os sufixos `.unit-spec.ts` e `.e2e-spec.ts` para não serem capturados pelo Vitest do front-end na raiz do repositório.
+Os arquivos de teste usam os sufixos `.unit-spec.ts` e `.e2e-spec.ts` para não serem capturados pelo Vitest do front-end.
 
 ## Convenções de código
 

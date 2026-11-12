@@ -14,7 +14,7 @@ Lista de tarefas para levar o AgroServ da etapa 1 (vitrine + painel do produtor)
 - Um item está pronto quando cumpre todos os critérios e a [definição de pronto](#definição-de-pronto).
 - As fases seguem a ordem da jornada do produtor. Dentro de uma fase, itens sem dependência entre si podem ser feitos em paralelo.
 - Ao pegar um item, coloque seu nome na coluna **Responsável** do [quadro](#quadro) e mude a situação.
-- O front-end é construído sobre o **mock** (`src/services/api/mock*`), que deve seguir o contrato à risca. O back-end real implementa o mesmo contrato depois (seção [Back-end](#back-end)).
+- O front-end é construído sobre o **mock** (`frontend/src/services/api/mock*`), que deve seguir o contrato à risca. O back-end real implementa o mesmo contrato depois (seção [Back-end](#back-end)).
 
 ### Ordem de início e divisão
 
@@ -36,7 +36,7 @@ Lista de tarefas para levar o AgroServ da etapa 1 (vitrine + painel do produtor)
 
 - Código **sem comentários**.
 - Variáveis, funções, tipos e arquivos **em inglês**. Textos de interface e URLs **em PT-BR**.
-- Camadas: `types → services/api → services/*Service → hooks → pages/components`. Páginas e componentes nunca importam de `src/data/` nem de `src/services/api/`.
+- Camadas: `types → services/api → services/*Service → hooks → pages/components`. Páginas e componentes nunca importam de `frontend/src/data/` nem de `frontend/src/services/api/`.
 - Toda escrita passa pelo `apiClient`. O mock valida, devolve os mesmos erros do contrato e aplica os mesmos efeitos (notificações, médias, cancelamentos).
 - Dados criados no mock sobrevivem ao F5 (banco salvo no `localStorage`, arquivos no IndexedDB).
 - Sem pagamento de nenhum tipo. Todo valor exibido é estimativa, com o texto `Valor estimado. O acerto é feito diretamente com o prestador.`
@@ -48,7 +48,7 @@ Lista de tarefas para levar o AgroServ da etapa 1 (vitrine + painel do produtor)
 
 Resumo do que já existe no projeto. Use os tokens e componentes prontos em vez de criar valores novos.
 
-**Cores** (tokens em `src/index.css`, usados como classes do Tailwind, ex.: `bg-primary`, `text-text-muted`):
+**Cores** (tokens em `frontend/src/index.css`, usados como classes do Tailwind, ex.: `bg-primary`, `text-text-muted`):
 
 | Token | Valor | Uso |
 |---|---|---|
@@ -70,9 +70,9 @@ Resumo do que já existe no projeto. Use os tokens e componentes prontos em vez 
 
 **Tipografia:** Manrope (variável). Título de página `text-3xl font-bold`, título de seção `text-xl font-semibold`, números com `tabular-nums`.
 
-**Componentes prontos** (`src/components/ui`): `Alert`, `Avatar`, `Badge`, `Breadcrumbs`, `Button` / `buttonClasses`, `EmptyState`, `ErrorState`, `FilterChip`, `FullScreenLoader`, `Input`, `Rating`, `SectionHeader`, `Skeleton`, `StatusBadge`. F1-03 acrescenta os de formulário, modal e toasts.
+**Componentes prontos** (`frontend/src/components/ui`): `Alert`, `Avatar`, `Badge`, `Breadcrumbs`, `Button` / `buttonClasses`, `EmptyState`, `ErrorState`, `FilterChip`, `FullScreenLoader`, `Input`, `Rating`, `SectionHeader`, `Skeleton`, `StatusBadge`. F1-03 acrescenta os de formulário, modal e toasts.
 
-**Animação:** framer-motion com as variantes de `src/utils/motion.ts` (`fadeUp`, `staggerContainer`, `pageTransition`). O app respeita a opção "reduzir movimento" do sistema (`MotionConfig reducedMotion="user"`).
+**Animação:** framer-motion com as variantes de `frontend/src/utils/motion.ts` (`fadeUp`, `staggerContainer`, `pageTransition`). O app respeita a opção "reduzir movimento" do sistema (`MotionConfig reducedMotion="user"`).
 
 **Acessibilidade:** todo campo com label, erro ligado por `aria-describedby`, foco visível, navegação por teclado, `role="status"` nos carregamentos, contraste AA.
 
@@ -184,7 +184,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 **Telas:** nenhuma nova. Botão "Restaurar dados demo" entra em F1-08.
 **Endpoints:** todos os atuais passam a ler e gravar no banco simulado.
 
-O mock deixa de ler arrays fixos de `src/data` e passa a usar um banco em memória salvo no `localStorage` (chave `agroserv_mock_db`, com versão). `src/data` vira só a semente inicial.
+O mock deixa de ler arrays fixos de `frontend/src/data` e passa a usar um banco em memória salvo no `localStorage` (chave `agroserv_mock_db`, com versão). `frontend/src/data` vira só a semente inicial.
 
 Critérios de aceite:
 - [ ] `mockRoutes.ts` dividido em módulos por domínio (auth, catálogo, produtor…), sem mudar o comportamento atual: todos os testes existentes passam.

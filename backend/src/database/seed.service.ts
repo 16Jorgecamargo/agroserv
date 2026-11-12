@@ -139,7 +139,7 @@ export class SeedService implements OnApplicationBootstrap {
   private seedImages(): Map<string, string> {
     // Reaproveita as fotos do front-end como uploads públicos, quando existirem
     const urls = new Map<string, string>();
-    const source = resolve(import.meta.dirname, '../../../src/assets/images');
+    const source = resolve(import.meta.dirname, '../../../frontend/src/assets/images');
     if (process.env.NODE_ENV === 'test' || !existsSync(source)) return urls;
     for (const image of new Set(SEED_SERVICES.map((service) => service.image))) {
       if (existsSync(join(source, image))) urls.set(image, image.replace('.jpg', ''));
@@ -158,7 +158,7 @@ export class SeedService implements OnApplicationBootstrap {
 
     // Fotos dos serviços registradas como uploads do prestador
     const images = this.seedImages();
-    const source = resolve(import.meta.dirname, '../../../src/assets/images');
+    const source = resolve(import.meta.dirname, '../../../frontend/src/assets/images');
     const uploads = SEED_SERVICES.filter((service) => images.has(service.image)).map((service) => {
       const id = `upl-${service.id}`;
       return {

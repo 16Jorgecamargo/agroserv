@@ -33,7 +33,7 @@ Projeto acadêmico em duas etapas:
 - **Apresentações:** [sistema completo](https://agroserv-bay.vercel.app/slides/full-stack/), [back-end](https://agroserv-bay.vercel.app/slides/backend/) e [etapa 1](https://agroserv-bay.vercel.app/slides/)
 - **Página do projeto** (apresentações, documentação e links): https://agroserv-bay.vercel.app/
 
-O site é hospedado na Vercel. O app publicado roda em modo `mock`, com os dados demo no navegador. O comando `npm run build:site` monta tudo em `site/`: a página inicial, os documentos de `docs/` convertidos de Markdown para HTML (com os diagramas Mermaid), as apresentações e o app em `/app/`. A configuração fica em `vercel.json`.
+O site é hospedado na Vercel. O app publicado roda em modo `mock`, com os dados demo no navegador. O comando `npm run build:site` monta tudo em `site/`: a página inicial, os documentos de `docs/` convertidos de Markdown para HTML (com os diagramas Mermaid), as apresentações e o app em `/app/`. A configuração fica em `vercel.json` e o script em `frontend/scripts/build-site.mjs`.
 
 ## Contas de demonstração
 
@@ -64,6 +64,7 @@ O comando instala as dependências que faltam, cria `backend/.env` a partir do `
 ### Só o front-end (modo `mock`)
 
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
@@ -79,7 +80,7 @@ cp .env.example .env
 pnpm start:dev
 ```
 
-Em outro terminal, na raiz, crie `.env` a partir de `.env.example` com:
+Em outro terminal, na pasta `frontend/`, crie `.env` a partir de `.env.example` com:
 
 ```
 VITE_API_MODE=http
@@ -90,13 +91,15 @@ e rode `npm run dev`. O banco SQLite é criado e recebe os dados demo na primeir
 
 | Comando | O que faz |
 |---|---|
-| `npm start` | Front-end + API + banco SQLite, em modo `http` |
+| `npm start` (na raiz) | Front-end + API + banco SQLite, em modo `http` |
 | `npm run dev` | Só o front-end, em modo `mock` |
 | `npm run build` | Build de produção do app |
 | `npm run build:site` | Monta o site completo publicado na Vercel em `site/` |
 | `npm run test:run` | Testes automatizados do front-end |
 | `npm run lint` | Lint |
 | `cd backend && pnpm test` e `pnpm test:e2e` | Testes unitários e de integração da API |
+
+Os comandos `npm run ...` do front-end funcionam dentro de `frontend/` e também na raiz, que só repassa para `frontend/`.
 
 ## Áreas e páginas
 
@@ -113,7 +116,12 @@ O `ProtectedRoute` manda quem não está logado para `/login` e quem tem outro p
 ## Arquitetura
 
 ```
-src/
+frontend/         app React (Vite + TypeScript)
+backend/          API NestJS + TypeORM + SQLite
+docs/             documentação, fluxogramas e apresentações
+scripts/          start.mjs, que sobe front-end e API juntos
+
+frontend/src/
 ├── types/        entidades e contrato da API
 ├── data/         dados demo (usados só pelo mock)
 ├── services/

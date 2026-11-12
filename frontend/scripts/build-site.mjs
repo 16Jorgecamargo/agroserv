@@ -1,8 +1,9 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join, normalize } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { Marked } from 'marked'
 
-const root = process.cwd()
+const root = fileURLToPath(new URL('../..', import.meta.url))
 const docsDir = join(root, 'docs')
 const outDir = join(root, 'site')
 const repoUrl = 'https://github.com/16Jorgecamargo/agroserv/blob/master'

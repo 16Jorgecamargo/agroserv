@@ -59,11 +59,11 @@ O **AgroServ** é um marketplace web que conecta **produtores rurais** a **prest
 
 | Requisito | Como foi atendido | Onde |
 |---|---|---|
-| Homepage como ponto de entrada, com navegação clara | Página inicial com cabeçalho fixo, busca, categorias e serviços em destaque; links para todas as áreas | `/` — `src/pages/HomePage.tsx` |
+| Homepage como ponto de entrada, com navegação clara | Página inicial com cabeçalho fixo, busca, categorias e serviços em destaque; links para todas as áreas | `/` — `frontend/src/pages/HomePage.tsx` |
 | Pelo menos duas páginas públicas | Listagem de serviços com busca e filtros; página de detalhes do serviço | `/servicos`, `/servicos/:id` |
 | Área privada para usuários autenticados | Painel do produtor e lista de solicitações | `/dashboard`, `/solicitacoes` |
-| Tela de login funcional que controla o acesso | Formulário validado, autenticação simulada, sessão persistida | `/login` — `src/pages/LoginPage.tsx`, `src/contexts/AuthProvider.tsx` |
-| Middleware de proteção de rotas | Verifica a sessão, permite ou bloqueia e redireciona para o login guardando a rota original | `src/routes/ProtectedRoute.tsx` |
+| Tela de login funcional que controla o acesso | Formulário validado, autenticação simulada, sessão persistida | `/login` — `frontend/src/pages/LoginPage.tsx`, `frontend/src/contexts/AuthProvider.tsx` |
+| Middleware de proteção de rotas | Verifica a sessão, permite ou bloqueia e redireciona para o login guardando a rota original | `frontend/src/routes/ProtectedRoute.tsx` |
 
 **Conta de demonstração:** `produtor@agroserv.com` / `123456`.
 
@@ -88,7 +88,7 @@ O estado global usa a **Context API** (`AuthContext`), sem bibliotecas extras.
 O código está organizado em camadas. Cada camada só conhece a camada abaixo dela, e a interface nunca importa dados diretamente.
 
 ```
-src/
+frontend/src/
 ├── types/        entidades (User, Service, ServiceRequest…) e contrato da API
 ├── data/         dados simulados (usados apenas pelo adaptador mock)
 ├── services/
@@ -113,7 +113,7 @@ Diagramas completos: [Arquitetura em camadas](flowcharts.md#5-arquitetura-em-cam
 
 **Regras adotadas**
 
-- `src/data/` só é importado pelo adaptador mock.
+- `frontend/src/data/` só é importado pelo adaptador mock.
 - Páginas e componentes não importam `services/api` (exceto o utilitário `isApiError`).
 - Toda busca de dados passa por `useAsync`, que entrega `{ data, error, isLoading, refetch }` e mantém os dados anteriores durante recarregamentos.
 - Código sem comentários; nomes de variáveis, funções e arquivos em inglês; textos da interface em português.
@@ -150,14 +150,14 @@ Diagrama: [Mapa de navegação](flowcharts.md#1-mapa-de-navegação).
 
 ## 6. Autenticação e proteção de rotas
 
-**AuthProvider** (`src/contexts/AuthProvider.tsx`) mantém `user`, `isAuthenticated`, `isLoading`, `login()` e `logout()`.
+**AuthProvider** (`frontend/src/contexts/AuthProvider.tsx`) mantém `user`, `isAuthenticated`, `isLoading`, `login()` e `logout()`.
 
 - **Login:** chama `POST /auth/login`, salva token e usuário no `localStorage` e atualiza o contexto.
 - **Ao abrir o app:** se existe token, chama `GET /auth/me`. Uma resposta 401 encerra a sessão; uma falha de rede mantém a sessão salva. Um valor corrompido no `localStorage` é descartado sem quebrar a tela.
 - **Sessão expirada:** qualquer 401 em uma requisição autenticada encerra a sessão e leva ao login.
 - **Logout:** limpa a sessão e volta para a página inicial.
 
-**ProtectedRoute** (`src/routes/ProtectedRoute.tsx`):
+**ProtectedRoute** (`frontend/src/routes/ProtectedRoute.tsx`):
 
 ```tsx
 export function ProtectedRoute() {
