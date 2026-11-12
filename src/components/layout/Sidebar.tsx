@@ -1,4 +1,4 @@
-import { BadgeCheck, CalendarDays, ClipboardList, Flag, LayoutDashboard, LogOut, MapPinned, Megaphone, Search, Star, Tags, Tractor, UserRound, Users, type LucideIcon } from 'lucide-react'
+import { BadgeCheck, CalendarDays, ClipboardList, Flag, History, LayoutDashboard, LogOut, MapPinned, Megaphone, Search, Star, Tags, Tractor, UserRound, Users, type LucideIcon } from 'lucide-react'
 import { NavLink } from 'react-router'
 import type { Role } from '../../types/entities'
 import { paths } from '../../routes/paths'
@@ -36,6 +36,7 @@ const sidebarItemsByRole: Record<Role, SidebarItem[]> = {
     { label: 'Anúncios', to: paths.adminServices, icon: Megaphone },
     { label: 'Denúncias', to: paths.adminReports, icon: Flag },
     { label: 'Categorias', to: paths.adminCategories, icon: Tags },
+    { label: 'Histórico', to: paths.adminActions, icon: History },
     { label: 'Minha conta', to: paths.adminAccount, icon: UserRound },
   ],
 }

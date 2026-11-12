@@ -1,4 +1,5 @@
 import type {
+  AdminActionFilters,
   AdminCategory,
   AdminDashboard,
   AdminReportFilters,
@@ -12,7 +13,7 @@ import type {
   ReportDetail,
   ResolveReportPayload,
 } from '../types/api'
-import type { Category, Report, Service, ServiceRequestDetail, User, Verification } from '../types/entities'
+import type { AdminAction, Category, Report, Service, ServiceRequestDetail, User, Verification } from '../types/entities'
 import { apiClient } from './api/apiClient'
 
 const userPath = (id: string) => `/admin/users/${encodeURIComponent(id)}`
@@ -80,5 +81,8 @@ export const adminService = {
   },
   deleteCategory(id: string): Promise<void> {
     return apiClient.delete<void>(`/admin/categories/${encodeURIComponent(id)}`)
+  },
+  listActions(filters: AdminActionFilters): Promise<Paginated<AdminAction>> {
+    return apiClient.get<Paginated<AdminAction>>('/admin/actions', { ...filters })
   },
 }
