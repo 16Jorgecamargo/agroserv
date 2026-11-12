@@ -24,7 +24,7 @@ import { paths, type LoginLocationState } from '../routes/paths'
 import { isApiError } from '../services/api/apiError'
 import { ESTIMATE_NOTICE, formatCount, formatLocation, formatPrice, formatRating } from '../utils/format'
 import { fadeUp, staggerContainer } from '../utils/motion'
-import { serviceStatusLabels } from '../utils/serviceStatus'
+import { equipmentTypeLabels, serviceStatusLabels } from '../utils/serviceStatus'
 
 function DetailSkeleton() {
   return (
@@ -116,6 +116,24 @@ export function ServiceDetailPage() {
             </h2>
             <p className="mt-3 max-w-2xl text-text-muted">{service.description}</p>
           </motion.section>
+
+          {service.equipment.length > 0 && (
+            <motion.section variants={fadeUp} aria-labelledby="equipment-heading" className="mt-8 border-t border-border pt-8">
+              <h2 id="equipment-heading" className="text-xl font-semibold text-text">
+                Equipamentos
+              </h2>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                {service.equipment.map((item) => (
+                  <li key={item.id} className="rounded-card border border-border bg-surface p-4">
+                    <p className="text-xs font-semibold tracking-[0.08em] text-primary uppercase">{equipmentTypeLabels[item.type]}</p>
+                    <p className="mt-1 font-semibold text-text">{item.model}</p>
+                    <p className="text-sm text-text-muted">Ano {item.year}</p>
+                    {item.specs && <p className="mt-2 text-sm text-text">{item.specs}</p>}
+                  </li>
+                ))}
+              </ul>
+            </motion.section>
+          )}
 
           <motion.div variants={fadeUp}>
             <ServiceReviews serviceId={service.id} />

@@ -1,5 +1,5 @@
 import type { BadgeTone } from '../components/ui/Badge'
-import type { ServiceStatus } from '../types/entities'
+import type { EquipmentType, ServiceStatus } from '../types/entities'
 
 export const serviceStatusLabels: Record<ServiceStatus, string> = {
   active: 'Ativo',
@@ -19,3 +19,13 @@ export const priceUnitOptions = [
   { value: 'day', label: 'Por dia' },
   { value: 'trip', label: 'Por viagem' },
 ] as const
+
+export const equipmentTypeLabels: Record<EquipmentType, string> = {
+  tractor: 'Trator',
+  harvester: 'Colheitadeira',
+  sprayer: 'Pulverizador',
+  drone: 'Drone',
+  truck: 'Caminhão',
+  implement: 'Implemento',
+  other: 'Outro',
+}

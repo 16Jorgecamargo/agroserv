@@ -1,9 +1,9 @@
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useState, type FormEvent } from 'react'
 import { brazilianStates } from '../../data/states'
 import { isApiError } from '../../services/apiError'
 import type { ServicePayload } from '../../types/api'
-import type { Category, Service } from '../../types/entities'
-import { priceUnitOptions } from '../../utils/serviceStatus'
+import type { Category, Equipment, Service } from '../../types/entities'
+import { equipmentTypeLabels, priceUnitOptions } from '../../utils/serviceStatus'
 import { parseDecimal, validateServiceForm, type ServiceFormErrors, type ServiceFormValues } from '../../utils/validators'
 import { Alert } from '../ui/Alert'
 import { Button } from '../ui/Button'
@@ -21,7 +21,7 @@ interface ServiceFormProps {
   submitLabel: string
   onSubmit: (payload: ServicePayload) => Promise<unknown>
   onCancel: () => void
-  extraFields?: (values: ServiceFormValues, update: <K extends keyof ServiceFormValues>(field: K, value: ServiceFormValues[K]) => void) => ReactNode
+  equipment?: Equipment[]
 }
 
 function toValues(service: Service | undefined, city = '', state = ''): ServiceFormValues {
@@ -39,7 +39,7 @@ function toValues(service: Service | undefined, city = '', state = ''): ServiceF
   }
 }
 
-export function ServiceForm({ categories, initial, defaultCity, defaultState, submitLabel, onSubmit, onCancel, extraFields }: ServiceFormProps) {
+export function ServiceForm({ categories, initial, defaultCity, defaultState, submitLabel, onSubmit, onCancel, equipment = [] }: ServiceFormProps) {
   const [values, setValues] = useState(() => toValues(initial, defaultCity, defaultState))
   const [errors, setErrors] = useState<ServiceFormErrors>({})
   const [formError, setFormError] = useState<string>()
@@ -158,7 +158,26 @@ export function ServiceForm({ categories, initial, defaultCity, defaultState, su
           error={errors.photos}
           description="Até 8 fotos JPG, PNG ou WEBP. A primeira é a capa do anúncio."
         />
-        {extraFields?.(values, update)}
+        {equipment.length > 0 && (
+          <fieldset>
+            <legend className="mb-1.5 text-sm font-medium text-text">Equipamentos usados</legend>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {equipment.map((item) => (
+                <Checkbox
+                  key={item.id}
+                  label={`${equipmentTypeLabels[item.type]} · ${item.model}`}
+                  checked={values.equipmentIds.includes(item.id)}
+                  onChange={(event) =>
+                    update(
+                      'equipmentIds',
+                      event.target.checked ? [...values.equipmentIds, item.id] : values.equipmentIds.filter((id) => id !== item.id),
+                    )
+                  }
+                />
+              ))}
+            </div>
+          </fieldset>
+        )}
         <Checkbox
           label="Disponível para novas solicitações"
           checked={values.available}

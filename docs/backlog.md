@@ -159,7 +159,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F4-02 | Conversa da solicitação | M | F2-04, F3-03 | | Feito |
 | F4-03 | Avaliar serviço (produtor) | M | F2-04 | | Feito |
 | F4-04 | Avaliações no detalhe do serviço e respostas do prestador | M | F4-03 | | Feito |
-| F5-01 | Equipamentos | M | F3-01, F3-02 | | A fazer |
+| F5-01 | Equipamentos | M | F3-01, F3-02 | | Feito |
 | F5-02 | Agenda e dias bloqueados | G | F3-03, F2-03 | | A fazer |
 | F5-03 | Verificação do prestador e selo | M | F3-01 | | A fazer |
 | F6-01 | Painel do administrador | P | F1-05 | | A fazer |

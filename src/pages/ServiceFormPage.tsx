@@ -14,6 +14,7 @@ import { useToast } from '../hooks/useToast'
 import { paths } from '../routes/paths'
 import { isApiError } from '../services/apiError'
 import { categoryService } from '../services/categoryService'
+import { equipmentService } from '../services/equipmentService'
 import { myServicesService } from '../services/myServicesService'
 import type { ServicePayload } from '../types/api'
 
@@ -25,7 +26,12 @@ export function ServiceFormPage() {
   const toast = useToast()
   const navigate = useNavigate()
   const loader = useCallback(
-    () => Promise.all([categoryService.list(), id ? myServicesService.getById(id) : Promise.resolve(undefined)]),
+    () =>
+      Promise.all([
+        categoryService.list(),
+        id ? myServicesService.getById(id) : Promise.resolve(undefined),
+        equipmentService.list().catch(() => []),
+      ]),
     [id],
   )
   const { data, error, refetch } = useAsync(loader)
@@ -83,6 +89,7 @@ export function ServiceFormPage() {
         <ServiceForm
           key={data[1]?.id ?? 'new'}
           categories={data[0]}
+          equipment={data[2]}
           initial={data[1]}
           defaultCity={user?.city}
           defaultState={user?.state}
