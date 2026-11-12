@@ -48,6 +48,7 @@ export class MailService implements OnModuleInit {
     }
     try {
       await this.transporter.sendMail({ from: this.config.getOrThrow<string>('mailFrom'), ...message });
+      this.logger.log(`E-mail "${message.subject}" enviado.`);
       return true;
     } catch (error) {
       this.logger.error(`Falha ao enviar "${message.subject}": ${error instanceof Error ? error.message : String(error)}`);
