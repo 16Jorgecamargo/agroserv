@@ -1,4 +1,4 @@
-import { ClipboardList, LayoutDashboard, LogOut, MapPinned, Megaphone, Search, Star, Tractor, UserRound, type LucideIcon } from 'lucide-react'
+import { CalendarDays, ClipboardList, LayoutDashboard, LogOut, MapPinned, Megaphone, Search, Star, Tractor, UserRound, type LucideIcon } from 'lucide-react'
 import { NavLink } from 'react-router'
 import type { Role } from '../../types/entities'
 import { paths } from '../../routes/paths'
@@ -22,6 +22,7 @@ const sidebarItemsByRole: Record<Role, SidebarItem[]> = {
   provider: [
     { label: 'Painel', to: paths.providerDashboard, icon: LayoutDashboard },
     { label: 'Solicitações', to: paths.providerRequests, icon: ClipboardList },
+    { label: 'Agenda', to: paths.providerAgenda, icon: CalendarDays },
     { label: 'Meus serviços', to: paths.providerServices, icon: Megaphone },
     { label: 'Equipamentos', to: paths.providerEquipment, icon: Tractor },
     { label: 'Avaliações', to: paths.providerReviews, icon: Star },

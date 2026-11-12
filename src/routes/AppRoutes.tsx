@@ -5,6 +5,7 @@ import { DashboardPage } from '../pages/DashboardPage'
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
 import { ProfilePage } from '../pages/ProfilePage'
 import { ProviderProfilePage } from '../pages/ProviderProfilePage'
+import { AgendaPage } from '../pages/AgendaPage'
 import { EquipmentPage } from '../pages/EquipmentPage'
 import { ProviderReviewsPage } from '../pages/ProviderReviewsPage'
 import { ProviderDashboardPage } from '../pages/ProviderDashboardPage'
@@ -83,6 +84,7 @@ export function AppRoutes() {
           <Route path="solicitacoes/:id" element={<ProviderRequestDetailPage />} />
           <Route path="avaliacoes" element={<ProviderReviewsPage />} />
           <Route path="equipamentos" element={<EquipmentPage />} />
+          <Route path="agenda" element={<AgendaPage />} />
           <Route path="perfil" element={<ProviderProfilePage />} />
           <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />
