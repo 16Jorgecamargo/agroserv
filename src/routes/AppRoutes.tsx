@@ -14,7 +14,11 @@ import { MyServicesPage } from '../pages/MyServicesPage'
 import { ProviderRequestDetailPage } from '../pages/ProviderRequestDetailPage'
 import { ProviderRequestsPage } from '../pages/ProviderRequestsPage'
 import { ServiceFormPage } from '../pages/ServiceFormPage'
+import { AdminAccountPage } from '../pages/AdminAccountPage'
 import { AdminDashboardPage } from '../pages/AdminDashboardPage'
+import { AdminRequestDetailPage } from '../pages/AdminRequestDetailPage'
+import { AdminUserDetailPage } from '../pages/AdminUserDetailPage'
+import { AdminUsersPage } from '../pages/AdminUsersPage'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
 import { PrivacyPage, TermsPage } from '../pages/LegalPages'
@@ -79,6 +83,10 @@ export function AppRoutes() {
       <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
         <Route path={paths.adminDashboard} element={<PrivateLayout />}>
           <Route index element={<AdminDashboardPage />} />
+          <Route path="usuarios" element={<AdminUsersPage />} />
+          <Route path="usuarios/:id" element={<AdminUserDetailPage />} />
+          <Route path="solicitacoes/:id" element={<AdminRequestDetailPage />} />
+          <Route path="conta" element={<AdminAccountPage />} />
           <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

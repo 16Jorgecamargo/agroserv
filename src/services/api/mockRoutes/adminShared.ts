@@ -31,8 +31,10 @@ export function recordAdminAction(
   return record
 }
 
-export function requireReason(body: unknown, field = 'reason', min = 5, max = 500): string {
-  const value = textField((body as Record<string, unknown> | null)?.[field])
-  if (value.length < min || value.length > max) validationError({ [field]: `Informe o motivo (${min} a ${max} caracteres).` })
+export const REASON_MESSAGE = 'Informe o motivo com pelo menos 5 caracteres.'
+
+export function requireReason(body: unknown): string {
+  const value = textField((body as Record<string, unknown> | null)?.reason)
+  if (value.length < 5 || value.length > 500) validationError({ reason: REASON_MESSAGE })
   return value
 }

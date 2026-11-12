@@ -163,7 +163,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F5-02 | Agenda e dias bloqueados | G | F3-03, F2-03 | | Feito |
 | F5-03 | Verificação do prestador e selo | M | F3-01 | | Feito |
 | F6-01 | Painel do administrador | P | F1-05 | | Feito |
-| F6-02 | Usuários e suspensão | G | F1-03, F6-01, F2-01 | | A fazer |
+| F6-02 | Usuários e suspensão | G | F1-03, F6-01, F2-01 | | Feito |
 | F6-03 | Fila de verificações | P | F5-03, F6-01 | | A fazer |
 | F6-04 | Moderação de anúncios | M | F3-02, F6-01 | | A fazer |
 | F6-05 | Denúncias | G | F3-03, F4-04, F6-02, F6-04 | | A fazer |

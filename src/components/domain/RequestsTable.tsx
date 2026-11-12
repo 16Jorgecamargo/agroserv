@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import type { ServiceRequest } from '../../types/entities'
 import { formatCurrency, formatDate } from '../../utils/format'
-import { getRequestDetailPath } from '../../utils/requestDetail'
+import { getRequestDetailPath, type RequestViewer } from '../../utils/requestDetail'
 import { Skeleton } from '../ui/Skeleton'
 import { StatusBadge } from '../ui/StatusBadge'
 
@@ -9,14 +9,17 @@ interface RequestsTableProps {
   requests: ServiceRequest[]
   caption: string
   showLocation?: boolean
-  viewer?: 'producer' | 'provider'
+  viewer?: RequestViewer
 }
 
 const cellClasses = 'px-5 py-4'
 
 export function RequestsTable({ requests, caption, showLocation = false, viewer = 'producer' }: RequestsTableProps) {
-  const partyLabel = viewer === 'provider' ? 'Produtor' : 'Prestador'
-  const partyName = (request: ServiceRequest) => (viewer === 'provider' ? request.producerName : request.providerName)
+  const partyLabel = viewer === 'admin' ? 'Produtor → Prestador' : viewer === 'provider' ? 'Produtor' : 'Prestador'
+  const partyName = (request: ServiceRequest) => {
+    if (viewer === 'admin') return `${request.producerName} → ${request.providerName}`
+    return viewer === 'provider' ? request.producerName : request.providerName
+  }
 
   return (
     <>

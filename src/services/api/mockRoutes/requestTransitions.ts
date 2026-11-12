@@ -377,8 +377,8 @@ export function getRequestDetail(record: RequestRecord, role: Role, now: Date = 
   if (!serviceRecord || !provider || !producer || !providerUser) return missingDetail()
 
   const canContact = ['accepted', 'in_progress', 'completed'].includes(request.status)
-  const showProducerPhone = canContact && (role === 'provider' || role === 'admin')
-  const showProviderPhone = canContact && (role === 'producer' || role === 'admin')
+  const showProducerPhone = role === 'admin' || (canContact && role === 'provider')
+  const showProviderPhone = role === 'admin' || (canContact && role === 'producer')
 
   return {
     ...request,
