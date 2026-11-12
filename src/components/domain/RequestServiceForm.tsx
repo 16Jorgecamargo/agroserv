@@ -8,7 +8,8 @@ import { propertyService } from '../../services/propertyService'
 import { requestService } from '../../services/requestService'
 import { serviceService } from '../../services/serviceService'
 import type { PropertyPayload } from '../../types/api'
-import type { Property, Service, ServiceRequestDetail } from '../../types/entities'
+import type { Property, Provider, Service, ServiceRequestDetail } from '../../types/entities'
+import { distanceBetweenCities } from '../../utils/cityCoordinates'
 import { getTodayInBrasilia } from '../../utils/date'
 import { ESTIMATE_NOTICE, formatDate, formatMoney, formatPrice, getQuantityUnitLabel } from '../../utils/format'
 import { parseDecimal, validateRequestForm, type RequestFormErrors, type RequestFormValues } from '../../utils/validators'
@@ -25,11 +26,12 @@ interface RequestServiceFormProps {
   service: Service
   onCancel: () => void
   initialPropertyId?: string
+  provider?: Pick<Provider, 'city' | 'state' | 'serviceRadiusKm'>
 }
 
 const EMPTY_VALUES: RequestFormValues = { propertyId: '', scheduledDate: '', quantity: '', notes: '' }
 
-export function RequestServiceForm({ service, onCancel, initialPropertyId }: RequestServiceFormProps) {
+export function RequestServiceForm({ service, onCancel, initialPropertyId, provider }: RequestServiceFormProps) {
   const { user } = useAuth()
   const [properties, setProperties] = useState<Property[] | null>(null)
   const [blockedDays, setBlockedDays] = useState<string[]>([])
@@ -156,6 +158,9 @@ export function RequestServiceForm({ service, onCancel, initialPropertyId }: Req
   const quantity = parseDecimal(values.quantity)
   const estimate = Number.isFinite(quantity) && quantity > 0 ? service.price * quantity : 0
   const unitLabel = getQuantityUnitLabel(service.priceUnit)
+  const selectedProperty = properties.find((property) => property.id === values.propertyId)
+  const distance = provider && selectedProperty ? distanceBetweenCities(provider, selectedProperty) : null
+  const isOutsideArea = Boolean(provider && distance !== null && distance > provider.serviceRadiusKm)
 
   return (
     <form noValidate onSubmit={submit} className="space-y-5">
@@ -173,6 +178,12 @@ export function RequestServiceForm({ service, onCancel, initialPropertyId }: Req
           <Plus className="size-4" aria-hidden />
           Cadastrar nova propriedade
         </button>
+        {isOutsideArea && provider && selectedProperty && distance !== null && (
+          <Alert tone="warning">
+            <span className="font-semibold">Sua propriedade pode estar fora da área de atendimento</span>. {selectedProperty.city} fica a cerca de{' '}
+            {Math.round(distance)} km de {provider.city} e o prestador atende até {provider.serviceRadiusKm} km. Você ainda pode enviar o pedido.
+          </Alert>
+        )}
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>

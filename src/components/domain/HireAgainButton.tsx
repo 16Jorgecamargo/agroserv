@@ -4,13 +4,13 @@ import { Link } from 'react-router'
 import { paths } from '../../routes/paths'
 import { categoryService } from '../../services/categoryService'
 import { serviceService } from '../../services/serviceService'
-import type { Service, ServiceRequestDetail } from '../../types/entities'
+import type { ServiceDetail, ServiceRequestDetail } from '../../types/entities'
 import { Button } from '../ui/Button'
 import { buttonClasses } from '../ui/buttonClasses'
 import { Modal } from '../ui/Modal'
 import { RequestServiceForm } from './RequestServiceForm'
 
-type HireState = { kind: 'form'; service: Service } | { kind: 'unavailable'; similarPath: string } | null
+type HireState = { kind: 'form'; service: ServiceDetail } | { kind: 'unavailable'; similarPath: string } | null
 
 export function HireAgainButton({ request }: { request: ServiceRequestDetail }) {
   const [state, setState] = useState<HireState>(null)
@@ -51,7 +51,7 @@ export function HireAgainButton({ request }: { request: ServiceRequestDetail }) 
         description={request.serviceTitle}
         closeOnBackdrop={false}
       >
-        {state?.kind === 'form' && <RequestServiceForm service={state.service} initialPropertyId={request.propertyId} onCancel={() => setState(null)} />}
+        {state?.kind === 'form' && <RequestServiceForm service={state.service} provider={state.service.provider} initialPropertyId={request.propertyId} onCancel={() => setState(null)} />}
       </Modal>
       <Modal isOpen={state?.kind === 'unavailable'} onClose={() => setState(null)} title="Serviço indisponível">
         {state?.kind === 'unavailable' && (

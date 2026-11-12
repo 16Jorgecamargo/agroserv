@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router'
 import { ReviewItem } from '../components/domain/ReviewItem'
 import { ReviewSummaryCard } from '../components/domain/ReviewSummaryCard'
 import { ServiceCard } from '../components/domain/ServiceCard'
+import { MapView } from '../components/map/MapView'
 import { Container } from '../components/layout/Container'
 import { Avatar } from '../components/ui/Avatar'
 import { Breadcrumbs } from '../components/ui/Breadcrumbs'
@@ -19,6 +20,7 @@ import { usePageTitle } from '../hooks/usePageTitle'
 import { paths } from '../routes/paths'
 import { isApiError } from '../services/apiError'
 import { providerService } from '../services/providerService'
+import { findCityCoordinates } from '../utils/cityCoordinates'
 import { formatCount, formatLocation } from '../utils/format'
 import { fadeUp, staggerContainer } from '../utils/motion'
 import { equipmentTypeLabels } from '../utils/serviceStatus'
@@ -62,6 +64,8 @@ export function ProviderPublicProfilePage() {
   }
 
   const { provider, services, equipment, recentReviews, reviewSummary } = data
+  const basePosition = findCityCoordinates(provider.city, provider.state)
+  const baseLabel = formatLocation(provider.city, provider.state)
 
   return (
     <Container className="py-8 lg:py-10">
@@ -93,6 +97,25 @@ export function ProviderPublicProfilePage() {
             {provider.description && <p className="max-w-3xl text-text">{provider.description}</p>}
           </div>
         </motion.header>
+
+        {basePosition && (
+          <motion.section variants={fadeUp} aria-labelledby="provider-area-heading" className="space-y-4">
+            <div>
+              <h2 id="provider-area-heading" className="text-xl font-semibold text-text">
+                Área de atendimento
+              </h2>
+              <p className="mt-1 text-sm text-text-muted">
+                Raio de {provider.serviceRadiusKm} km a partir de {baseLabel}.
+              </p>
+            </div>
+            <MapView
+              label={`Área de atendimento de ${provider.name}`}
+              markers={[{ id: 'base', position: basePosition, label: baseLabel }]}
+              circle={{ center: basePosition, radiusKm: provider.serviceRadiusKm }}
+              className="h-72 sm:h-80"
+            />
+          </motion.section>
+        )}
 
         <motion.section variants={fadeUp} aria-labelledby="provider-services-heading" className="space-y-4">
           <h2 id="provider-services-heading" className="text-xl font-semibold text-text">

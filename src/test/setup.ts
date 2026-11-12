@@ -19,6 +19,8 @@ class IntersectionObserverStub {
 
 configure({ asyncUtilTimeout: 4000 })
 
+vi.mock('../components/map/LeafletMap', () => import('./LeafletMapStub'))
+
 vi.stubGlobal('IntersectionObserver', IntersectionObserverStub)
 window.scrollTo = vi.fn() as unknown as typeof window.scrollTo
 

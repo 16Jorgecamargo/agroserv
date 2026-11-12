@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { SearchX, SlidersHorizontal, X } from 'lucide-react'
+import { List, Map as MapIcon, SearchX, SlidersHorizontal, X } from 'lucide-react'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { CategoryIcon } from '../components/domain/CategoryIcon'
@@ -7,6 +7,7 @@ import { SearchBar, type SearchValues } from '../components/domain/SearchBar'
 import { ServiceFiltersPanel, type AdvancedFilterKey, type AdvancedFilterValues } from '../components/domain/ServiceFiltersPanel'
 import { ServiceCard } from '../components/domain/ServiceCard'
 import { ServiceCardSkeleton } from '../components/domain/ServiceCardSkeleton'
+import { ServicesMapPanel } from '../components/domain/ServicesMapPanel'
 import { Container } from '../components/layout/Container'
 import { Breadcrumbs } from '../components/ui/Breadcrumbs'
 import { Button } from '../components/ui/Button'
@@ -16,7 +17,7 @@ import { FilterChip } from '../components/ui/FilterChip'
 import { Modal } from '../components/ui/Modal'
 import { Select } from '../components/ui/Select'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { useCategories, useServicePages } from '../hooks/useServices'
+import { useAllServices, useCategories, useServicePages } from '../hooks/useServices'
 import { paths } from '../routes/paths'
 import type { ServiceFilters, ServiceSort } from '../types/api'
 import type { PriceUnit } from '../types/entities'
@@ -33,7 +34,13 @@ const SORT_OPTIONS: { value: ServiceSort; label: string }[] = [
   { value: 'rating', label: 'Melhor avaliação' },
 ]
 
-type FilterKey = 'q' | 'location' | 'category' | 'sort' | AdvancedFilterKey
+type FilterKey = 'q' | 'location' | 'category' | 'sort' | 'view' | AdvancedFilterKey
+type ViewMode = 'list' | 'map'
+
+const VIEW_OPTIONS: { value: ViewMode; label: string; icon: typeof List }[] = [
+  { value: 'list', label: 'Lista', icon: List },
+  { value: 'map', label: 'Mapa', icon: MapIcon },
+]
 
 function toNumber(value: string): number | undefined {
   if (!value) return undefined
@@ -62,6 +69,7 @@ export function ServicesPage() {
   const query = searchParams.get('q') ?? ''
   const location = searchParams.get('location') ?? ''
   const category = searchParams.get('category') ?? ''
+  const view: ViewMode = searchParams.get('view') === 'map' ? 'map' : 'list'
   const filterKey = searchParams.toString()
   const [pagination, setPagination] = useState({ filterKey, pageCount: 1 })
   const pageCount = pagination.filterKey === filterKey ? pagination.pageCount : 1
@@ -85,6 +93,7 @@ export function ServicesPage() {
     sort: sort === 'relevance' ? undefined : sort,
   }
   const { data, error, isLoading, refetch } = useServicePages(filters, PAGE_SIZE, pageCount)
+  const allServices = useAllServices(filters, view === 'map')
 
   const services = data?.data ?? []
   const total = data?.meta.total ?? 0
@@ -105,7 +114,7 @@ export function ServicesPage() {
   }
 
   function clearFilters() {
-    setSearchParams(new URLSearchParams())
+    setSearchParams(new URLSearchParams(view === 'map' ? { view } : {}))
   }
 
   function loadMore() {
@@ -163,18 +172,41 @@ export function ServicesPage() {
             </Button>
           )}
         </div>
-        <Select
-          label="Ordenar por"
-          value={sort}
-          onChange={(event) => updateParams({ sort: event.target.value === 'relevance' ? '' : event.target.value })}
-          containerClassName="w-full sm:w-56"
-        >
-          {SORT_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Select>
+        <div className="flex w-full flex-wrap items-end gap-3 sm:w-auto">
+          <div role="group" aria-label="Modo de exibição" className="inline-flex h-11 items-center rounded-full border border-border bg-surface p-1">
+            {VIEW_OPTIONS.map((option) => {
+              const Icon = option.icon
+              const isActive = view === option.value
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => updateParams({ view: option.value === 'map' ? 'map' : '' })}
+                  className={cn(
+                    'inline-flex h-full items-center gap-1.5 rounded-full px-3.5 text-sm font-medium transition-colors',
+                    isActive ? 'bg-primary text-white' : 'text-text-muted hover:text-text',
+                  )}
+                >
+                  <Icon className="size-4" aria-hidden />
+                  {option.label}
+                </button>
+              )
+            })}
+          </div>
+          <Select
+            label="Ordenar por"
+            value={sort}
+            onChange={(event) => updateParams({ sort: event.target.value === 'relevance' ? '' : event.target.value })}
+            containerClassName="min-w-0 flex-1 sm:w-56 sm:flex-none"
+          >
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        </div>
       </div>
 
       <Modal isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title="Filtros">
@@ -192,7 +224,9 @@ export function ServicesPage() {
           </div>
         </aside>
         <div>
-        {error && !data ? (
+        {view === 'map' ? (
+          <ServicesMapPanel services={allServices.data} error={allServices.error} onRetry={allServices.refetch} onClearFilters={clearFilters} />
+        ) : error && !data ? (
           <ErrorState message={error.message} onRetry={refetch} />
         ) : !data ? (
           <div role="status" className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">

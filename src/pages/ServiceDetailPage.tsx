@@ -214,7 +214,7 @@ export function ServiceDetailPage() {
       </div>
 
       <Modal isOpen={isRequesting} onClose={() => setIsRequesting(false)} title="Solicitar serviço" description={service.title} closeOnBackdrop={false}>
-        {isRequesting && <RequestServiceForm service={service} onCancel={() => setIsRequesting(false)} />}
+        {isRequesting && <RequestServiceForm service={service} provider={service.provider} onCancel={() => setIsRequesting(false)} />}
       </Modal>
     </Container>
   )

@@ -170,7 +170,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F6-06 | Categorias | M | F1-03, F6-01 | | Feito |
 | F6-07 | Histórico de ações | P | F6-02 | | Feito |
 | F7-01 | Filtros avançados e ordenação | M | F5-02, F5-03 | | Feito |
-| F7-02 | Mapa de serviços e raio de atendimento | G | F1-08 | | A fazer |
+| F7-02 | Mapa de serviços e raio de atendimento | G | F1-08 | | Feito |
 | F7-03 | Favoritos | P | F2-05 | | Feito |
 | F7-04 | Contratar de novo | P | F2-03 | | Feito |
 | F7-05 | Perfil público do prestador | M | F4-04, F5-01 | | Feito |

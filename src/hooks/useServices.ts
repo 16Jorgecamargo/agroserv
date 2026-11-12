@@ -20,6 +20,24 @@ export function useServicePages(filters: ServicePageFilters, pageSize: number, p
   return useAsync(fetcher)
 }
 
+const MAP_PAGE_SIZE = 60
+
+export function useAllServices(filters: ServicePageFilters, isEnabled: boolean) {
+  const filterKey = JSON.stringify(filters)
+  const fetcher = useCallback(async (): Promise<Service[] | null> => {
+    if (!isEnabled) return null
+    const parsed = JSON.parse(filterKey) as ServicePageFilters
+    const first = await serviceService.list({ ...parsed, page: 1, pageSize: MAP_PAGE_SIZE })
+    const rest = await Promise.all(
+      Array.from({ length: Math.max(0, first.meta.totalPages - 1) }, (_, index) =>
+        serviceService.list({ ...parsed, page: index + 2, pageSize: MAP_PAGE_SIZE }),
+      ),
+    )
+    return [first, ...rest].flatMap((page) => page.data)
+  }, [filterKey, isEnabled])
+  return useAsync(fetcher)
+}
+
 export function useFeaturedServices(limit: number) {
   const fetcher = useCallback(() => serviceService.featured(limit), [limit])
   return useAsync(fetcher)
