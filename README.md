@@ -31,7 +31,7 @@ Projeto acadêmico em duas etapas:
 
 - **App:** https://agroserv-bay.vercel.app/app/
 - **Apresentações:** [sistema completo](https://agroserv-bay.vercel.app/slides/full-stack/), [back-end](https://agroserv-bay.vercel.app/slides/backend/) e [etapa 1](https://agroserv-bay.vercel.app/slides/)
-- **Documentação:** https://agroserv-bay.vercel.app/
+- **Página do projeto** (apresentações, documentação e links): https://agroserv-bay.vercel.app/
 
 O site é hospedado na Vercel. O app publicado roda em modo `mock`, com os dados demo no navegador. O comando `npm run build:site` monta tudo em `site/`: a página inicial, os documentos de `docs/` convertidos de Markdown para HTML (com os diagramas Mermaid), as apresentações e o app em `/app/`. A configuração fica em `vercel.json`.
 
@@ -48,6 +48,18 @@ Todas com a senha `123456`. Na tela de login, os botões de conta demo preenchem
 No modo `mock`, o administrador pode voltar aos dados demo pelo painel (**Restaurar dados demo**).
 
 ## Como executar
+
+### Tudo de uma vez (front-end + API + banco)
+
+```bash
+npm start
+```
+
+O comando instala as dependências que faltam, cria `backend/.env` a partir do `.env.example` na primeira vez, sobe a API NestJS, espera ela responder e abre o front-end em modo `http`. Ctrl+C para os dois.
+
+- App: `http://localhost:5173`
+- API: `http://localhost:3333`
+- Banco: `backend/data/agroserv.sqlite`, criado com os dados demo na primeira execução. Para voltar aos dados demo, pare o projeto e apague esse arquivo.
 
 ### Só o front-end (modo `mock`)
 
@@ -78,7 +90,8 @@ e rode `npm run dev`. O banco SQLite é criado e recebe os dados demo na primeir
 
 | Comando | O que faz |
 |---|---|
-| `npm run dev` | Servidor de desenvolvimento |
+| `npm start` | Front-end + API + banco SQLite, em modo `http` |
+| `npm run dev` | Só o front-end, em modo `mock` |
 | `npm run build` | Build de produção do app |
 | `npm run build:site` | Monta o site completo publicado na Vercel em `site/` |
 | `npm run test:run` | Testes automatizados do front-end |
