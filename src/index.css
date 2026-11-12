@@ -3,22 +3,37 @@
 
 @theme {
   --font-sans: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
-  --color-bg: #f7f8f5;
+  --color-bg: #f8f9f6;
   --color-surface: #ffffff;
   --color-surface-muted: #eef1ec;
-  --color-border: #e4e8e1;
-  --color-text: #17201a;
-  --color-text-muted: #667085;
-  --color-primary: #2f6b45;
-  --color-primary-strong: #173f2a;
+  --color-border: #e7eae5;
+  --color-text: #19211d;
+  --color-text-muted: #66706a;
+  --color-primary: #286b4d;
+  --color-primary-strong: #173f35;
+  --color-primary-mid: #3e805e;
   --color-primary-light: #7fb685;
-  --color-primary-soft: #e6f0e8;
+  --color-primary-soft: #e7f0e8;
   --color-warning: #b7791f;
   --color-danger: #b42318;
   --color-info: #2b5c8a;
   --shadow-card: 0 1px 2px rgb(16 24 20 / 0.04);
   --shadow-card-hover: 0 12px 28px -14px rgb(16 24 20 / 0.22);
   --radius-card: 10px;
+  --shadow-float: 0 18px 40px -18px rgb(23 63 53 / 0.35), 0 2px 6px rgb(16 24 20 / 0.06);
+  --shadow-search: 0 24px 60px -28px rgb(23 63 53 / 0.3), 0 2px 8px rgb(16 24 20 / 0.04);
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-float-soft: float-soft 7s ease-in-out infinite;
+
+  @keyframes float-soft {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
 }
 
 @layer base {

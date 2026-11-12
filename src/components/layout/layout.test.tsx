@@ -85,7 +85,8 @@ describe('Navbar', () => {
 
     expect(screen.getByRole('link', { name: 'Entrar' })).toHaveAttribute('href', '/login')
     expect(screen.getByRole('link', { name: 'Serviços' })).toHaveAttribute('href', '/servicos')
-    expect(screen.queryByRole('link', { name: 'Meu painel' })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Painel' })).toHaveAttribute('href', '/dashboard')
+    expect(screen.queryByRole('button', { name: 'Sair da conta' })).not.toBeInTheDocument()
   })
 
   it.each([
@@ -100,9 +101,8 @@ describe('Navbar', () => {
       </MemoryRouter>,
     )
 
-    const panelLinks = screen.getAllByRole('link', { name: 'Meu painel' })
-    expect(panelLinks.length).toBeGreaterThan(0)
-    expect(panelLinks.every((link) => link.getAttribute('href') === expectedPath)).toBe(true)
+    expect(screen.getByRole('link', { name: 'Painel' })).toHaveAttribute('href', expectedPath)
+    expect(screen.queryByRole('link', { name: 'Entrar' })).not.toBeInTheDocument()
   })
 
   it('logs the authenticated user out', async () => {
