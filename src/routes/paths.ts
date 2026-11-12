@@ -23,6 +23,7 @@ export const paths = {
   providerAgenda: '/prestador/agenda',
   providerReviews: '/prestador/avaliacoes',
   providerEquipment: '/prestador/equipamentos',
+  providerVerification: '/prestador/verificacao',
   providerRequestDetail: (id: string) => `/prestador/solicitacoes/${encodeURIComponent(id)}`,
   adminDashboard: '/admin',
   adminRequestDetail: (id: string) => `/admin/solicitacoes/${encodeURIComponent(id)}`,

@@ -17,6 +17,7 @@ import { ErrorState } from '../components/ui/ErrorState'
 import { Modal } from '../components/ui/Modal'
 import { Rating } from '../components/ui/Rating'
 import { Skeleton } from '../components/ui/Skeleton'
+import { VerifiedBadge } from '../components/ui/VerifiedBadge'
 import { useAuth } from '../hooks/useAuth'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { useService } from '../hooks/useServices'
@@ -176,7 +177,10 @@ export function ServiceDetailPage() {
               <div className="mt-3 flex items-center gap-3">
                 <Avatar name={provider.name} src={provider.avatarUrl} />
                 <div>
-                  <p className="font-semibold text-text">{provider.name}</p>
+                  <p className="flex flex-wrap items-center gap-1.5 font-semibold text-text">
+                    {provider.name}
+                    {provider.verified && <VerifiedBadge />}
+                  </p>
                   <p className="text-sm text-text-muted">{formatLocation(provider.city, provider.state)}</p>
                 </div>
               </div>
