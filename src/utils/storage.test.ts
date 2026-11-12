@@ -9,6 +9,8 @@ const user: User = {
   role: 'producer',
   city: 'Santa Helena',
   state: 'PR',
+  status: 'active',
+  createdAt: '2026-01-01T00:00:00.000Z',
 }
 
 describe('storage', () => {
