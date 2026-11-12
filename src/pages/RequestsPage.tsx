@@ -17,9 +17,11 @@ import { isRequestStatus } from '../utils/requestStatus'
 const statusFilters: { value: RequestStatusFilter; label: string }[] = [
   { value: 'all', label: 'Todas' },
   { value: 'pending', label: 'Pendentes' },
-  { value: 'accepted', label: 'Aceitas' },
+  { value: 'counter_offer', label: 'Contrapropostas' },
+  { value: 'accepted', label: 'Agendadas' },
   { value: 'in_progress', label: 'Em andamento' },
   { value: 'completed', label: 'Concluídas' },
+  { value: 'rejected', label: 'Recusadas' },
   { value: 'cancelled', label: 'Canceladas' },
 ]
 
