@@ -153,8 +153,8 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F2-05 | Lista e painel do produtor com os novos status | P | F2-01 | | Feito |
 | F3-01 | Upload de arquivos | M | F1-01, F1-03 | | Feito |
 | F3-02 | Meus serviços | G | F3-01, F1-05 | | Feito |
-| F3-03 | Solicitações recebidas e ações do prestador | G | F1-03, F1-05, F2-01 | | A fazer |
-| F3-04 | Painel do prestador | M | F3-03 | | A fazer |
+| F3-03 | Solicitações recebidas e ações do prestador | G | F1-03, F1-05, F2-01 | | Feito |
+| F3-04 | Painel do prestador | M | F3-03 | | Feito |
 | F4-01 | Notificações e sino | M | F1-05, F2-01 | | A fazer |
 | F4-02 | Conversa da solicitação | M | F2-04, F3-03 | | A fazer |
 | F4-03 | Avaliar serviço (produtor) | M | F2-04 | | Feito |

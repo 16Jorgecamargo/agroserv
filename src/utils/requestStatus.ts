@@ -1,3 +1,4 @@
+import type { RequestStatusFilter } from '../types/api'
 import type { RequestEventType, RequestStatus } from '../types/entities'
 
 export const requestStatuses: RequestStatus[] = [
@@ -40,4 +41,19 @@ export const requestEventLabels: Record<RequestEventType, string> = {
   started: 'Serviço iniciado',
   completed: 'Serviço concluído',
   cancelled: 'Solicitação cancelada',
+}
+
+export const requestStatusFilters: { value: RequestStatusFilter; label: string }[] = [
+  { value: 'all', label: 'Todas' },
+  { value: 'pending', label: 'Pendentes' },
+  { value: 'counter_offer', label: 'Contrapropostas' },
+  { value: 'accepted', label: 'Agendadas' },
+  { value: 'in_progress', label: 'Em andamento' },
+  { value: 'completed', label: 'Concluídas' },
+  { value: 'rejected', label: 'Recusadas' },
+  { value: 'cancelled', label: 'Canceladas' },
+]
+
+export function parseStatusFilter(value: string | null): RequestStatusFilter {
+  return value && isRequestStatus(value) ? value : 'all'
 }

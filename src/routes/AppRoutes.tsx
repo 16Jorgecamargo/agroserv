@@ -6,6 +6,8 @@ import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
 import { ProfilePage } from '../pages/ProfilePage'
 import { ProviderProfilePage } from '../pages/ProviderProfilePage'
 import { MyServicesPage } from '../pages/MyServicesPage'
+import { ProviderRequestDetailPage } from '../pages/ProviderRequestDetailPage'
+import { ProviderRequestsPage } from '../pages/ProviderRequestsPage'
 import { ServiceFormPage } from '../pages/ServiceFormPage'
 import { DemoRestoreAction } from '../components/domain/DemoRestoreAction'
 import type { ReactNode } from 'react'
@@ -80,6 +82,8 @@ export function AppRoutes() {
           <Route path="servicos" element={<MyServicesPage />} />
           <Route path="servicos/novo" element={<ServiceFormPage />} />
           <Route path="servicos/:id/editar" element={<ServiceFormPage />} />
+          <Route path="solicitacoes" element={<ProviderRequestsPage />} />
+          <Route path="solicitacoes/:id" element={<ProviderRequestDetailPage />} />
           <Route path="perfil" element={<ProviderProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

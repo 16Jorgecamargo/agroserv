@@ -18,7 +18,8 @@ export function useRequestAction(onSettled: () => void) {
         onSettled()
         return true
       } catch (error) {
-        toast.error(isApiError(error) ? error.message : 'Não foi possível concluir a ação.')
+        const fieldMessage = isApiError(error) && error.fields ? Object.values(error.fields)[0] : undefined
+        toast.error(fieldMessage ?? (isApiError(error) ? error.message : 'Não foi possível concluir a ação.'))
         if (isApiError(error) && (error.status === 409 || error.status === 404)) onSettled()
         return false
       } finally {

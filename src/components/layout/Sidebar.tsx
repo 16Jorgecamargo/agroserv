@@ -21,6 +21,7 @@ const sidebarItemsByRole: Record<Role, SidebarItem[]> = {
   ],
   provider: [
     { label: 'Painel', to: paths.providerDashboard, icon: LayoutDashboard },
+    { label: 'Solicitações', to: paths.providerRequests, icon: ClipboardList },
     { label: 'Meus serviços', to: paths.providerServices, icon: Megaphone },
     { label: 'Perfil', to: paths.providerProfile, icon: UserRound },
   ],
