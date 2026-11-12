@@ -156,7 +156,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F3-03 | Solicitações recebidas e ações do prestador | G | F1-03, F1-05, F2-01 | | Feito |
 | F3-04 | Painel do prestador | M | F3-03 | | Feito |
 | F4-01 | Notificações e sino | M | F1-05, F2-01 | | Feito |
-| F4-02 | Conversa da solicitação | M | F2-04, F3-03 | | A fazer |
+| F4-02 | Conversa da solicitação | M | F2-04, F3-03 | | Feito |
 | F4-03 | Avaliar serviço (produtor) | M | F2-04 | | A fazer |
 | F4-04 | Avaliações no detalhe do serviço e respostas do prestador | M | F4-03 | | A fazer |
 | F5-01 | Equipamentos | M | F3-01, F3-02 | | A fazer |

@@ -1,6 +1,7 @@
 import { SearchX } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { Link, useParams } from 'react-router'
+import { RequestConversation } from '../components/domain/RequestConversation'
 import { RequestDetailView } from '../components/domain/RequestDetailView'
 import { Button } from '../components/ui/Button'
 import { buttonClasses } from '../components/ui/buttonClasses'
@@ -12,6 +13,7 @@ import { useAsync } from '../hooks/useAsync'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { useRequestAction } from '../hooks/useRequestAction'
 import { paths } from '../routes/paths'
+import { isOpenRequestStatus } from '../utils/requestStatus'
 import { isApiError } from '../services/apiError'
 import { requestService } from '../services/requestService'
 
@@ -100,7 +102,9 @@ export function RequestDetailPage() {
             </div>
           ) : undefined
         }
-      />
+      >
+        <RequestConversation requestId={request.id} isOpen={isOpenRequestStatus(request.status)} onClosedConflict={refetch} />
+      </RequestDetailView>
 
       <ConfirmDialog
         isOpen={dialog === 'cancel'}

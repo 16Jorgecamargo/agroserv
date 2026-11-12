@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useParams } from 'react-router'
 import { CounterOfferForm } from '../components/domain/CounterOfferForm'
+import { RequestConversation } from '../components/domain/RequestConversation'
 import { RequestDetailView } from '../components/domain/RequestDetailView'
 import { Button } from '../components/ui/Button'
 import { ConfirmDialog } from '../components/ui/ConfirmDialog'
@@ -11,6 +12,7 @@ import { usePageTitle } from '../hooks/usePageTitle'
 import { useRequestAction } from '../hooks/useRequestAction'
 import { useToast } from '../hooks/useToast'
 import { paths } from '../routes/paths'
+import { isOpenRequestStatus } from '../utils/requestStatus'
 import { isApiError } from '../services/apiError'
 import { providerRequestService } from '../services/providerRequestService'
 import type { CounterOfferPayload } from '../types/api'
@@ -114,7 +116,9 @@ export function ProviderRequestDetailPage() {
             </div>
           ) : undefined
         }
-      />
+      >
+        <RequestConversation requestId={request.id} isOpen={isOpenRequestStatus(request.status)} onClosedConflict={refetch} />
+      </RequestDetailView>
 
       <Modal isOpen={dialog === 'counter'} onClose={() => setDialog(null)} title="Fazer contraproposta" description="Proponha uma nova data, um novo valor total ou os dois.">
         <CounterOfferForm request={request} onSubmit={sendCounterOffer} onCancel={() => setDialog(null)} />
