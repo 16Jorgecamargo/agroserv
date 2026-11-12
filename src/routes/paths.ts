@@ -25,12 +25,21 @@ export const paths = {
   adminDashboard: '/admin',
   adminRequestDetail: (id: string) => `/admin/solicitacoes/${encodeURIComponent(id)}`,
   profile: '/perfil',
+  notifications: '/notificacoes',
+  providerNotifications: '/prestador/notificacoes',
+  adminNotifications: '/admin/notificacoes',
   providerProfile: '/prestador/perfil',
 }
 
 export const routePatterns = {
   serviceDetail: '/servicos/:id',
   requestDetail: '/solicitacoes/:id',
+}
+
+export function notificationsPathFor(role: Role): string {
+  if (role === 'provider') return paths.providerNotifications
+  if (role === 'admin') return paths.adminNotifications
+  return paths.notifications
 }
 
 export interface LoginLocationState {

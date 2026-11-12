@@ -17,6 +17,7 @@ import { LoginPage } from '../pages/LoginPage'
 import { PrivacyPage, TermsPage } from '../pages/LegalPages'
 import { PropertiesPage } from '../pages/PropertiesPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
+import { NotificationsPage } from '../pages/NotificationsPage'
 import { RegisterPage } from '../pages/RegisterPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { RequestDetailPage } from '../pages/RequestDetailPage'
@@ -66,6 +67,7 @@ export function AppRoutes() {
           <Route path={routePatterns.requestDetail} element={<RequestDetailPage />} />
           <Route path={paths.properties} element={<PropertiesPage />} />
           <Route path={paths.profile} element={<ProfilePage />} />
+          <Route path={paths.notifications} element={<NotificationsPage />} />
         </Route>
       </Route>
 
@@ -78,6 +80,7 @@ export function AppRoutes() {
           <Route path="solicitacoes" element={<ProviderRequestsPage />} />
           <Route path="solicitacoes/:id" element={<ProviderRequestDetailPage />} />
           <Route path="perfil" element={<ProviderProfilePage />} />
+          <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Route>
@@ -95,6 +98,7 @@ export function AppRoutes() {
               </RoleDashboardPlaceholder>
             }
           />
+          <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Route>
