@@ -14,7 +14,8 @@ import { ApiError } from '../apiError'
 import { getMockDatabase, persistMockDatabase } from '../mockDatabase'
 import { findUserByToken } from './shared'
 import type { MockRoute, RouteContext } from './types'
-import { isValidEmail, brazilianStates } from '../../../utils/validators'
+import { brazilianStateCodes } from '../../../data/states'
+import { isValidEmail } from '../../../utils/validators'
 
 function nextId(prefix: string, existingIds: string[]): string {
   let index = 1
@@ -38,7 +39,7 @@ function validateRegistration(payload: Record<string, unknown>, users: User[]): 
   if (password.length < 8) fields.password = 'A senha precisa ter pelo menos 8 caracteres.'
   if (phone.length !== 10 && phone.length !== 11) fields.phone = 'Informe um telefone válido.'
   if (city.length < 2 || city.length > 80) fields.city = 'Informe sua cidade.'
-  if (typeof payload.state !== 'string' || !brazilianStates.some((state) => state.value === payload.state)) {
+  if (typeof payload.state !== 'string' || !brazilianStateCodes.has(payload.state)) {
     fields.state = 'Selecione a UF.'
   }
   if (payload.role !== 'producer' && payload.role !== 'provider') {

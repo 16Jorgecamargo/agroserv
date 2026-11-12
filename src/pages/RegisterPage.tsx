@@ -12,7 +12,8 @@ import { usePageTitle } from '../hooks/usePageTitle'
 import { getRoleHomePath, paths } from '../routes/paths'
 import { isApiError } from '../services/api/apiError'
 import type { RegisterPayload } from '../types/api'
-import { brazilianStates, validateRegisterForm, type RegisterFormErrors, type RegisterFormValues } from '../utils/validators'
+import { brazilianStates } from '../data/states'
+import { validateRegisterForm, type RegisterFormErrors, type RegisterFormValues } from '../utils/validators'
 
 const initialValues: RegisterFormValues = {
   name: '',

@@ -3,6 +3,10 @@ import { PrivateLayout } from '../layouts/PrivateLayout'
 import { PublicLayout } from '../layouts/PublicLayout'
 import { DashboardPage } from '../pages/DashboardPage'
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
+import { ProfilePage } from '../pages/ProfilePage'
+import { ProviderProfilePage } from '../pages/ProviderProfilePage'
+import { DemoRestoreAction } from '../components/domain/DemoRestoreAction'
+import type { ReactNode } from 'react'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
 import { PrivacyPage, TermsPage } from '../pages/LegalPages'
@@ -18,13 +22,15 @@ import { ProtectedRoute } from './ProtectedRoute'
 interface RoleDashboardPlaceholderProps {
   title: string
   description: string
+  children?: ReactNode
 }
 
-function RoleDashboardPlaceholder({ title, description }: RoleDashboardPlaceholderProps) {
+function RoleDashboardPlaceholder({ title, description, children }: RoleDashboardPlaceholderProps) {
   return (
     <section className="rounded-card border border-border bg-surface p-6 shadow-card">
       <h1 className="text-3xl font-bold text-text">{title}</h1>
       <p className="mt-3 text-text-muted">{description}</p>
+      {children}
     </section>
   )
 }
@@ -50,6 +56,7 @@ export function AppRoutes() {
         <Route element={<PrivateLayout />}>
           <Route path={paths.dashboard} element={<DashboardPage />} />
           <Route path={paths.requests} element={<RequestsPage />} />
+          <Route path={paths.profile} element={<ProfilePage />} />
         </Route>
       </Route>
 
@@ -64,6 +71,7 @@ export function AppRoutes() {
               />
             }
           />
+          <Route path="perfil" element={<ProviderProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Route>
@@ -76,7 +84,9 @@ export function AppRoutes() {
               <RoleDashboardPlaceholder
                 title="Painel do administrador"
                 description="O painel completo do administrador será disponibilizado em uma próxima etapa."
-              />
+              >
+                <DemoRestoreAction />
+              </RoleDashboardPlaceholder>
             }
           />
           <Route path="*" element={<NotFoundPage />} />

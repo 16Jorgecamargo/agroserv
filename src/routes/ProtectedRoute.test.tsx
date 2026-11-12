@@ -29,6 +29,7 @@ function mockAuth(overrides: Partial<AuthContextValue>) {
     isLoading: false,
     login: vi.fn(),
     register: vi.fn(),
+    updateUser: vi.fn(),
     logout: vi.fn(),
     ...overrides,
   })

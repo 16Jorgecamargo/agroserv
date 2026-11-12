@@ -1,3 +1,5 @@
+import { brazilianStateCodes } from '../data/states'
+
 export interface LoginFormValues {
   email: string
   password: string
@@ -19,35 +21,6 @@ export interface RegisterFormValues {
 
 export type RegisterFormErrors = Partial<Record<keyof RegisterFormValues, string>>
 
-export const brazilianStates = [
-  { value: 'AC', label: 'Acre' },
-  { value: 'AL', label: 'Alagoas' },
-  { value: 'AP', label: 'Amapá' },
-  { value: 'AM', label: 'Amazonas' },
-  { value: 'BA', label: 'Bahia' },
-  { value: 'CE', label: 'Ceará' },
-  { value: 'DF', label: 'Distrito Federal' },
-  { value: 'ES', label: 'Espírito Santo' },
-  { value: 'GO', label: 'Goiás' },
-  { value: 'MA', label: 'Maranhão' },
-  { value: 'MT', label: 'Mato Grosso' },
-  { value: 'MS', label: 'Mato Grosso do Sul' },
-  { value: 'MG', label: 'Minas Gerais' },
-  { value: 'PA', label: 'Pará' },
-  { value: 'PB', label: 'Paraíba' },
-  { value: 'PR', label: 'Paraná' },
-  { value: 'PE', label: 'Pernambuco' },
-  { value: 'PI', label: 'Piauí' },
-  { value: 'RJ', label: 'Rio de Janeiro' },
-  { value: 'RN', label: 'Rio Grande do Norte' },
-  { value: 'RS', label: 'Rio Grande do Sul' },
-  { value: 'RO', label: 'Rondônia' },
-  { value: 'RR', label: 'Roraima' },
-  { value: 'SC', label: 'Santa Catarina' },
-  { value: 'SP', label: 'São Paulo' },
-  { value: 'SE', label: 'Sergipe' },
-  { value: 'TO', label: 'Tocantins' },
-] as const
 export interface ResetPasswordFormValues {
   password: string
   confirmPassword: string
@@ -82,7 +55,7 @@ export function validateRegisterForm(values: RegisterFormValues): RegisterFormEr
   else if (values.confirmPassword !== values.password) errors.confirmPassword = 'As senhas não conferem.'
   if (phoneDigits.length !== 10 && phoneDigits.length !== 11) errors.phone = 'Informe um telefone válido.'
   if (city.length < 2 || city.length > 80) errors.city = 'Informe sua cidade.'
-  if (!brazilianStates.some((state) => state.value === values.state)) errors.state = 'Selecione a UF.'
+  if (!brazilianStateCodes.has(values.state)) errors.state = 'Selecione a UF.'
   if (values.role !== 'producer' && values.role !== 'provider') {
     errors.role = 'Escolha como você vai usar o AgroServ.'
   }
@@ -101,5 +74,68 @@ export function validateResetPasswordForm(values: ResetPasswordFormValues): Rese
   if (values.password.length < 8) errors.password = 'A senha precisa ter pelo menos 8 caracteres.'
   if (!values.confirmPassword) errors.confirmPassword = 'Confirme sua senha.'
   else if (values.confirmPassword !== values.password) errors.confirmPassword = 'As senhas não conferem.'
+  return errors
+}
+
+export interface AccountProfileFormValues {
+  name: string
+  phone: string
+  city: string
+  state: string
+}
+
+export type AccountProfileFormErrors = Partial<Record<keyof AccountProfileFormValues, string>>
+
+export function validateAccountProfileForm(values: AccountProfileFormValues): AccountProfileFormErrors {
+  const errors: AccountProfileFormErrors = {}
+  if (values.name.trim().length < 2 || values.name.trim().length > 120) errors.name = 'Informe seu nome.'
+  const phoneDigits = values.phone.replace(/\D/g, '')
+  if (phoneDigits.length !== 10 && phoneDigits.length !== 11) errors.phone = 'Informe um telefone válido.'
+  if (values.city.trim().length < 2 || values.city.trim().length > 80) errors.city = 'Informe sua cidade.'
+  if (!brazilianStateCodes.has(values.state.trim().toUpperCase())) errors.state = 'Selecione a UF.'
+  return errors
+}
+
+export interface ChangePasswordFormValues {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
+}
+
+export type ChangePasswordFormErrors = Partial<Record<keyof ChangePasswordFormValues, string>>
+
+export function validateChangePasswordForm({
+  currentPassword,
+  newPassword,
+  confirmPassword,
+}: ChangePasswordFormValues): ChangePasswordFormErrors {
+  const errors: ChangePasswordFormErrors = {}
+  if (!currentPassword) errors.currentPassword = 'Informe sua senha atual.'
+  if (newPassword.length < 8) errors.newPassword = 'A senha precisa ter pelo menos 8 caracteres.'
+  else if (newPassword === currentPassword) errors.newPassword = 'A nova senha precisa ser diferente da atual.'
+  if (confirmPassword !== newPassword) errors.confirmPassword = 'As senhas não conferem.'
+  return errors
+}
+
+export interface ProviderProfileFormValues {
+  document: string
+  serviceRadiusKm: string
+  yearsOfExperience: string
+  description: string
+}
+
+export type ProviderProfileFormErrors = Partial<Record<keyof ProviderProfileFormValues, string>>
+
+export function validateProviderProfileForm(values: ProviderProfileFormValues): ProviderProfileFormErrors {
+  const errors: ProviderProfileFormErrors = {}
+  const documentDigits = values.document.replace(/\D/g, '')
+  if (documentDigits.length !== 11 && documentDigits.length !== 14) {
+    errors.document = 'Informe um CPF ou CNPJ válido.'
+  }
+  const radius = Number(values.serviceRadiusKm)
+  if (!Number.isInteger(radius) || radius < 1 || radius > 500) errors.serviceRadiusKm = 'Informe um raio entre 1 e 500 km.'
+  const years = Number(values.yearsOfExperience)
+  if (!Number.isInteger(years) || years < 0 || years > 80) errors.yearsOfExperience = 'Informe os anos de experiência.'
+  if (values.description.length > 1000) errors.description = 'Use no máximo 1000 caracteres.'
   return errors
 }

@@ -15,6 +15,8 @@ export const paths = {
   providerRoot: '/prestador',
   providerDashboard: '/prestador/dashboard',
   adminDashboard: '/admin',
+  profile: '/perfil',
+  providerProfile: '/prestador/perfil',
 }
 
 export const routePatterns = {
@@ -41,7 +43,7 @@ export function getRequiredRole(pathname: string): Role | null {
     pathname === '/propriedades' ||
     pathname.startsWith('/propriedades/') ||
     pathname === '/favoritos' ||
-    pathname === '/perfil'
+    pathname === paths.profile
   ) {
     return 'producer'
   }
