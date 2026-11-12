@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { notFound } from '../common/app.exception.js';
-import { isValidDay } from '../common/clock.service.js';
-import { Paginated, paginate, parsePage } from '../common/pagination.js';
-import { searchTerms } from '../common/text.js';
-import { PRICE_UNITS } from '../common/types.js';
-import type { PriceUnit } from '../common/types.js';
-import type { User } from '../users/entities/user.entity.js';
-import type { Service } from './entities/service.entity.js';
+import { notFound } from '../exceptions/app.exception.js';
+import { isValidDay } from './clock.service.js';
+import { Paginated, paginate, parsePage } from '../utils/pagination.js';
+import { searchTerms } from '../utils/text.js';
+import { PRICE_UNITS } from '../types/index.js';
+import type { PriceUnit } from '../types/index.js';
+import type { User } from '../entities/user.entity.js';
+import type { Service } from '../entities/service.entity.js';
 import {
   isServiceVisible, ServiceDetailView, ServiceView, toServiceDetailView, toServiceView,
-} from './service.presenter.js';
-import { ServiceSearch, ServicesRepository } from './services.repository.js';
+} from '../presenters/service.presenter.js';
+import { ServiceSearch, ServicesRepository } from '../repositories/services.repository.js';
 
 export type Query = Record<string, unknown>;
 

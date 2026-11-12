@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CategoriesRepository } from '../categories/categories.repository.js';
-import { conflict, invalidTransition, notFound, validationError } from '../common/app.exception.js';
-import { ClockService } from '../common/clock.service.js';
-import type { Equipment } from '../equipment/entities/equipment.entity.js';
-import { EquipmentRepository } from '../equipment/equipment.repository.js';
-import { RequestsRepository } from '../requests/requests.repository.js';
-import { UploadRulesService } from '../uploads/upload-rules.service.js';
-import type { CreateServiceDto, UpdateServiceDto } from './dto/service.dto.js';
-import type { Service } from './entities/service.entity.js';
-import { ServiceDetailView, ServiceView, toServiceDetailView, toServiceView } from './service.presenter.js';
-import { ServicesRepository } from './services.repository.js';
+import { CategoriesRepository } from '../repositories/categories.repository.js';
+import { conflict, invalidTransition, notFound, validationError } from '../exceptions/app.exception.js';
+import { ClockService } from './clock.service.js';
+import type { Equipment } from '../entities/equipment.entity.js';
+import { EquipmentRepository } from '../repositories/equipment.repository.js';
+import { RequestsRepository } from '../repositories/requests.repository.js';
+import { UploadRulesService } from './upload-rules.service.js';
+import type { CreateServiceDto, UpdateServiceDto } from '../dto/service.dto.js';
+import type { Service } from '../entities/service.entity.js';
+import { ServiceDetailView, ServiceView, toServiceDetailView, toServiceView } from '../presenters/service.presenter.js';
+import { ServicesRepository } from '../repositories/services.repository.js';
 
 const HIDDEN_MESSAGE = 'Anúncio oculto pela administração.';
 export const OPEN_REQUESTS_MESSAGE = 'Este serviço tem solicitações em aberto. Pause o anúncio em vez de excluir.';

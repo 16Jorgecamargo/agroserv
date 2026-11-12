@@ -2,7 +2,7 @@ import type { AddressInfo } from 'node:net';
 import { INestApplication } from '@nestjs/common';
 import { simpleParser, type ParsedMail } from 'mailparser';
 import { SMTPServer } from 'smtp-server';
-import { ClockService } from '../src/common/clock.service.js';
+import { ClockService } from '../src/services/clock.service.js';
 import { api, createApp, PRODUCER } from './helpers.js';
 
 describe('password recovery', () => {
@@ -114,7 +114,7 @@ describe('password recovery', () => {
   });
 
   it('keeps answering 200 when the mail server is down', async () => {
-    const { MailService } = await import('../src/mail/mail.service.js');
+    const { MailService } = await import('../src/services/mail.service.js');
     const mail = app.get(MailService);
     const transporter = (mail as unknown as { transporter: { sendMail: () => Promise<never> } }).transporter;
     vi.spyOn(transporter, 'sendMail').mockRejectedValue(new Error('connection refused'));

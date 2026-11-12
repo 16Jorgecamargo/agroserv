@@ -106,51 +106,63 @@ Toda resposta com corpo usa o mesmo envelope (exigência do trabalho: respostas 
 
 ## Arquitetura
 
-Uma pasta por assunto em `src/`. Cada uma segue as mesmas camadas:
+O código em `src/` é separado por função: cada pasta guarda um tipo de arquivo, e o nome do arquivo diz de qual assunto ele é (`requests.repository.ts`, `auth.service.ts`).
 
-| Camada | Arquivo | Responsabilidade |
+| Camada | Pasta | Responsabilidade |
 |---|---|---|
-| Controller | `*.controller.ts` | Só HTTP: rota, parâmetros, DTO e status. Chama o service |
-| Service | `*.service.ts` | Regras de negócio. Lança as exceções (`AppException`) |
-| Repository | `*.repository.ts` | Só acesso a dados com TypeORM. Sem regra de negócio |
-| Entidade | `entities/*.entity.ts` | Tabela e relacionamentos |
-| DTO | `dto/*.dto.ts` | Validação de entrada com class-validator e as mensagens do contrato |
-| Presenter | `*.presenter.ts` | Converte a entidade no tipo do contrato, sem campos internos |
+| Controller | `controllers/` | Só HTTP: rota, parâmetros, DTO e status. Chama o service |
+| Service | `services/` | Regras de negócio. Lança as exceções (`AppException`) |
+| Repository | `repositories/` | Só acesso a dados com TypeORM. Sem regra de negócio |
+| Entidade | `entities/` | Tabela e relacionamentos |
+| DTO | `dto/` | Validação de entrada com class-validator e as mensagens do contrato |
+| Presenter | `presenters/` | Converte a entidade no tipo do contrato, sem campos internos |
+| Módulo | `modules/` | Liga controllers e services de cada assunto no NestJS |
 
 ```
 src/
-  common/         envelope, filtro de erros, log, validação, guards, relógio, paginação
-  database/       conexão, lista de entidades, migrations e seed
-  auth/           cadastro, login, sessão e recuperação de senha
-  users/          perfil, senha e exclusão de conta
-  providers/      perfil profissional, verificação e perfil público
-  categories/  services/  equipment/  properties/  favorites/  agenda/
-  requests/       solicitações do produtor e do prestador e a máquina de status
-  messages/  notifications/  reviews/  reports/  uploads/
-  admin/          painel, usuários, verificações, anúncios, categorias e histórico
-test/             testes de integração (*.e2e-spec.ts)
+  main.ts           sobe a aplicação
+  app.module.ts     módulo raiz: junta os módulos e registra guard, pipe, filtro e interceptor globais
+  config/           leitura e validação das variáveis de ambiente
+  database/         conexão, lista de entidades, migrations e seed
+  modules/          um módulo NestJS por assunto
+  controllers/      rotas HTTP
+  services/         regras de negócio (e os testes unitários *.unit-spec.ts)
+  repositories/     acesso a dados
+  entities/         entidades TypeORM
+  dto/              DTOs de entrada
+  presenters/       formato de saída do contrato
+  guards/           AuthGuard (JWT) e RolesGuard (papéis)
+  decorators/       @Public, @Roles, @CurrentUser e validadores próprios
+  middlewares/      log das requisições
+  interceptors/     envelope de sucesso
+  filters/          envelope de erro
+  pipes/            validação e limpeza da entrada
+  exceptions/       AppException e atalhos de erro
+  types/            tipos do contrato
+  utils/            funções puras: paginação, texto, médias, máquina de status
+test/               testes de integração (*.e2e-spec.ts)
 ```
 
-Os repositories ficam na pasta do seu assunto e são registrados em `database/database.module.ts`, que é global. Assim qualquer service usa qualquer repository sem dependência circular entre módulos.
+Os repositories são registrados em `database/database.module.ts`, que é global. Assim qualquer service usa qualquer repository sem dependência circular entre módulos.
 
 ### Onde está cada exigência do trabalho
 
 | Exigência | Onde |
 |---|---|
 | NestJS + TypeORM + SQLite | `src/app.module.ts`, `src/database/database.module.ts` |
-| API REST com métodos, parâmetros, query params e status codes | controllers de cada pasta (ex.: `src/services/services.controller.ts`) |
-| DTOs com class-validator | `src/**/dto/*.dto.ts`, `src/common/validation.pipe.ts`, `src/common/validators.ts` |
-| Middleware de log | `src/common/logger.middleware.ts` |
-| Resposta padronizada de sucesso (interceptor) | `src/common/response.interceptor.ts` |
-| Resposta padronizada de erro (filtro global) | `src/common/http-exception.filter.ts`, `src/common/app.exception.ts` |
-| Controller, service e repository | todas as pastas de assunto |
-| Entidades com relacionamentos | `src/**/entities/*.entity.ts` (1:1 usuário–perfil, 1:N em quase tudo, N:N serviço–equipamento) |
+| API REST com métodos, parâmetros, query params e status codes | `src/controllers/` (ex.: `src/controllers/services.controller.ts`) |
+| DTOs com class-validator | `src/dto/*.dto.ts`, `src/pipes/validation.pipe.ts`, `src/decorators/validators.ts` |
+| Middleware de log | `src/middlewares/logger.middleware.ts` |
+| Resposta padronizada de sucesso (interceptor) | `src/interceptors/response.interceptor.ts` |
+| Resposta padronizada de erro (filtro global) | `src/filters/http-exception.filter.ts`, `src/exceptions/app.exception.ts` |
+| Controller, service e repository | `src/controllers/`, `src/services/`, `src/repositories/` |
+| Entidades com relacionamentos | `src/entities/*.entity.ts` (1:1 usuário–perfil, 1:N em quase tudo, N:N serviço–equipamento) |
 | Migrations | `src/database/migrations/` (rodam ao subir a API), `src/database/data-source.ts` para a CLI do TypeORM |
 | Seed | `src/database/seed.service.ts`, `src/database/seed.data.ts` (`pnpm seed`) |
 | CRUD completo | propriedades, serviços, equipamentos e categorias |
-| Cadastro e login com bcrypt | `src/auth/auth.service.ts` |
-| Token JWT | `src/auth/auth.module.ts`, `src/auth/auth.service.ts` |
-| Rotas privadas com Guard (401) | `AuthGuard` em `src/common/auth.guard.ts` (global; rotas abertas usam `@Public()`) |
+| Cadastro e login com bcrypt | `src/services/auth.service.ts` |
+| Token JWT | `src/modules/auth.module.ts`, `src/services/auth.service.ts` |
+| Rotas privadas com Guard (401) | `AuthGuard` em `src/guards/auth.guard.ts` (global; rotas abertas usam `@Public()`) |
 | Rota restrita por papel (403) | `RolesGuard` + `@Roles(...)` (ex.: tudo em `/admin/*`) |
 
 ### Regras que valem para a API inteira
@@ -159,10 +171,10 @@ Os repositories ficam na pasta do seu assunto e são registrados em `database/da
 - **Recursos de outros usuários:** respondem 404, não 403.
 - **"Hoje":** sempre o dia de Brasília (`ClockService`). Momentos são gravados em UTC.
 - **Exclusão lógica:** serviços, propriedades e contas nunca são apagados de verdade.
-- **Solicitações:** toda mudança de status passa por `applyTransition` (`src/requests/request-lifecycle.ts`), que segue a tabela da seção 6 do contrato.
+- **Solicitações:** toda mudança de status passa por `applyTransition` (`src/utils/request-lifecycle.ts`), que segue a tabela da seção 6 do contrato.
 - **Segurança:** helmet, CORS, limite de 300 requisições por minuto por IP e bloqueio de login após 5 tentativas erradas em 15 minutos.
 - **Arquivos:** `multipart/form-data` em `POST /uploads`, guardados em `uploads/`. Documentos de verificação só abrem para o dono, para administradores ou por URL assinada de 10 minutos.
-- **E-mail:** o link de redefinição de senha é enviado por SMTP (`src/mail/mail.service.ts`). A resposta nunca revela se a conta existe nem devolve o token.
+- **E-mail:** o link de redefinição de senha é enviado por SMTP (`src/services/mail.service.ts`). A resposta nunca revela se a conta existe nem devolve o token.
 
 ## Testes
 

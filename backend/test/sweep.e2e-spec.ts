@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { addDays, ClockService } from '../src/common/clock.service.js';
+import { addDays, ClockService } from '../src/services/clock.service.js';
 import { ADMIN, api, createApp, login, PRODUCER, PROVIDER } from './helpers.js';
 
 type Method = 'get' | 'post' | 'patch' | 'put' | 'delete';

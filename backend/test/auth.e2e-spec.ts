@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { Service } from '../src/services/entities/service.entity.js';
-import { User } from '../src/users/entities/user.entity.js';
+import { Service } from '../src/entities/service.entity.js';
+import { User } from '../src/entities/user.entity.js';
 import { ADMIN, api, createApp, login, PRODUCER, PROVIDER } from './helpers.js';
 
 const newAccount = {
