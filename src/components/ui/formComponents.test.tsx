@@ -9,7 +9,8 @@ import { Modal } from './Modal'
 import { Select } from './Select'
 import { Tabs } from './Tabs'
 import { Textarea } from './Textarea'
-import { ToastProvider, useToast } from './ToastProvider'
+import { useToast } from '../../hooks/useToast'
+import { ToastProvider } from './ToastProvider'
 
 describe('form components', () => {
   it('associates labels and validation messages with fields', () => {
@@ -141,6 +142,25 @@ describe('ConfirmDialog', () => {
     await user.click(confirmButton)
     expect(onConfirm).toHaveBeenCalledWith('Duplicado')
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('clears the reason when the dialog is reopened', async () => {
+    const user = userEvent.setup()
+    const props = {
+      onClose: vi.fn(),
+      onConfirm: vi.fn(),
+      title: 'Excluir item',
+      description: 'Confirme a exclusão.',
+    }
+
+    const { rerender } = render(<ConfirmDialog isOpen {...props} />)
+    await user.type(screen.getByLabelText('Motivo (opcional)'), 'Duplicado')
+    expect(screen.getByLabelText('Motivo (opcional)')).toHaveValue('Duplicado')
+
+    rerender(<ConfirmDialog isOpen={false} {...props} />)
+    rerender(<ConfirmDialog isOpen {...props} />)
+
+    expect(screen.getByLabelText('Motivo (opcional)')).toHaveValue('')
   })
 })
 
