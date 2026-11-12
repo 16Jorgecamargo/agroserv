@@ -66,6 +66,15 @@ describe('password recovery', () => {
     expect(mail.html).toContain(`/redefinir-senha?token=${tokenOf(mail)}`);
   });
 
+  it('embeds the AgroServ logo inline in the reset e-mail', async () => {
+    await api(app).post('/auth/forgot-password', { email: 'prestador2@agroserv.com' }).expect(200);
+    const [mail] = await delivered(1);
+    const logo = mail.attachments.find((attachment) => attachment.cid === 'agroserv-logo');
+    expect(logo?.contentType).toBe('image/png');
+    expect(logo?.content.length).toBeGreaterThan(0);
+    expect(mail.html).toMatch(/<img src="data:image\/png;base64,[^"]+" alt="AgroServ"/);
+  });
+
   it('answers the same for unknown accounts without sending anything', async () => {
     const response = await api(app).post('/auth/forgot-password', { email: 'ninguem@agroserv.com' }).expect(200);
     expect(response.body.data).toEqual({ message: 'Se o e-mail existir, enviaremos um link.' });

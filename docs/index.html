@@ -7,7 +7,9 @@
 <meta name="theme-color" content="#173F2A" />
 <title>AgroServ — Projeto CC6PDSW</title>
 <script>document.documentElement.classList.add('js')</script>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232F6B45'/%3E%3Cpath d='M16 25V15m0 0c0-4.4 3.1-7.5 7.5-7.5 0 4.4-3.1 7.5-7.5 7.5Zm0 3c0-3.3-2.7-6-6-6 0 3.3 2.7 6 6 6Z' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="assets/brand/icon-192.png" />
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" />
 <style>
 @font-face {
   font-family: 'Manrope';
@@ -49,8 +51,8 @@ img { display: block; max-width: 100%; }
 .topbar { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid transparent; transition: background-color .25s, border-color .25s, backdrop-filter .25s; }
 .topbar.is-scrolled { background: rgb(247 248 245 / .82); border-color: var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .topbar .container { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .1em; color: var(--dark); font-size: 16px; }
-.logo-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--green); color: var(--white); display: grid; place-items: center; font-size: 19px; }
+.logo { display: inline-flex; align-items: center; }
+.logo img { display: block; height: 36px; width: auto; }
 .topbar nav { display: flex; align-items: center; gap: 6px; }
 .topbar nav a.link { padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; color: var(--muted); transition: color .2s; }
 .topbar nav a.link:hover { color: var(--ink); }
@@ -181,8 +183,7 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
 <header class="topbar" id="topbar">
   <div class="container">
     <a class="logo" href="./" aria-label="AgroServ, início">
-      <span class="logo-mark"><svg class="icon" viewBox="0 0 24 24"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span>
-      AGROSERV
+      <img src="assets/brand/logo-horizontal.png" alt="" width="140" height="36" />
     </a>
     <nav aria-label="Principal">
       <a class="link" href="app/">App</a>
