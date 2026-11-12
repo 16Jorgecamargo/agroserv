@@ -47,6 +47,20 @@ export interface LoginResponse {
   user: User
 }
 
+export interface ForgotPasswordResponse {
+  message: string
+  resetToken?: string
+}
+
+export interface ResetPasswordPayload {
+  token: string
+  password: string
+}
+
+export interface ResetPasswordResponse {
+  message: string
+}
+
 export type ServiceFilters = {
   q?: string
   location?: string

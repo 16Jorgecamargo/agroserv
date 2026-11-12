@@ -2,9 +2,11 @@ import { Route, Routes } from 'react-router'
 import { PrivateLayout } from '../layouts/PrivateLayout'
 import { PublicLayout } from '../layouts/PublicLayout'
 import { DashboardPage } from '../pages/DashboardPage'
+import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
+import { ResetPasswordPage } from '../pages/ResetPasswordPage'
 import { RequestsPage } from '../pages/RequestsPage'
 import { ServiceDetailPage } from '../pages/ServiceDetailPage'
 import { ServicesPage } from '../pages/ServicesPage'
@@ -36,6 +38,8 @@ export function AppRoutes() {
       </Route>
 
       <Route path={paths.login} element={<LoginPage />} />
+      <Route path={paths.forgotPassword} element={<ForgotPasswordPage />} />
+      <Route path={paths.resetPassword} element={<ResetPasswordPage />} />
 
       <Route element={<ProtectedRoute allowedRoles={['producer']} />}>
         <Route element={<PrivateLayout />}>

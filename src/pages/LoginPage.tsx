@@ -123,6 +123,12 @@ export function LoginPage() {
             </Alert>
           )}
 
+          {state?.notice === 'passwordReset' && (
+            <Alert tone="info" className="mt-6">
+              Senha redefinida. Entre com a nova senha.
+            </Alert>
+          )}
+
           <form
             noValidate
             onSubmit={handleSubmit}

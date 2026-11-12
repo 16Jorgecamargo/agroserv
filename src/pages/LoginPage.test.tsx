@@ -23,6 +23,11 @@ describe('LoginPage', () => {
     expect(screen.queryByText('Faça login para acessar esta área.')).not.toBeInTheDocument()
   })
 
+  it('shows the notice after a successful password reset', () => {
+    renderApp({ pathname: '/login', state: { notice: 'passwordReset' } })
+    expect(screen.getByRole('status')).toHaveTextContent('Senha redefinida. Entre com a nova senha.')
+  })
+
   it('validates required fields and email format', async () => {
     renderApp('/login')
     await submitLogin('', '')
