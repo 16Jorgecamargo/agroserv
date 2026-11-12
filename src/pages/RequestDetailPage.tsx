@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { RequestConversation } from '../components/domain/RequestConversation'
 import { RequestDetailView } from '../components/domain/RequestDetailView'
+import { RequestReviewSection } from '../components/domain/RequestReviewSection'
 import { Button } from '../components/ui/Button'
 import { buttonClasses } from '../components/ui/buttonClasses'
 import { ConfirmDialog } from '../components/ui/ConfirmDialog'
@@ -103,6 +104,13 @@ export function RequestDetailPage() {
           ) : undefined
         }
       >
+        <RequestReviewSection
+          key={`${request.review?.id ?? 'new'}-${request.review?.updatedAt ?? ''}`}
+          requestId={request.id}
+          review={request.review}
+          canReview={can('review')}
+          onSaved={refetch}
+        />
         <RequestConversation requestId={request.id} isOpen={isOpenRequestStatus(request.status)} onClosedConflict={refetch} />
       </RequestDetailView>
 

@@ -165,7 +165,7 @@ export function toProvider(userId: string): Provider | undefined {
     ...(user.avatarUrl ? { avatarUrl: user.avatarUrl } : {}),
     city: user.city,
     state: user.state,
-    rating: profile.rating,
+    rating: roundRating(profile.rating),
     reviewCount: profile.reviewCount,
     yearsOfExperience: profile.yearsOfExperience,
     verified: profile.verificationStatus === 'approved',
@@ -186,6 +186,7 @@ export function toService(record: ServiceRecord, includeHiddenReason = false): S
 
   return {
     ...service,
+    rating: roundRating(record.rating),
     imageUrl: record.photos[0] ?? '',
     providerName: provider?.name ?? 'Prestador',
     providerVerified: provider?.verified ?? false,
