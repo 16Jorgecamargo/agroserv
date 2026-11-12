@@ -8,7 +8,7 @@ import type { ProviderProfile, User } from '../../../types/entities'
 import { brazilianStateCodes } from '../../../data/states'
 import { ApiError } from '../apiError'
 import { getMockDatabase, persistMockDatabase } from '../mockDatabase'
-import { findUserByToken, requireRole } from './shared'
+import { areOwnPublicUploads, findUserByToken, OWN_IMAGES_MESSAGE, requireRole } from './shared'
 import type { MockRoute, RouteContext } from './types'
 
 const OPEN_REQUEST_STATUSES = new Set(['pending', 'accepted', 'in_progress'])
@@ -50,8 +50,8 @@ function updateMe({ token, body }: RouteContext): User {
   }
   if (payload.avatarUrl !== undefined) {
     if (payload.avatarUrl === null) updates.avatarUrl = undefined
-    else if (typeof payload.avatarUrl === 'string' && /^https?:\/\//.test(payload.avatarUrl)) updates.avatarUrl = payload.avatarUrl
-    else fields.avatarUrl = 'Informe uma URL de imagem válida.'
+    else if (typeof payload.avatarUrl === 'string' && areOwnPublicUploads(user.id, [payload.avatarUrl])) updates.avatarUrl = payload.avatarUrl
+    else fields.avatarUrl = OWN_IMAGES_MESSAGE
   }
 
   if (Object.keys(fields).length) throwFields(fields)

@@ -1,6 +1,7 @@
 import { startTransition, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { Alert } from '../ui/Alert'
+import { AvatarSettings } from './AvatarSettings'
 import { Button } from '../ui/Button'
 import { ConfirmDialog } from '../ui/ConfirmDialog'
 import { Input } from '../ui/Input'
@@ -126,6 +127,8 @@ export function AccountSettings({ onDemoRestored }: { onDemoRestored?: () => voi
   return (
     <div className="space-y-8">
       {formError && <Alert tone="danger">{formError}</Alert>}
+
+      <AvatarSettings />
 
       <section aria-labelledby="personal-details-heading" className="rounded-card border border-border bg-surface p-6 shadow-card sm:p-8">
         <div className="mb-6">

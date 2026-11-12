@@ -6,6 +6,7 @@ import type {
   Role,
   Service,
   ServiceRequest,
+  UploadPurpose,
   User,
 } from '../../../types/entities'
 import { getMockDatabase } from '../mockDatabase'
@@ -265,3 +266,13 @@ export function notifyAdmins(type: NotificationType, title: string, link: string
 export function textField(value: unknown): string {
   return typeof value === 'string' ? value.trim() : ''
 }
+
+export function findOwnUpload(userId: string, url: string, purpose: UploadPurpose) {
+  return getMockDatabase().uploads.find((upload) => upload.url === url && upload.ownerId === userId && upload.purpose === purpose)
+}
+
+export function areOwnPublicUploads(userId: string, urls: string[]): boolean {
+  return urls.every((url) => Boolean(findOwnUpload(userId, url, 'public')))
+}
+
+export const OWN_IMAGES_MESSAGE = 'Use apenas imagens enviadas por você.'

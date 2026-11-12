@@ -197,3 +197,17 @@ export function validateRequestForm(values: RequestFormValues, today: string, bl
 
   return errors
 }
+
+export const ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
+export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+export const MAX_FILE_BYTES = 5 * 1024 * 1024
+
+export function validateUploadFile(file: File, acceptedTypes: string[] = ACCEPTED_FILE_TYPES): string | undefined {
+  if (!acceptedTypes.includes(file.type)) {
+    return acceptedTypes.includes('application/pdf')
+      ? 'Envie uma imagem JPG, PNG ou WEBP, ou um PDF.'
+      : 'Envie uma imagem JPG, PNG ou WEBP.'
+  }
+  if (file.size > MAX_FILE_BYTES) return 'O arquivo deve ter no máximo 5 MB.'
+  return undefined
+}
