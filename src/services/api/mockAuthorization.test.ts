@@ -100,6 +100,25 @@ describe('mock authorization', () => {
     },
   )
 
+  it('returns the specific error when a suspended user tries to log in', () => {
+    const user = getMockDatabase().users.find((candidate) => candidate.id === 'usr-1')
+    if (!user) throw new Error('Demo producer account not found')
+
+    user.status = 'suspended'
+
+    const error = captureError(() =>
+      handleMockRequest({
+        method: 'POST',
+        path: '/auth/login',
+        body: { email: user.email, password: '123456' },
+      }),
+    )
+
+    expect(error.status).toBe(403)
+    expect(error.code).toBe('account_suspended')
+    expect(error.message).toBe('Sua conta está suspensa. Entre em contato com o suporte.')
+  })
+
   it.each(['mock.prv-1', 'mock.adm-1'])(
     'rejects a non-producer role from producer routes with 403',
     (token) => {

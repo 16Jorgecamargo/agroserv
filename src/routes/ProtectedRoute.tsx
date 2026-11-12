@@ -1,20 +1,30 @@
 import { Navigate, Outlet, useLocation } from 'react-router'
 import { FullScreenLoader } from '../components/ui/FullScreenLoader'
 import { useAuth } from '../hooks/useAuth'
-import { paths, type LoginLocationState } from './paths'
+import { getRoleHomePath, paths, type LoginLocationState } from './paths'
+import type { Role } from '../types/entities'
 
-export function ProtectedRoute() {
-  const { isAuthenticated, isLoading } = useAuth()
+interface ProtectedRouteProps {
+  allowedRoles: readonly Role[]
+}
+
+export function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
+  const { user, isAuthenticated, isLoading } = useAuth()
   const location = useLocation()
 
   if (isLoading) return <FullScreenLoader />
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     const state: LoginLocationState = {
       from: { pathname: location.pathname, search: location.search },
       reason: 'protected',
     }
     return <Navigate to={paths.login} replace state={state} />
+  }
+
+  if (!allowedRoles.includes(user.role)) {
+    const state: LoginLocationState = { reason: 'forbidden' }
+    return <Navigate to={getRoleHomePath(user.role)} replace state={state} />
   }
 
   return <Outlet />
