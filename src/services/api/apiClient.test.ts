@@ -14,6 +14,24 @@ describe('createApiClient', () => {
     expect(request).toHaveBeenNthCalledWith(2, { method: 'POST', path: '/auth/login', body: { email: 'a' }, token: 'token-1' })
   })
 
+  it('forwards patch, put and delete requests with the current token', async () => {
+    const request = vi.fn().mockResolvedValue(undefined)
+    const client = createApiClient({ request }, () => 'token-1')
+
+    await client.patch('/me', { name: 'Ana' })
+    await client.put('/provider/reviews/rev-1/reply', { reply: 'Obrigado' })
+    await client.delete('/properties/prop-1')
+
+    expect(request).toHaveBeenNthCalledWith(1, { method: 'PATCH', path: '/me', body: { name: 'Ana' }, token: 'token-1' })
+    expect(request).toHaveBeenNthCalledWith(2, {
+      method: 'PUT',
+      path: '/provider/reviews/rev-1/reply',
+      body: { reply: 'Obrigado' },
+      token: 'token-1',
+    })
+    expect(request).toHaveBeenNthCalledWith(3, { method: 'DELETE', path: '/properties/prop-1', token: 'token-1' })
+  })
+
   it('reports 401 responses on authenticated requests', async () => {
     const unauthorized = new ApiError({ status: 401, code: 'unauthorized', message: 'Sessão inválida.' })
     const adapter: HttpAdapter = { request: vi.fn().mockRejectedValue(unauthorized) }
