@@ -6,6 +6,7 @@ import { FavoritesPage } from '../pages/FavoritesPage'
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
 import { ProfilePage } from '../pages/ProfilePage'
 import { ProviderProfilePage } from '../pages/ProviderProfilePage'
+import { ProviderPublicProfilePage } from '../pages/ProviderPublicProfilePage'
 import { VerificationPage } from '../pages/VerificationPage'
 import { AgendaPage } from '../pages/AgendaPage'
 import { EquipmentPage } from '../pages/EquipmentPage'
@@ -48,6 +49,7 @@ export function AppRoutes() {
         <Route index element={<HomePage />} />
         <Route path={paths.services} element={<ServicesPage />} />
         <Route path={routePatterns.serviceDetail} element={<ServiceDetailPage />} />
+        <Route path={routePatterns.providerPublicProfile} element={<ProviderPublicProfilePage />} />
         <Route path={paths.terms} element={<TermsPage />} />
         <Route path={paths.privacy} element={<PrivacyPage />} />
         <Route path="*" element={<NotFoundPage />} />

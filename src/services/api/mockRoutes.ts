@@ -20,6 +20,7 @@ import { verificationRoutes } from './mockRoutes/verificationRoutes'
 import { notificationRoutes } from './mockRoutes/notificationRoutes'
 import { producerRoutes } from './mockRoutes/producerRoutes'
 import { propertyRoutes } from './mockRoutes/propertyRoutes'
+import { publicProviderRoutes } from './mockRoutes/publicProviderRoutes'
 import { providerRoutes } from './mockRoutes/providerRoutes'
 import { providerServiceRoutes } from './mockRoutes/providerServiceRoutes'
 import { uploadRoutes } from './mockRoutes/uploadRoutes'
@@ -73,6 +74,7 @@ const routes: MockRoute[] = [
   ...adminActionRoutes,
   ...reportRoutes,
   ...favoriteRoutes,
+  ...publicProviderRoutes,
   ...demoRoutes,
 ]
 

@@ -160,6 +160,13 @@ function listServiceReviews({ token, params, query }: RouteContext): ReviewList 
   return pageReviews(visible, query, record, visible)
 }
 
+export function getProviderReviewSummary(providerId: string): ReviewSummary {
+  const database = getMockDatabase()
+  const profile = database.providerProfiles.find((candidate) => candidate.userId === providerId)
+  const visible = database.reviews.filter((review) => review.providerId === providerId && !review.hidden)
+  return buildSummary(profile ?? { rating: 0, reviewCount: 0 }, visible)
+}
+
 function listProviderReviews({ token, query }: RouteContext): ReviewList {
   const user = requireUser(token, 'provider')
   const database = getMockDatabase()

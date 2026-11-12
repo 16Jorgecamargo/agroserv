@@ -4,6 +4,7 @@ export const paths = {
   home: '/',
   services: '/servicos',
   serviceDetail: (id: string) => `/servicos/${encodeURIComponent(id)}`,
+  providerPublicProfile: (id: string) => `/prestadores/${encodeURIComponent(id)}`,
   login: '/login',
   forgotPassword: '/esqueci-senha',
   resetPassword: '/redefinir-senha',
@@ -46,6 +47,7 @@ export const paths = {
 
 export const routePatterns = {
   serviceDetail: '/servicos/:id',
+  providerPublicProfile: '/prestadores/:id',
   requestDetail: '/solicitacoes/:id',
 }
 

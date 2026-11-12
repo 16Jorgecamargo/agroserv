@@ -36,7 +36,10 @@ export function ServiceCard({ service }: { service: Service }) {
         <div>
           <h3 className="text-lg/[26px] font-semibold text-text">{service.title}</h3>
           <p className="flex flex-wrap items-center gap-1.5 text-sm text-text-muted">
-            por {service.providerName}
+            por{' '}
+            <Link to={paths.providerPublicProfile(service.providerId)} className="hover:text-primary hover:underline">
+              {service.providerName}
+            </Link>
             {service.providerVerified && <VerifiedBadge />}
           </p>
         </div>

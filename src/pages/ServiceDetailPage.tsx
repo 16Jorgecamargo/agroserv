@@ -190,7 +190,9 @@ export function ServiceDetailPage() {
                 <Avatar name={provider.name} src={provider.avatarUrl} />
                 <div>
                   <p className="flex flex-wrap items-center gap-1.5 font-semibold text-text">
-                    {provider.name}
+                    <Link to={paths.providerPublicProfile(provider.id)} className="hover:text-primary hover:underline">
+                      {provider.name}
+                    </Link>
                     {provider.verified && <VerifiedBadge />}
                   </p>
                   <p className="text-sm text-text-muted">{formatLocation(provider.city, provider.state)}</p>

@@ -40,7 +40,7 @@ describe('ServiceCard', () => {
       </MemoryRouter>,
     )
     expect(screen.getByRole('heading', { name: 'Pulverização Agrícola' })).toBeInTheDocument()
-    expect(screen.getByText('por Agro Máquinas Paraná')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Agro Máquinas Paraná' })).toHaveAttribute('href', '/prestadores/prv-1')
     expect(screen.getByText('Santa Helena - PR')).toBeInTheDocument()
     expect(screen.getByText('Disponível')).toBeInTheDocument()
     expect(screen.getByText(/R\$\s180\/h/)).toBeInTheDocument()
