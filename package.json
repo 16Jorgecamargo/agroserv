@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "node scripts/start.mjs",
     "build": "tsc -b && vite build",
     "build:site": "node scripts/build-site.mjs && tsc -b && VITE_ROUTER=hash vite build --base=/app/ --outDir=site/app",
     "lint": "oxlint",
