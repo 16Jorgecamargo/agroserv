@@ -1,6 +1,7 @@
 import { MessageSquareReply, Star } from 'lucide-react'
 import { useCallback, useState, type FormEvent } from 'react'
 import { useSearchParams } from 'react-router'
+import { ReportButton } from '../components/domain/ReportButton'
 import { ReviewItem } from '../components/domain/ReviewItem'
 import { ReviewSummaryCard } from '../components/domain/ReviewSummaryCard'
 import { PageHeader } from '../components/layout/PageHeader'
@@ -114,11 +115,18 @@ export function ProviderReviewsPage() {
                         }}
                       />
                     ) : (
-                      <div className="ml-11">
+                      <div className="ml-11 flex flex-wrap gap-2">
                         <Button variant="ghost" size="sm" onClick={() => setReplying(review.id)} aria-label={`${review.reply ? 'Editar resposta' : 'Responder'} a ${review.producerName}`}>
                           <MessageSquareReply className="size-4" aria-hidden />
                           {review.reply ? 'Editar resposta' : 'Responder'}
                         </Button>
+                        {!review.hidden && (
+                          <ReportButton
+                            buttonLabel="Denunciar avaliação"
+                            title={`Denunciar avaliação de ${review.producerName}`}
+                            targets={[{ type: 'review', id: review.id, label: `Avaliação de ${review.producerName}` }]}
+                          />
+                        )}
                       </div>
                     )}
                   </ReviewItem>

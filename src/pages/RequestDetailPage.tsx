@@ -2,6 +2,7 @@ import { SearchX } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { RequestConversation } from '../components/domain/RequestConversation'
+import { ReportButton } from '../components/domain/ReportButton'
 import { RequestDetailView } from '../components/domain/RequestDetailView'
 import { RequestReviewSection } from '../components/domain/RequestReviewSection'
 import { Button } from '../components/ui/Button'
@@ -94,12 +95,24 @@ export function RequestDetailPage() {
           )
         }
         actions={
-          can('cancel') ? (
+          can('cancel') || can('report') ? (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-text">Ações</p>
-              <Button variant="secondary" className="w-full text-danger" disabled={isRunning} onClick={() => setDialog('cancel')}>
-                Cancelar solicitação
-              </Button>
+              {can('cancel') && (
+                <Button variant="secondary" className="w-full text-danger" disabled={isRunning} onClick={() => setDialog('cancel')}>
+                  Cancelar solicitação
+                </Button>
+              )}
+              {can('report') && (
+                <ReportButton
+                  className="w-full"
+                  title="Denunciar"
+                  targets={[
+                    { type: 'request', id: request.id, label: 'Esta solicitação' },
+                    { type: 'user', id: request.providerId, label: `O prestador ${request.providerName}` },
+                  ]}
+                />
+              )}
             </div>
           ) : undefined
         }

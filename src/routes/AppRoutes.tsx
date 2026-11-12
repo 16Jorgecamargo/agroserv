@@ -16,6 +16,8 @@ import { ProviderRequestsPage } from '../pages/ProviderRequestsPage'
 import { ServiceFormPage } from '../pages/ServiceFormPage'
 import { AdminAccountPage } from '../pages/AdminAccountPage'
 import { AdminDashboardPage } from '../pages/AdminDashboardPage'
+import { AdminReportDetailPage } from '../pages/AdminReportDetailPage'
+import { AdminReportsPage } from '../pages/AdminReportsPage'
 import { AdminRequestDetailPage } from '../pages/AdminRequestDetailPage'
 import { AdminUserDetailPage } from '../pages/AdminUserDetailPage'
 import { AdminServicesPage } from '../pages/AdminServicesPage'
@@ -90,6 +92,8 @@ export function AppRoutes() {
           <Route path="solicitacoes/:id" element={<AdminRequestDetailPage />} />
           <Route path="verificacoes" element={<AdminVerificationsPage />} />
           <Route path="anuncios" element={<AdminServicesPage />} />
+          <Route path="denuncias" element={<AdminReportsPage />} />
+          <Route path="denuncias/:id" element={<AdminReportDetailPage />} />
           <Route path="conta" element={<AdminAccountPage />} />
           <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />

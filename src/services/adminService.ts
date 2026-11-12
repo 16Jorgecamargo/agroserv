@@ -1,13 +1,16 @@
 import type {
   AdminDashboard,
+  AdminReportFilters,
   AdminServiceFilters,
   AdminUserDetail,
   AdminUserFilters,
   CreateAdminPayload,
   Paginated,
   PendingVerification,
+  ReportDetail,
+  ResolveReportPayload,
 } from '../types/api'
-import type { Service, ServiceRequestDetail, User, Verification } from '../types/entities'
+import type { Report, Service, ServiceRequestDetail, User, Verification } from '../types/entities'
 import { apiClient } from './api/apiClient'
 
 const userPath = (id: string) => `/admin/users/${encodeURIComponent(id)}`
@@ -54,5 +57,14 @@ export const adminService = {
   },
   deleteService(id: string): Promise<void> {
     return apiClient.delete<void>(`/admin/services/${encodeURIComponent(id)}`)
+  },
+  listReports(filters: AdminReportFilters): Promise<Paginated<Report>> {
+    return apiClient.get<Paginated<Report>>('/admin/reports', { ...filters })
+  },
+  getReport(id: string): Promise<ReportDetail> {
+    return apiClient.get<ReportDetail>(`/admin/reports/${encodeURIComponent(id)}`)
+  },
+  resolveReport(id: string, payload: ResolveReportPayload): Promise<Report> {
+    return apiClient.post<Report>(`/admin/reports/${encodeURIComponent(id)}/resolve`, payload)
   },
 }

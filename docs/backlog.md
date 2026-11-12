@@ -166,7 +166,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F6-02 | Usuários e suspensão | G | F1-03, F6-01, F2-01 | | Feito |
 | F6-03 | Fila de verificações | P | F5-03, F6-01 | | Feito |
 | F6-04 | Moderação de anúncios | M | F3-02, F6-01 | | Feito |
-| F6-05 | Denúncias | G | F3-03, F4-04, F6-02, F6-04 | | A fazer |
+| F6-05 | Denúncias | G | F3-03, F4-04, F6-02, F6-04 | | Feito |
 | F6-06 | Categorias | M | F1-03, F6-01 | | A fazer |
 | F6-07 | Histórico de ações | P | F6-02 | | A fazer |
 | F7-01 | Filtros avançados e ordenação | M | F5-02, F5-03 | | A fazer |

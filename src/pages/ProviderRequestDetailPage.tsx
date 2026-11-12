@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { useParams } from 'react-router'
 import { CounterOfferForm } from '../components/domain/CounterOfferForm'
 import { RequestConversation } from '../components/domain/RequestConversation'
+import { ReportButton } from '../components/domain/ReportButton'
 import { RequestDetailView } from '../components/domain/RequestDetailView'
 import { Button } from '../components/ui/Button'
 import { ConfirmDialog } from '../components/ui/ConfirmDialog'
@@ -60,7 +61,8 @@ export function ProviderRequestDetailPage() {
     refetch()
   }
 
-  const hasActions = can('accept') || can('reject') || can('counter_offer') || can('start') || can('complete') || can('cancel') || waitingStart
+  const hasActions =
+    can('accept') || can('reject') || can('counter_offer') || can('start') || can('complete') || can('cancel') || can('report') || waitingStart
 
   return (
     <>
@@ -112,6 +114,16 @@ export function ProviderRequestDetailPage() {
                 <Button variant="ghost" className="w-full text-danger" disabled={isRunning} onClick={() => setDialog('cancel')}>
                   Cancelar agendamento
                 </Button>
+              )}
+              {can('report') && (
+                <ReportButton
+                  className="w-full"
+                  title="Denunciar"
+                  targets={[
+                    { type: 'request', id: request.id, label: 'Esta solicitação' },
+                    { type: 'user', id: request.producerId, label: `O produtor ${request.producerName}` },
+                  ]}
+                />
               )}
             </div>
           ) : undefined

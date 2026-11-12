@@ -3,6 +3,7 @@ import { MapPin, SearchX } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
 import { CategoryIcon } from '../components/domain/CategoryIcon'
+import { ReportButton } from '../components/domain/ReportButton'
 import { RequestServiceForm } from '../components/domain/RequestServiceForm'
 import { ServiceGallery } from '../components/domain/ServiceGallery'
 import { ServiceReviews } from '../components/domain/ServiceReviews'
@@ -171,6 +172,15 @@ export function ServiceDetailPage() {
               <p className="mt-3 text-center text-sm text-text-muted">Este serviço não está disponível para novas solicitações.</p>
             )}
             <p className="mt-3 text-center text-xs text-text-muted">{ESTIMATE_NOTICE}</p>
+            {user?.role === 'producer' && service.status === 'active' && (
+              <div className="mt-2 flex justify-center">
+                <ReportButton
+                  buttonLabel="Denunciar anúncio"
+                  title="Denunciar anúncio"
+                  targets={[{ type: 'service', id: service.id, label: service.title }]}
+                />
+              </div>
+            )}
 
             <div className="mt-6 border-t border-border pt-6">
               <p className="text-xs font-semibold tracking-[0.12em] text-text-muted uppercase">Prestador</p>
