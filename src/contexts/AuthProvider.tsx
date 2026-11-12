@@ -6,6 +6,7 @@ import type { RegisterPayload } from '../types/api'
 import type { User } from '../types/entities'
 import { clearSession, getStoredUser, getToken, saveSession } from '../utils/storage'
 import { AuthContext, type AuthContextValue } from './AuthContext'
+import { FavoritesProvider } from './FavoritesProvider'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(() => (getToken() ? getStoredUser() : null))
@@ -77,5 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [user, isLoading, login, register, updateUser, logout],
   )
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={value}>
+      <FavoritesProvider>{children}</FavoritesProvider>
+    </AuthContext.Provider>
+  )
 }

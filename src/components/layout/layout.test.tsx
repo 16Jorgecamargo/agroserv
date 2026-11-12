@@ -191,7 +191,7 @@ describe('PrivateLayout', () => {
     expect(screen.getByText(header)).toBeInTheDocument()
     expect(screen.getByText('Carlos Souza')).toBeInTheDocument()
     expect(screen.getByText('Santa Helena - PR')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Notificações (em breve)' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /^Notificações/ })).toBeEnabled()
     expect(screen.getByText('Conteúdo da área')).toBeInTheDocument()
   })
 

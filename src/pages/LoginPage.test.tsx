@@ -60,7 +60,7 @@ describe('LoginPage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Usar conta demo: Prestador' }))
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }))
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Painel do prestador' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: /^Olá, / })).toBeInTheDocument()
     expect(localStorage.getItem('agroserv_token')).toBe('mock.prv-1')
   })
 
@@ -95,7 +95,7 @@ describe('LoginPage', () => {
 
     await submitLogin('produtor@agroserv.com', '123456')
     expect(await screen.findByRole('heading', { level: 1, name: 'Pulverização Agrícola' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Acompanhar no painel' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Solicitar serviço' })).toBeInTheDocument()
   })
 
   it('links to password recovery and account registration', () => {

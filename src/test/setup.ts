@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup } from '@testing-library/react'
+import { cleanup, configure } from '@testing-library/react'
 import { afterEach, beforeEach, vi } from 'vitest'
 import { resetMockDatabase } from '../services/api/mockDatabase'
 
@@ -16,6 +16,10 @@ class IntersectionObserverStub {
     return []
   }
 }
+
+configure({ asyncUtilTimeout: 4000 })
+
+vi.mock('../components/map/LeafletMap', () => import('./LeafletMapStub'))
 
 vi.stubGlobal('IntersectionObserver', IntersectionObserverStub)
 window.scrollTo = vi.fn() as unknown as typeof window.scrollTo

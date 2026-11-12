@@ -1,27 +1,67 @@
 import { motion } from 'framer-motion'
-import { SearchX, X } from 'lucide-react'
+import { List, Map as MapIcon, SearchX, SlidersHorizontal, X } from 'lucide-react'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { CategoryIcon } from '../components/domain/CategoryIcon'
 import { SearchBar, type SearchValues } from '../components/domain/SearchBar'
+import { ServiceFiltersPanel, type AdvancedFilterKey, type AdvancedFilterValues } from '../components/domain/ServiceFiltersPanel'
 import { ServiceCard } from '../components/domain/ServiceCard'
 import { ServiceCardSkeleton } from '../components/domain/ServiceCardSkeleton'
+import { ServicesMapPanel } from '../components/domain/ServicesMapPanel'
 import { Container } from '../components/layout/Container'
 import { Breadcrumbs } from '../components/ui/Breadcrumbs'
 import { Button } from '../components/ui/Button'
 import { EmptyState } from '../components/ui/EmptyState'
 import { ErrorState } from '../components/ui/ErrorState'
 import { FilterChip } from '../components/ui/FilterChip'
+import { Modal } from '../components/ui/Modal'
+import { Select } from '../components/ui/Select'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { useCategories, useServicePages } from '../hooks/useServices'
+import { useAllServices, useCategories, useServicePages } from '../hooks/useServices'
 import { paths } from '../routes/paths'
+import type { ServiceFilters, ServiceSort } from '../types/api'
+import type { PriceUnit } from '../types/entities'
 import { cn } from '../utils/cn'
 import { formatCount } from '../utils/format'
 import { fadeUp, staggerContainer } from '../utils/motion'
 
 const PAGE_SIZE = 9
+const PRICE_UNITS: PriceUnit[] = ['hectare', 'hour', 'day', 'trip']
+const SORT_OPTIONS: { value: ServiceSort; label: string }[] = [
+  { value: 'relevance', label: 'Relevância' },
+  { value: 'price_asc', label: 'Menor preço' },
+  { value: 'price_desc', label: 'Maior preço' },
+  { value: 'rating', label: 'Melhor avaliação' },
+]
 
-type FilterKey = 'q' | 'location' | 'category'
+type FilterKey = 'q' | 'location' | 'category' | 'sort' | 'view' | AdvancedFilterKey
+type ViewMode = 'list' | 'map'
+
+const VIEW_OPTIONS: { value: ViewMode; label: string; icon: typeof List }[] = [
+  { value: 'list', label: 'Lista', icon: List },
+  { value: 'map', label: 'Mapa', icon: MapIcon },
+]
+
+function toNumber(value: string): number | undefined {
+  if (!value) return undefined
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : undefined
+}
+
+function readAdvanced(params: URLSearchParams): AdvancedFilterValues {
+  return {
+    priceUnit: PRICE_UNITS.find((unit) => unit === params.get('priceUnit')) ?? '',
+    minPrice: params.get('minPrice') ?? '',
+    maxPrice: params.get('maxPrice') ?? '',
+    minRating: params.get('minRating') ?? '',
+    verified: params.get('verified') === 'true',
+    date: params.get('date') ?? '',
+  }
+}
+
+function countAdvanced(values: AdvancedFilterValues): number {
+  return [values.priceUnit, values.minRating, values.verified, values.date].filter(Boolean).length
+}
 
 export function ServicesPage() {
   usePageTitle('Serviços')
@@ -29,20 +69,35 @@ export function ServicesPage() {
   const query = searchParams.get('q') ?? ''
   const location = searchParams.get('location') ?? ''
   const category = searchParams.get('category') ?? ''
+  const view: ViewMode = searchParams.get('view') === 'map' ? 'map' : 'list'
   const filterKey = searchParams.toString()
   const [pagination, setPagination] = useState({ filterKey, pageCount: 1 })
   const pageCount = pagination.filterKey === filterKey ? pagination.pageCount : 1
 
+  const advanced = readAdvanced(searchParams)
+  const sort = SORT_OPTIONS.find((option) => option.value === searchParams.get('sort'))?.value ?? 'relevance'
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const advancedCount = countAdvanced(advanced)
+
   const categories = useCategories()
-  const { data, error, isLoading, refetch } = useServicePages(
-    { q: query || undefined, location: location || undefined, category: category || undefined },
-    PAGE_SIZE,
-    pageCount,
-  )
+  const filters: Omit<ServiceFilters, 'page' | 'pageSize'> = {
+    q: query || undefined,
+    location: location || undefined,
+    category: category || undefined,
+    priceUnit: advanced.priceUnit || undefined,
+    minPrice: advanced.priceUnit ? toNumber(advanced.minPrice) : undefined,
+    maxPrice: advanced.priceUnit ? toNumber(advanced.maxPrice) : undefined,
+    minRating: toNumber(advanced.minRating),
+    verified: advanced.verified || undefined,
+    date: advanced.date || undefined,
+    sort: sort === 'relevance' ? undefined : sort,
+  }
+  const { data, error, isLoading, refetch } = useServicePages(filters, PAGE_SIZE, pageCount)
+  const allServices = useAllServices(filters, view === 'map')
 
   const services = data?.data ?? []
   const total = data?.meta.total ?? 0
-  const hasFilters = Boolean(query || location || category)
+  const hasFilters = Boolean(query || location || category || advancedCount || sort !== 'relevance')
   const hasMore = services.length < total
 
   function updateParams(next: Partial<Record<FilterKey, string>>) {
@@ -59,7 +114,7 @@ export function ServicesPage() {
   }
 
   function clearFilters() {
-    setSearchParams(new URLSearchParams())
+    setSearchParams(new URLSearchParams(view === 'map' ? { view } : {}))
   }
 
   function loadMore() {
@@ -101,23 +156,80 @@ export function ServicesPage() {
         ))}
       </div>
 
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-6">
-        <p className="text-sm text-text-muted" aria-live="polite">
-          {data ? `Encontramos ${formatCount(total, 'serviço', 'serviços')}` : 'Buscando serviços…'}
-        </p>
-        {hasFilters && (
-          <Button variant="ghost" size="sm" onClick={clearFilters}>
-            <X className="size-4" aria-hidden />
-            Limpar filtros
+      <div className="mt-8 flex flex-wrap items-end justify-between gap-3 border-t border-border pt-6">
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="secondary" size="sm" className="lg:hidden" onClick={() => setIsDrawerOpen(true)}>
+            <SlidersHorizontal className="size-4" aria-hidden />
+            {advancedCount ? `Filtros (${advancedCount})` : 'Filtros'}
           </Button>
-        )}
+          <p className="text-sm text-text-muted" aria-live="polite">
+            {data ? `Encontramos ${formatCount(total, 'serviço', 'serviços')}` : 'Buscando serviços…'}
+          </p>
+          {hasFilters && (
+            <Button variant="ghost" size="sm" onClick={clearFilters}>
+              <X className="size-4" aria-hidden />
+              Limpar filtros
+            </Button>
+          )}
+        </div>
+        <div className="flex w-full flex-wrap items-end gap-3 sm:w-auto">
+          <div role="group" aria-label="Modo de exibição" className="inline-flex h-11 items-center rounded-full border border-border bg-surface p-1">
+            {VIEW_OPTIONS.map((option) => {
+              const Icon = option.icon
+              const isActive = view === option.value
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => updateParams({ view: option.value === 'map' ? 'map' : '' })}
+                  className={cn(
+                    'inline-flex h-full items-center gap-1.5 rounded-full px-3.5 text-sm font-medium transition-colors',
+                    isActive ? 'bg-primary text-white' : 'text-text-muted hover:text-text',
+                  )}
+                >
+                  <Icon className="size-4" aria-hidden />
+                  {option.label}
+                </button>
+              )
+            })}
+          </div>
+          <Select
+            label="Ordenar por"
+            value={sort}
+            onChange={(event) => updateParams({ sort: event.target.value === 'relevance' ? '' : event.target.value })}
+            containerClassName="min-w-0 flex-1 sm:w-56 sm:flex-none"
+          >
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        </div>
       </div>
 
-      <div className="mt-5">
-        {error && !data ? (
+      <Modal isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} title="Filtros">
+        <ServiceFiltersPanel idPrefix="drawer" values={advanced} onChange={updateParams} />
+        <div className="mt-6 flex justify-end">
+          <Button onClick={() => setIsDrawerOpen(false)}>Ver resultados</Button>
+        </div>
+      </Modal>
+
+      <div className="mt-5 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8">
+        <aside aria-label="Filtros avançados" className="hidden lg:block">
+          <div className="sticky top-24 rounded-card border border-border bg-surface p-5 shadow-card">
+            <h2 className="mb-4 text-sm font-semibold text-text">Filtros</h2>
+            <ServiceFiltersPanel idPrefix="panel" values={advanced} onChange={updateParams} />
+          </div>
+        </aside>
+        <div>
+        {view === 'map' ? (
+          <ServicesMapPanel services={allServices.data} error={allServices.error} onRetry={allServices.refetch} onClearFilters={clearFilters} />
+        ) : error && !data ? (
           <ErrorState message={error.message} onRetry={refetch} />
         ) : !data ? (
-          <div role="status" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div role="status" className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             <span className="sr-only">Carregando serviços…</span>
             {Array.from({ length: 6 }, (_, index) => (
               <ServiceCardSkeleton key={index} />
@@ -137,7 +249,7 @@ export function ServicesPage() {
               initial="hidden"
               animate="visible"
               aria-busy={isLoading}
-              className={cn('grid gap-5 transition-opacity sm:grid-cols-2 lg:grid-cols-3', isLoading && 'opacity-60')}
+              className={cn('grid gap-5 transition-opacity sm:grid-cols-2 xl:grid-cols-3', isLoading && 'opacity-60')}
             >
               {services.map((service) => (
                 <motion.li key={service.id} variants={fadeUp}>
@@ -154,6 +266,7 @@ export function ServicesPage() {
             )}
           </>
         )}
+        </div>
       </div>
     </Container>
   )

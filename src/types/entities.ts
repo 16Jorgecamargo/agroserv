@@ -24,11 +24,28 @@ export interface PasswordResetTokenRecord {
   usedAt?: string
 }
 
+export type CategoryIcon =
+  | 'sprout'
+  | 'wheat'
+  | 'droplets'
+  | 'spray-can'
+  | 'flask-conical'
+  | 'truck'
+  | 'wrench'
+  | 'tractor'
+  | 'leaf'
+  | 'shovel'
+  | 'warehouse'
+  | 'sun'
+  | 'tree-pine'
+  | 'beef'
+
 export interface Category {
   id: string
   slug: string
   name: string
-  icon: string
+  icon: CategoryIcon
+  active: boolean
 }
 
 export interface ProviderProfile {
@@ -58,6 +75,7 @@ export interface Provider {
 }
 
 export type PriceUnit = 'hour' | 'hectare' | 'day' | 'trip'
+export type ServiceStatus = 'active' | 'paused' | 'hidden'
 
 export interface Service {
   id: string
@@ -74,11 +92,30 @@ export interface Service {
   reviewCount: number
   available: boolean
   imageUrl: string
+  providerVerified: boolean
+  photos: string[]
+  equipmentIds: string[]
+  status: ServiceStatus
+  hiddenReason?: string
+  createdAt: string
+}
+
+export type EquipmentType = 'tractor' | 'harvester' | 'sprayer' | 'drone' | 'truck' | 'implement' | 'other'
+
+export interface Equipment {
+  id: string
+  providerId: string
+  type: EquipmentType
+  model: string
+  year: number
+  specs: string
+  photos: string[]
 }
 
 export interface ServiceDetail extends Service {
   provider: Provider
   category: Category
+  equipment: Equipment[]
 }
 
 export interface Property {
@@ -207,4 +244,135 @@ export interface ServiceRequestDetail extends ServiceRequest {
   events: RequestEvent[]
   review?: Review
   allowedActions: RequestAction[]
+}
+
+export interface ReviewSummary {
+  average: number
+  count: number
+  writtenCount: number
+  distribution: Record<1 | 2 | 3 | 4 | 5, number>
+}
+
+export interface Message {
+  id: string
+  requestId: string
+  senderId: string
+  senderName: string
+  senderRole: Role
+  text: string
+  createdAt: string
+}
+
+export type NotificationType =
+  | 'request_created'
+  | 'request_status'
+  | 'counter_offer'
+  | 'message'
+  | 'review'
+  | 'review_reply'
+  | 'verification'
+  | 'service_hidden'
+  | 'warning'
+  | 'report_resolved'
+  | 'report_created'
+  | 'verification_submitted'
+
+export interface Notification {
+  id: string
+  type: NotificationType
+  title: string
+  body?: string
+  link: string
+  read: boolean
+  createdAt: string
+}
+
+export type ReportTargetType = 'service' | 'review' | 'user' | 'request'
+export type ReportReason = 'offensive' | 'false_info' | 'fraud' | 'service_not_done' | 'other'
+export type ReportStatus = 'open' | 'resolved' | 'dismissed'
+export type ReportResolutionAction = 'hide_service' | 'hide_review' | 'warn' | 'suspend' | 'archive'
+
+export interface ReportResolution {
+  action: ReportResolutionAction
+  targetUserId?: string
+  message?: string
+  internalNote: string
+  adminId: string
+  adminName: string
+  resolvedAt: string
+}
+
+export interface Report {
+  id: string
+  reporterId: string
+  reporterName: string
+  reporterRole: Role
+  targetType: ReportTargetType
+  targetId: string
+  targetLabel: string
+  reason: ReportReason
+  description: string
+  status: ReportStatus
+  resolution?: ReportResolution
+  createdAt: string
+}
+
+export type VerificationDocumentKind = 'identity' | 'address'
+
+export interface VerificationDocument {
+  kind: VerificationDocumentKind
+  uploadId: string
+  url: string
+  name: string
+}
+
+export interface Verification {
+  status: VerificationStatus
+  documents: VerificationDocument[]
+  submittedAt?: string
+  reviewedAt?: string
+  rejectionReason?: string
+}
+
+export type UploadPurpose = 'public' | 'verification'
+
+export interface Upload {
+  id: string
+  url: string
+  name: string
+  contentType: string
+  size: number
+  purpose: UploadPurpose
+  createdAt: string
+}
+
+export type AdminActionType =
+  | 'suspend_user'
+  | 'reactivate_user'
+  | 'create_admin'
+  | 'approve_verification'
+  | 'reject_verification'
+  | 'hide_service'
+  | 'show_service'
+  | 'delete_service'
+  | 'hide_review'
+  | 'warn_user'
+  | 'resolve_report'
+  | 'dismiss_report'
+  | 'create_category'
+  | 'update_category'
+  | 'delete_category'
+
+export type AdminActionTargetType = 'user' | 'service' | 'review' | 'report' | 'category' | 'verification'
+
+export interface AdminAction {
+  id: string
+  adminId: string
+  adminName: string
+  action: AdminActionType
+  targetType: AdminActionTargetType
+  targetId: string
+  targetLabel: string
+  reason?: string
+  createdAt: string
 }

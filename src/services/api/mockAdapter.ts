@@ -35,7 +35,8 @@ export function createMockAdapter({
           message: 'Não foi possível carregar os dados. Tente novamente.',
         })
       }
-      return JSON.parse(JSON.stringify(handleMockRequest(config))) as T
+      const result = await handleMockRequest(config)
+      return (result === undefined ? undefined : JSON.parse(JSON.stringify(result))) as T
     },
   }
 }

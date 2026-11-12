@@ -8,7 +8,7 @@
 <title>Página não encontrada · AgroServ</title>
 <script>
 (() => {
-  const appBase = '/agroserv/app/'
+  const appBase = '/app/'
   const { pathname, search, hash } = window.location
   if (pathname.startsWith(appBase) && !hash) {
     const route = pathname.slice(appBase.length).replace(/^index\.html$/, '')
@@ -16,13 +16,13 @@
   }
 })()
 </script>
-<link rel="icon" type="image/png" sizes="32x32" href="/agroserv/assets/brand/favicon-32.png" />
-<link rel="icon" type="image/png" sizes="192x192" href="/agroserv/assets/brand/icon-192.png" />
-<link rel="apple-touch-icon" href="/agroserv/assets/brand/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/brand/icon-192.png" />
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" />
 <style>
 @font-face {
   font-family: 'Manrope';
-  src: url('/agroserv/slides/fonts/manrope.woff2') format('woff2');
+  src: url('/slides/fonts/manrope.woff2') format('woff2');
   font-weight: 200 800;
   font-display: swap;
 }
@@ -66,8 +66,8 @@ footer { padding-bottom: 32px; font-size: 14px; color: var(--muted); text-align:
 </head>
 <body>
 <header>
-  <a class="logo" href="/agroserv/" aria-label="AgroServ, início">
-    <img src="/agroserv/assets/brand/logo-horizontal.png" alt="" width="140" height="36" />
+  <a class="logo" href="/" aria-label="AgroServ, início">
+    <img src="/assets/brand/logo-horizontal.png" alt="" width="140" height="36" />
   </a>
 </header>
 <main>
@@ -77,9 +77,9 @@ footer { padding-bottom: 32px; font-size: 14px; color: var(--muted); text-align:
     <h1>Página não encontrada</h1>
     <p>O endereço acessado não existe ou foi alterado. Escolha um dos caminhos abaixo para continuar.</p>
     <div class="actions">
-      <a class="btn btn-primary" href="/agroserv/">Voltar para o início</a>
-      <a class="btn btn-secondary" href="/agroserv/app/">Abrir o app</a>
-      <a class="btn btn-secondary" href="/agroserv/slides/">Apresentação</a>
+      <a class="btn btn-primary" href="/">Voltar para o início</a>
+      <a class="btn btn-secondary" href="/app/">Abrir o app</a>
+      <a class="btn btn-secondary" href="/slides/">Apresentação</a>
     </div>
   </div>
 </main>

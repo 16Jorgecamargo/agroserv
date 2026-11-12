@@ -3,6 +3,7 @@ import type { LoginResponse, RequestConfig } from '../../../types/api'
 import { ApiError } from '../apiError'
 import { getMockDatabase } from '../mockDatabase'
 import { handleMockRequest } from '../mockRoutes'
+import { toProvider } from './shared'
 
 const validPayload = {
   name: 'Ana Produtora',
@@ -66,7 +67,7 @@ describe('POST /auth/register', () => {
       rating: 0,
       reviewCount: 0,
     })
-    expect(database.providers.find((provider) => provider.id === result.user.id)).toMatchObject({
+    expect(toProvider(result.user.id)).toMatchObject({
       name: 'Ana Produtora',
       verified: false,
       serviceRadiusKm: 50,

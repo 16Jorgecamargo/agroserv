@@ -4,6 +4,7 @@ export const paths = {
   home: '/',
   services: '/servicos',
   serviceDetail: (id: string) => `/servicos/${encodeURIComponent(id)}`,
+  providerPublicProfile: (id: string) => `/prestadores/${encodeURIComponent(id)}`,
   login: '/login',
   forgotPassword: '/esqueci-senha',
   resetPassword: '/redefinir-senha',
@@ -12,15 +13,48 @@ export const paths = {
   privacy: '/privacidade',
   dashboard: '/dashboard',
   requests: '/solicitacoes',
+  requestDetail: (id: string) => `/solicitacoes/${encodeURIComponent(id)}`,
+  properties: '/propriedades',
+  favorites: '/favoritos',
   providerRoot: '/prestador',
   providerDashboard: '/prestador/dashboard',
+  providerServices: '/prestador/servicos',
+  providerServiceNew: '/prestador/servicos/novo',
+  providerServiceEdit: (id: string) => `/prestador/servicos/${encodeURIComponent(id)}/editar`,
+  providerRequests: '/prestador/solicitacoes',
+  providerAgenda: '/prestador/agenda',
+  providerReviews: '/prestador/avaliacoes',
+  providerEquipment: '/prestador/equipamentos',
+  providerVerification: '/prestador/verificacao',
+  providerRequestDetail: (id: string) => `/prestador/solicitacoes/${encodeURIComponent(id)}`,
   adminDashboard: '/admin',
+  adminRequestDetail: (id: string) => `/admin/solicitacoes/${encodeURIComponent(id)}`,
+  adminUsers: '/admin/usuarios',
+  adminUserDetail: (id: string) => `/admin/usuarios/${encodeURIComponent(id)}`,
+  adminVerifications: '/admin/verificacoes',
+  adminServices: '/admin/anuncios',
+  adminReports: '/admin/denuncias',
+  adminReportDetail: (id: string) => `/admin/denuncias/${encodeURIComponent(id)}`,
+  adminCategories: '/admin/categorias',
+  adminActions: '/admin/historico',
+  adminAccount: '/admin/conta',
   profile: '/perfil',
+  notifications: '/notificacoes',
+  providerNotifications: '/prestador/notificacoes',
+  adminNotifications: '/admin/notificacoes',
   providerProfile: '/prestador/perfil',
 }
 
 export const routePatterns = {
   serviceDetail: '/servicos/:id',
+  providerPublicProfile: '/prestadores/:id',
+  requestDetail: '/solicitacoes/:id',
+}
+
+export function notificationsPathFor(role: Role): string {
+  if (role === 'provider') return paths.providerNotifications
+  if (role === 'admin') return paths.adminNotifications
+  return paths.notifications
 }
 
 export interface LoginLocationState {
@@ -42,7 +76,7 @@ export function getRequiredRole(pathname: string): Role | null {
     pathname.startsWith(`${paths.requests}/`) ||
     pathname === '/propriedades' ||
     pathname.startsWith('/propriedades/') ||
-    pathname === '/favoritos' ||
+    pathname === paths.favorites ||
     pathname === paths.profile
   ) {
     return 'producer'

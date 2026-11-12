@@ -37,8 +37,7 @@ export interface ServiceDetailView extends ServiceView {
 export function isServiceVisible(service: Service): boolean {
   // Regra geral de visibilidade do catálogo (seção 10 do contrato)
   const providerActive = service.provider?.status === 'active';
-  const categoryActive = service.category?.active === true;
-  return !service.deletedAt && service.status === 'active' && providerActive && categoryActive;
+  return !service.deletedAt && service.status === 'active' && providerActive;
 }
 
 export function toServiceView(service: Service, showHiddenReason = false): ServiceView {

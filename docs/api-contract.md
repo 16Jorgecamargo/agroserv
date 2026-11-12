@@ -2,8 +2,10 @@
 
 Este é o contrato entre o front-end e o back-end do AgroServ. Ele cobre:
 
-- os endpoints que o front-end **já consome** (marcados como **Implementado**), hoje respondidos pelo adaptador mock (`src/services/api/mockRoutes.ts`);
-- os endpoints da **ampliação** (marcados como **Planejado**), ilustrados em [`future-flowcharts.md`](future-flowcharts.md).
+- todos os endpoints que o front-end consome, marcados como **Implementado**;
+- as regras de validação, permissão, transição e notificação de cada um.
+
+Os endpoints existem em dois lugares com o mesmo comportamento: no adaptador mock do front-end (`src/services/api/mockRoutes.ts`) e no back-end real em [`backend/`](../backend/README.md) (NestJS + TypeORM + SQLite). Os fluxos estão em [`system-flowchart.md`](system-flowchart.md) e [`flowcharts.md`](flowcharts.md).
 
 Este contrato é autossuficiente: tudo o que front-end e back-end precisam implementar está aqui.
 
@@ -602,101 +604,101 @@ Rótulos na interface:
 
 | Método e rota | Papel | Situação | Fase |
 |---|---|---|---|
-| `POST /auth/register` | Público | Planejado | F1 |
-| `POST /auth/login` | Público | Implementado, muda | F1 |
-| `GET /auth/me` | Autenticado | Implementado, muda | F1 |
-| `POST /auth/forgot-password` | Público | Planejado | F1 |
-| `POST /auth/reset-password` | Público | Planejado | F1 |
-| `PATCH /me` | Autenticado | Planejado | F1 |
-| `PATCH /me/password` | Autenticado | Planejado | F1 |
-| `DELETE /me` | Produtor, Prestador | Planejado | F1 |
-| `POST /uploads` | Autenticado | Planejado | F3 |
-| `GET /categories` | Público | Implementado, muda | F6 |
-| `GET /services` | Público | Implementado, muda | F3, F5, F7 |
-| `GET /services/featured` | Público | Implementado, muda | F3 |
-| `GET /services/:id` | Público | Implementado, muda | F3, F5 |
-| `GET /services/:id/reviews` | Público | Planejado | F4 |
-| `GET /services/:id/blocked-days` | Público | Planejado | F5 |
-| `GET /providers/:id` | Público | Planejado | F7 |
-| `GET /me/properties` | Produtor | Planejado | F2 |
-| `POST /me/properties` | Produtor | Planejado | F2 |
-| `PATCH /me/properties/:id` | Produtor | Planejado | F2 |
-| `DELETE /me/properties/:id` | Produtor | Planejado | F2 |
-| `POST /requests` | Produtor | Planejado | F2 |
-| `GET /requests` | Produtor | Implementado, muda | F2 |
-| `GET /requests/:id` | Produtor | Planejado | F2 |
-| `POST /requests/:id/cancel` | Produtor | Planejado | F2 |
-| `POST /requests/:id/counter-offer/accept` | Produtor | Planejado | F2 |
-| `POST /requests/:id/counter-offer/decline` | Produtor | Planejado | F2 |
-| `POST /requests/:id/review` | Produtor | Planejado | F4 |
-| `PATCH /reviews/:id` | Produtor | Planejado | F4 |
-| `GET /dashboard` | Produtor | Implementado, muda | F2 |
-| `GET /me/favorites` | Produtor | Planejado | F7 |
-| `POST /me/favorites` | Produtor | Planejado | F7 |
-| `DELETE /me/favorites/:serviceId` | Produtor | Planejado | F7 |
-| `GET /provider/profile` | Prestador | Planejado | F1 |
-| `PATCH /provider/profile` | Prestador | Planejado | F1 |
-| `GET /provider/dashboard` | Prestador | Planejado | F3 |
-| `GET /provider/services` | Prestador | Planejado | F3 |
-| `GET /provider/services/:id` | Prestador | Planejado | F3 |
-| `POST /provider/services` | Prestador | Planejado | F3 |
-| `PATCH /provider/services/:id` | Prestador | Planejado | F3 |
-| `POST /provider/services/:id/pause` | Prestador | Planejado | F3 |
-| `POST /provider/services/:id/activate` | Prestador | Planejado | F3 |
-| `DELETE /provider/services/:id` | Prestador | Planejado | F3 |
-| `GET /provider/requests` | Prestador | Planejado | F3 |
-| `GET /provider/requests/:id` | Prestador | Planejado | F3 |
-| `POST /provider/requests/:id/accept` | Prestador | Planejado | F3 |
-| `POST /provider/requests/:id/reject` | Prestador | Planejado | F3 |
-| `POST /provider/requests/:id/counter-offer` | Prestador | Planejado | F3 |
-| `POST /provider/requests/:id/start` | Prestador | Planejado | F3 |
-| `POST /provider/requests/:id/complete` | Prestador | Planejado | F3 |
-| `POST /provider/requests/:id/cancel` | Prestador | Planejado | F3 |
-| `GET /provider/equipment` | Prestador | Planejado | F5 |
-| `POST /provider/equipment` | Prestador | Planejado | F5 |
-| `PATCH /provider/equipment/:id` | Prestador | Planejado | F5 |
-| `DELETE /provider/equipment/:id` | Prestador | Planejado | F5 |
-| `GET /provider/agenda` | Prestador | Planejado | F5 |
-| `POST /provider/blocked-days` | Prestador | Planejado | F5 |
-| `DELETE /provider/blocked-days/:date` | Prestador | Planejado | F5 |
-| `GET /provider/reviews` | Prestador | Planejado | F4 |
-| `PUT /provider/reviews/:id/reply` | Prestador | Planejado | F4 |
-| `GET /provider/verification` | Prestador | Planejado | F5 |
-| `POST /provider/verification` | Prestador | Planejado | F5 |
-| `GET /requests/:id/messages` | Participante, Admin | Planejado | F4 |
-| `POST /requests/:id/messages` | Participante | Planejado | F4 |
-| `GET /me/notifications` | Autenticado | Planejado | F4 |
-| `POST /me/notifications/:id/read` | Autenticado | Planejado | F4 |
-| `POST /me/notifications/read-all` | Autenticado | Planejado | F4 |
-| `POST /reports` | Produtor, Prestador | Planejado | F6 |
-| `GET /admin/dashboard` | Admin | Planejado | F6 |
-| `GET /admin/users` | Admin | Planejado | F6 |
-| `POST /admin/users` | Admin | Planejado | F6 |
-| `GET /admin/users/:id` | Admin | Planejado | F6 |
-| `GET /admin/requests/:id` | Admin | Planejado | F6 |
-| `POST /admin/users/:id/suspend` | Admin | Planejado | F6 |
-| `POST /admin/users/:id/reactivate` | Admin | Planejado | F6 |
-| `GET /admin/verifications` | Admin | Planejado | F6 |
-| `POST /admin/verifications/:providerId/approve` | Admin | Planejado | F6 |
-| `POST /admin/verifications/:providerId/reject` | Admin | Planejado | F6 |
-| `GET /admin/services` | Admin | Planejado | F6 |
-| `POST /admin/services/:id/hide` | Admin | Planejado | F6 |
-| `POST /admin/services/:id/show` | Admin | Planejado | F6 |
-| `DELETE /admin/services/:id` | Admin | Planejado | F6 |
-| `GET /admin/reports` | Admin | Planejado | F6 |
-| `GET /admin/reports/:id` | Admin | Planejado | F6 |
-| `POST /admin/reports/:id/resolve` | Admin | Planejado | F6 |
-| `GET /admin/categories` | Admin | Planejado | F6 |
-| `POST /admin/categories` | Admin | Planejado | F6 |
-| `PATCH /admin/categories/:id` | Admin | Planejado | F6 |
-| `DELETE /admin/categories/:id` | Admin | Planejado | F6 |
-| `GET /admin/actions` | Admin | Planejado | F6 |
+| `POST /auth/register` | Público | Implementado | F1 |
+| `POST /auth/login` | Público | Implementado | F1 |
+| `GET /auth/me` | Autenticado | Implementado | F1 |
+| `POST /auth/forgot-password` | Público | Implementado | F1 |
+| `POST /auth/reset-password` | Público | Implementado | F1 |
+| `PATCH /me` | Autenticado | Implementado | F1 |
+| `PATCH /me/password` | Autenticado | Implementado | F1 |
+| `DELETE /me` | Produtor, Prestador | Implementado | F1 |
+| `POST /uploads` | Autenticado | Implementado | F3 |
+| `GET /categories` | Público | Implementado | F6 |
+| `GET /services` | Público | Implementado | F3, F5, F7 |
+| `GET /services/featured` | Público | Implementado | F3 |
+| `GET /services/:id` | Público | Implementado | F3, F5 |
+| `GET /services/:id/reviews` | Público | Implementado | F4 |
+| `GET /services/:id/blocked-days` | Público | Implementado | F5 |
+| `GET /providers/:id` | Público | Implementado | F7 |
+| `GET /me/properties` | Produtor | Implementado | F2 |
+| `POST /me/properties` | Produtor | Implementado | F2 |
+| `PATCH /me/properties/:id` | Produtor | Implementado | F2 |
+| `DELETE /me/properties/:id` | Produtor | Implementado | F2 |
+| `POST /requests` | Produtor | Implementado | F2 |
+| `GET /requests` | Produtor | Implementado | F2 |
+| `GET /requests/:id` | Produtor | Implementado | F2 |
+| `POST /requests/:id/cancel` | Produtor | Implementado | F2 |
+| `POST /requests/:id/counter-offer/accept` | Produtor | Implementado | F2 |
+| `POST /requests/:id/counter-offer/decline` | Produtor | Implementado | F2 |
+| `POST /requests/:id/review` | Produtor | Implementado | F4 |
+| `PATCH /reviews/:id` | Produtor | Implementado | F4 |
+| `GET /dashboard` | Produtor | Implementado | F2 |
+| `GET /me/favorites` | Produtor | Implementado | F7 |
+| `POST /me/favorites` | Produtor | Implementado | F7 |
+| `DELETE /me/favorites/:serviceId` | Produtor | Implementado | F7 |
+| `GET /provider/profile` | Prestador | Implementado | F1 |
+| `PATCH /provider/profile` | Prestador | Implementado | F1 |
+| `GET /provider/dashboard` | Prestador | Implementado | F3 |
+| `GET /provider/services` | Prestador | Implementado | F3 |
+| `GET /provider/services/:id` | Prestador | Implementado | F3 |
+| `POST /provider/services` | Prestador | Implementado | F3 |
+| `PATCH /provider/services/:id` | Prestador | Implementado | F3 |
+| `POST /provider/services/:id/pause` | Prestador | Implementado | F3 |
+| `POST /provider/services/:id/activate` | Prestador | Implementado | F3 |
+| `DELETE /provider/services/:id` | Prestador | Implementado | F3 |
+| `GET /provider/requests` | Prestador | Implementado | F3 |
+| `GET /provider/requests/:id` | Prestador | Implementado | F3 |
+| `POST /provider/requests/:id/accept` | Prestador | Implementado | F3 |
+| `POST /provider/requests/:id/reject` | Prestador | Implementado | F3 |
+| `POST /provider/requests/:id/counter-offer` | Prestador | Implementado | F3 |
+| `POST /provider/requests/:id/start` | Prestador | Implementado | F3 |
+| `POST /provider/requests/:id/complete` | Prestador | Implementado | F3 |
+| `POST /provider/requests/:id/cancel` | Prestador | Implementado | F3 |
+| `GET /provider/equipment` | Prestador | Implementado | F5 |
+| `POST /provider/equipment` | Prestador | Implementado | F5 |
+| `PATCH /provider/equipment/:id` | Prestador | Implementado | F5 |
+| `DELETE /provider/equipment/:id` | Prestador | Implementado | F5 |
+| `GET /provider/agenda` | Prestador | Implementado | F5 |
+| `POST /provider/blocked-days` | Prestador | Implementado | F5 |
+| `DELETE /provider/blocked-days/:date` | Prestador | Implementado | F5 |
+| `GET /provider/reviews` | Prestador | Implementado | F4 |
+| `PUT /provider/reviews/:id/reply` | Prestador | Implementado | F4 |
+| `GET /provider/verification` | Prestador | Implementado | F5 |
+| `POST /provider/verification` | Prestador | Implementado | F5 |
+| `GET /requests/:id/messages` | Participante, Admin | Implementado | F4 |
+| `POST /requests/:id/messages` | Participante | Implementado | F4 |
+| `GET /me/notifications` | Autenticado | Implementado | F4 |
+| `POST /me/notifications/:id/read` | Autenticado | Implementado | F4 |
+| `POST /me/notifications/read-all` | Autenticado | Implementado | F4 |
+| `POST /reports` | Produtor, Prestador | Implementado | F6 |
+| `GET /admin/dashboard` | Admin | Implementado | F6 |
+| `GET /admin/users` | Admin | Implementado | F6 |
+| `POST /admin/users` | Admin | Implementado | F6 |
+| `GET /admin/users/:id` | Admin | Implementado | F6 |
+| `GET /admin/requests/:id` | Admin | Implementado | F6 |
+| `POST /admin/users/:id/suspend` | Admin | Implementado | F6 |
+| `POST /admin/users/:id/reactivate` | Admin | Implementado | F6 |
+| `GET /admin/verifications` | Admin | Implementado | F6 |
+| `POST /admin/verifications/:providerId/approve` | Admin | Implementado | F6 |
+| `POST /admin/verifications/:providerId/reject` | Admin | Implementado | F6 |
+| `GET /admin/services` | Admin | Implementado | F6 |
+| `POST /admin/services/:id/hide` | Admin | Implementado | F6 |
+| `POST /admin/services/:id/show` | Admin | Implementado | F6 |
+| `DELETE /admin/services/:id` | Admin | Implementado | F6 |
+| `GET /admin/reports` | Admin | Implementado | F6 |
+| `GET /admin/reports/:id` | Admin | Implementado | F6 |
+| `POST /admin/reports/:id/resolve` | Admin | Implementado | F6 |
+| `GET /admin/categories` | Admin | Implementado | F6 |
+| `POST /admin/categories` | Admin | Implementado | F6 |
+| `PATCH /admin/categories/:id` | Admin | Implementado | F6 |
+| `DELETE /admin/categories/:id` | Admin | Implementado | F6 |
+| `GET /admin/actions` | Admin | Implementado | F6 |
 
 ---
 
 ## 8. Autenticação e conta
 
-### `POST /auth/register` — Planejado (F1)
+### `POST /auth/register` — Implementado (F1)
 Público. Cria uma conta de produtor ou prestador e já devolve a sessão.
 
 Corpo:
@@ -718,7 +720,7 @@ O back-end guarda a data do aceite dos termos (LGPD). As páginas de termos e pr
 
 Efeitos: se `role` for `provider`, cria um `ProviderProfile` com `document: ""`, `serviceRadiusKm: 50`, `yearsOfExperience: 0`, `description: ""`, `verificationStatus: "not_sent"`, `rating: 0`, `reviewCount: 0`.
 
-### `POST /auth/login` — Implementado, muda (F1)
+### `POST /auth/login` — Implementado (F1)
 Corpo: `{ "email": string, "password": string }`. E-mail comparado sem diferenciar maiúsculas e sem espaços nas pontas.
 
 200: `{ "token": string, "user": User }`.
@@ -734,10 +736,10 @@ Mudança: hoje só existe o produtor demo. Depois, qualquer papel faz login. O f
 
 Token: válido por 7 dias. Depois disso, qualquer requisição recebe 401 e o usuário entra de novo. Não há renovação automática nesta versão.
 
-### `GET /auth/me` — Implementado, muda (F1)
+### `GET /auth/me` — Implementado (F1)
 Autenticado. 200: `User`. 401 se o token for inválido ou se a conta estiver suspensa ou excluída. O front-end apaga a sessão somente no 401.
 
-### `POST /auth/forgot-password` — Planejado (F1)
+### `POST /auth/forgot-password` — Implementado (F1)
 Público. Corpo: `{ "email": string }`.
 
 200 (sempre, exista ou não a conta): `{ "message": "Se o e-mail existir, enviaremos um link." }`.
@@ -746,26 +748,26 @@ Produção: envia e-mail com o link `<URL do front-end>/redefinir-senha?token=<t
 
 Mock: como não há e-mail, a resposta inclui `"resetToken": string` quando a conta existe, e a tela mostra o link. **O back-end real não deve devolver `resetToken`.**
 
-### `POST /auth/reset-password` — Planejado (F1)
+### `POST /auth/reset-password` — Implementado (F1)
 Público. Corpo: `{ "token": string, "password": string }`.
 
 200: `{ "message": "Senha redefinida. Entre com a nova senha." }`.
 
 422: `fields.token` `Link inválido ou expirado.` (inexistente, vencido ou já usado), `fields.password` mínimo 8 caracteres.
 
-### `PATCH /me` — Planejado (F1)
+### `PATCH /me` — Implementado (F1)
 Autenticado. Corpo parcial: `name`, `phone`, `city`, `state` (mesmas regras do cadastro) e `avatarUrl` (URL devolvida por `POST /uploads`, ou `null` para remover).
 
 200: `User` atualizado. O e-mail não pode ser alterado nesta versão.
 
-### `PATCH /me/password` — Planejado (F1)
+### `PATCH /me/password` — Implementado (F1)
 Autenticado. Corpo: `{ "currentPassword": string, "newPassword": string }`.
 
 200: `{ "message": "Senha alterada." }`. 422: `fields.currentPassword` `Senha atual incorreta.`; `fields.newPassword` mínimo 8 caracteres e diferente da atual (`A nova senha precisa ser diferente da atual.`).
 
 Efeito: `mustChangePassword` vira `false`.
 
-### `DELETE /me` — Planejado (F1)
+### `DELETE /me` — Implementado (F1)
 Produtor ou prestador. Administradores não se excluem (403).
 
 200: `{ "message": "Conta excluída." }`.
@@ -784,7 +786,7 @@ Efeitos (exclusão lógica):
 
 ## 9. Arquivos
 
-### `POST /uploads` — Planejado (F3)
+### `POST /uploads` — Implementado (F3)
 Autenticado. Envia um arquivo e devolve a URL para usar em outros endpoints (`avatarUrl`, `photos`, documentos de verificação).
 
 Produção: `multipart/form-data` com o campo `file`.
@@ -816,14 +818,14 @@ Um upload `verification` não pode ser usado como foto, e um `public` não pode 
 
 ## 10. Catálogo público
 
-Regra geral de visibilidade: um serviço aparece em buscas, destaques, favoritos e perfil público só quando `status === 'active'`, o prestador está `active` e a categoria está ativa. Serviços de prestadores suspensos somem da busca sem mudar de status, e voltam quando a conta é reativada.
+Regra geral de visibilidade: um serviço aparece em buscas, destaques, favoritos e perfil público só quando `status === 'active'` e o prestador está `active`. Categoria desativada sai dos filtros e do formulário de novo serviço, mas os serviços já publicados nela continuam visíveis. Serviços de prestadores suspensos somem da busca sem mudar de status, e voltam quando a conta é reativada.
 
-### `GET /categories` — Implementado, muda (F6)
+### `GET /categories` — Implementado (F6)
 200: `Category[]` com `active: true`, na ordem de cadastro.
 
 Mudança: o campo `active` passa a existir, e categorias desativadas deixam de aparecer. A lista completa fica em `GET /admin/categories`.
 
-### `GET /services` — Implementado, muda (F3, F5, F7)
+### `GET /services` — Implementado (F3, F5, F7)
 Query (todas opcionais):
 
 | Parâmetro | Regra | Situação |
@@ -833,30 +835,30 @@ Query (todas opcionais):
 | `category` | `slug` da categoria. Slug inexistente ou de categoria desativada retorna lista vazia. | Implementado |
 | `page` | Inteiro ≥ 1. Padrão 1. | Implementado |
 | `pageSize` | Inteiro ≥ 1, máximo 60. Padrão 9. | Implementado |
-| `priceUnit` | `hectare`, `hour`, `day` ou `trip`: só serviços cobrados nessa unidade. | Planejado (F7) |
-| `minPrice`, `maxPrice` | Número ≥ 0, comparado com `price`. **Só valem junto com `priceUnit`**: sem ele, são ignorados, porque comparar preço por hora com preço por hectare não faz sentido. | Planejado (F7) |
-| `minRating` | Número de 1 a 5, compara com `rating`. | Planejado (F7) |
-| `verified` | `true`: só prestadores verificados. | Planejado (F7) |
-| `date` | `YYYY-MM-DD`: só serviços `available` cujo prestador não bloqueou esse dia. | Planejado (F7) |
-| `sort` | `relevance` (padrão, ordem de cadastro), `price_asc`, `price_desc`, `rating` (nota e depois número de avaliações). | Planejado (F7) |
+| `priceUnit` | `hectare`, `hour`, `day` ou `trip`: só serviços cobrados nessa unidade. | Implementado (F7) |
+| `minPrice`, `maxPrice` | Número ≥ 0, comparado com `price`. **Só valem junto com `priceUnit`**: sem ele, são ignorados, porque comparar preço por hora com preço por hectare não faz sentido. | Implementado (F7) |
+| `minRating` | Número de 1 a 5, compara com `rating`. | Implementado (F7) |
+| `verified` | `true`: só prestadores verificados. | Implementado (F7) |
+| `date` | `YYYY-MM-DD`: só serviços `available` cujo prestador não bloqueou esse dia. | Implementado (F7) |
+| `sort` | `relevance` (padrão, ordem de cadastro), `price_asc`, `price_desc`, `rating` (nota e depois número de avaliações). | Implementado (F7) |
 
-Valores inválidos nos filtros planejados são ignorados, sem erro.
+Valores inválidos nesses filtros são ignorados, sem erro.
 
 200: `Paginated<Service>`.
 
 Mudanças: aplica a regra geral de visibilidade (F3) e os novos campos de `Service` (`providerVerified`, `photos`, `status` etc.).
 
-### `GET /services/featured` — Implementado, muda (F3)
+### `GET /services/featured` — Implementado (F3)
 Query: `limit` (padrão 4, máximo 12).
 
 200: `Service[]` visíveis e com `available: true`, ordenados por avaliação e número de avaliações.
 
-### `GET /services/:id` — Implementado, muda (F3, F5)
+### `GET /services/:id` — Implementado (F3, F5)
 200: `ServiceDetail` (serviço + `provider` + `category` + `equipment`).
 
 404 `service_not_found` quando o serviço não existe **ou** não está visível. Exceção: o prestador dono e o administrador recebem o detalhe de qualquer status, com `hiddenReason` se houver.
 
-### `GET /services/:id/reviews` — Planejado (F4)
+### `GET /services/:id/reviews` — Implementado (F4)
 Query: `page`, `pageSize` (padrão 10, máximo 50), `rating` (1 a 5, opcional).
 
 200:
@@ -867,12 +869,12 @@ Query: `page`, `pageSize` (padrão 10, máximo 50), `rating` (1 a 5, opcional).
 
 Avaliações ocultas não aparecem. Ordem: mais recentes primeiro. 404 `service_not_found` como em `GET /services/:id`.
 
-### `GET /services/:id/blocked-days` — Planejado (F5)
+### `GET /services/:id/blocked-days` — Implementado (F5)
 Query: `from` e `to` (`YYYY-MM-DD`, padrão hoje até hoje + 90 dias, intervalo máximo de 366 dias).
 
 200: `string[]` com os dias bloqueados pelo prestador do serviço, em ordem crescente. O formulário de solicitação desabilita esses dias.
 
-### `GET /providers/:id` — Planejado (F7)
+### `GET /providers/:id` — Implementado (F7)
 200:
 
 ```ts
@@ -893,10 +895,10 @@ interface ProviderPublicProfile {
 
 ## 11. Produtor
 
-### `GET /me/properties` — Planejado (F2)
+### `GET /me/properties` — Implementado (F2)
 200: `Property[]` do produtor, por `createdAt` crescente.
 
-### `POST /me/properties` — Planejado (F2)
+### `POST /me/properties` — Implementado (F2)
 Corpo:
 
 | Campo | Regra | Mensagem |
@@ -910,17 +912,17 @@ Corpo:
 
 201: `Property`. 422 com `fields`.
 
-### `PATCH /me/properties/:id` — Planejado (F2)
+### `PATCH /me/properties/:id` — Implementado (F2)
 Corpo parcial com as mesmas regras. 200: `Property`. 404 `property_not_found`.
 
 Editar não muda solicitações já criadas (elas guardam `location` como cópia).
 
-### `DELETE /me/properties/:id` — Planejado (F2)
+### `DELETE /me/properties/:id` — Implementado (F2)
 204. 404 `property_not_found`. 409 `conflict`, `Esta propriedade tem solicitações em aberto.`
 
 Exclusão lógica: a propriedade some da lista e do formulário de solicitação, e continua nas solicitações antigas (`propertyRemoved: true`).
 
-### `POST /requests` — Planejado (F2)
+### `POST /requests` — Implementado (F2)
 Produtor. Corpo:
 
 | Campo | Regra | Mensagem |
@@ -937,38 +939,38 @@ Serviço visível mas com `available: false` → 409 `service_unavailable`, `Est
 
 Efeitos: notifica o prestador (`request_created`). O raio de atendimento **não** bloqueia a criação. O aviso de distância é só do front-end.
 
-### `GET /requests` — Implementado, muda (F2)
+### `GET /requests` — Implementado (F2)
 Produtor. Query: `status` opcional (qualquer `RequestStatus` ou `all`). Status inválido: 400 `invalid_status`.
 
 200: `ServiceRequest[]` do produtor, por `scheduledDate` decrescente.
 
 Mudança: entram os status `counter_offer` e `rejected` e os novos campos de `ServiceRequest`.
 
-### `GET /requests/:id` — Planejado (F2)
+### `GET /requests/:id` — Implementado (F2)
 Produtor dono da solicitação. 200: `ServiceRequestDetail`. 404 `request_not_found`.
 
-### `POST /requests/:id/cancel` — Planejado (F2)
+### `POST /requests/:id/cancel` — Implementado (F2)
 Produtor. Corpo: `{ "reason"?: string }` (5 a 500 caracteres). Obrigatório quando o status é `accepted`: `Informe o motivo do cancelamento.`
 
 Permitido em `pending`, `counter_offer` e `accepted`. 200: `ServiceRequestDetail` com `status: "cancelled"`, `cancelledBy: "producer"`. 409 `invalid_transition` nos demais.
 
 Efeitos: evento `cancelled`; notifica o prestador.
 
-### `POST /requests/:id/counter-offer/accept` — Planejado (F2)
+### `POST /requests/:id/counter-offer/accept` — Implementado (F2)
 Produtor. Só em `counter_offer` e com a data efetiva (a proposta, ou a original se a proposta mudou só o valor) hoje ou depois. Data passada: 409 `invalid_transition`, `A data proposta já passou. Recuse a proposta ou cancele a solicitação.`
 
 200: `ServiceRequestDetail` com `status: "accepted"`, `scheduledDate` e `value` atualizados pela proposta, `counterOffer` mantido para histórico. Evento `counter_offer_accepted` com `previousDate` e `previousValue`.
 
 Efeitos: notifica o prestador.
 
-### `POST /requests/:id/counter-offer/decline` — Planejado (F2)
+### `POST /requests/:id/counter-offer/decline` — Implementado (F2)
 Produtor. Só em `counter_offer`.
 
 200: `ServiceRequestDetail` com `status: "cancelled"`, `cancelledBy: "producer"`, `cancelReason: "Contraproposta recusada pelo produtor"`. Evento `counter_offer_declined`.
 
 Efeitos: notifica o prestador.
 
-### `POST /requests/:id/review` — Planejado (F4)
+### `POST /requests/:id/review` — Implementado (F4)
 Produtor. Corpo: `{ "rating": 1..5, "comment"?: string }` (comentário até 1000 caracteres).
 
 Só em `completed` e uma vez por solicitação: 409 `conflict`, `Você já avaliou esta solicitação.`; status diferente → 409 `invalid_transition`.
@@ -980,14 +982,14 @@ Efeitos:
 - atualiza `rating` e `reviewCount` do serviço e do prestador: `novaMédia = (média × total + nota) / (total + 1)`;
 - notifica o prestador (`review`).
 
-### `PATCH /reviews/:id` — Planejado (F4)
+### `PATCH /reviews/:id` — Implementado (F4)
 Produtor autor. Corpo parcial: `rating`, `comment`.
 
 Até `editableUntil` (7 dias). Depois: 409 `conflict`, `O prazo para editar esta avaliação terminou.`
 
 200: `Review`. A mudança de nota ajusta as médias: `média += (notaNova − notaAntiga) / total`.
 
-### `GET /dashboard` — Implementado, muda (F2)
+### `GET /dashboard` — Implementado (F2)
 Produtor. 200: `ProducerDashboard`:
 
 - `stats.open`: `pending` + `counter_offer` + `accepted`
@@ -998,23 +1000,23 @@ Produtor. 200: `ProducerDashboard`:
 
 Mudança: `open` passa a contar `counter_offer`.
 
-### `GET /me/favorites` — Planejado (F7)
+### `GET /me/favorites` — Implementado (F7)
 200: `Service[]` favoritados e visíveis, do mais recente para o mais antigo.
 
-### `POST /me/favorites` — Planejado (F7)
+### `POST /me/favorites` — Implementado (F7)
 Corpo: `{ "serviceId": string }`. 204, idempotente. 404 `service_not_found`.
 
-### `DELETE /me/favorites/:serviceId` — Planejado (F7)
+### `DELETE /me/favorites/:serviceId` — Implementado (F7)
 204, idempotente (remover algo que não está nos favoritos também responde 204).
 
 ---
 
 ## 12. Prestador
 
-### `GET /provider/profile` — Planejado (F1)
+### `GET /provider/profile` — Implementado (F1)
 200: `ProviderProfile` do prestador autenticado.
 
-### `PATCH /provider/profile` — Planejado (F1)
+### `PATCH /provider/profile` — Implementado (F1)
 Corpo parcial:
 
 | Campo | Regra | Mensagem |
@@ -1028,7 +1030,7 @@ Corpo parcial:
 
 Alterar `document` com verificação `approved` ou `under_review` volta a verificação para `not_sent`.
 
-### `GET /provider/dashboard` — Planejado (F3)
+### `GET /provider/dashboard` — Implementado (F3)
 200: `ProviderDashboard`:
 
 | Campo | Cálculo |
@@ -1042,13 +1044,13 @@ Alterar `document` com verificação `approved` ou `under_review` volta a verifi
 | `pendingRequests` | até 5 `pending`, mais antigas primeiro |
 | `upcomingRequests` | até 5 `accepted` dos próximos 7 dias, por data |
 
-### `GET /provider/services` — Planejado (F3)
+### `GET /provider/services` — Implementado (F3)
 200: `Service[]` do prestador em qualquer status, mais recentes primeiro.
 
-### `GET /provider/services/:id` — Planejado (F3)
+### `GET /provider/services/:id` — Implementado (F3)
 200: `ServiceDetail`. 404 `service_not_found` se não for dele.
 
-### `POST /provider/services` — Planejado (F3)
+### `POST /provider/services` — Implementado (F3)
 Corpo:
 
 | Campo | Regra | Mensagem |
@@ -1065,43 +1067,43 @@ Corpo:
 
 201: `Service` com `status: "active"`. **Vai para a busca na hora**, sem aprovação. Prestador não verificado também publica.
 
-### `PATCH /provider/services/:id` — Planejado (F3)
+### `PATCH /provider/services/:id` — Implementado (F3)
 Corpo parcial com as mesmas regras. 200: `Service`. Um anúncio `hidden` pode ser editado, mas continua oculto.
 
-### `POST /provider/services/:id/pause` — Planejado (F3)
+### `POST /provider/services/:id/pause` — Implementado (F3)
 `active` → `paused` (some da busca). 200: `Service`.
 
 409 `invalid_transition` se já estiver pausado. Se estiver oculto: 409 `invalid_transition`, `Anúncio oculto pela administração.`
 
-### `POST /provider/services/:id/activate` — Planejado (F3)
+### `POST /provider/services/:id/activate` — Implementado (F3)
 `paused` → `active`. 200: `Service`. Oculto: 409 `invalid_transition`, `Anúncio oculto pela administração.`
 
-### `DELETE /provider/services/:id` — Planejado (F3)
+### `DELETE /provider/services/:id` — Implementado (F3)
 204. 409 `conflict`, `Este serviço tem solicitações em aberto. Pause o anúncio em vez de excluir.`
 
 Exclusão lógica: o anúncio some da lista do prestador, da busca, dos favoritos e do perfil público, e continua nas solicitações e avaliações antigas (`serviceRemoved: true`). Depois de excluído, `GET /services/:id` e `GET /provider/services/:id` respondem 404 `service_not_found`.
 
-### `GET /provider/requests` — Planejado (F3)
+### `GET /provider/requests` — Implementado (F3)
 Query: `status` opcional (como em `GET /requests`).
 
 200: `ServiceRequest[]` recebidas, por `createdAt` decrescente.
 
-### `GET /provider/requests/:id` — Planejado (F3)
+### `GET /provider/requests/:id` — Implementado (F3)
 200: `ServiceRequestDetail` (inclui a propriedade: área, culturas, acesso). 404 `request_not_found`.
 
-### `POST /provider/requests/:id/accept` — Planejado (F3)
+### `POST /provider/requests/:id/accept` — Implementado (F3)
 `pending` → `accepted`, só se `scheduledDate` ≥ hoje. Data passada: 409 `invalid_transition`, `A data pedida já passou. Faça uma contraproposta com uma nova data.`
 
 200: `ServiceRequestDetail`. Aceitar é permitido mesmo se o dia estiver bloqueado: quem decide é o prestador.
 
 Efeitos: evento `accepted`; notifica o produtor.
 
-### `POST /provider/requests/:id/reject` — Planejado (F3)
+### `POST /provider/requests/:id/reject` — Implementado (F3)
 Corpo: `{ "reason": string }` (5 a 500 caracteres, `Informe o motivo da recusa.`).
 
 `pending` → `rejected`. 200: `ServiceRequestDetail` com `rejectReason`. Efeitos: evento `rejected`; notifica o produtor.
 
-### `POST /provider/requests/:id/counter-offer` — Planejado (F3)
+### `POST /provider/requests/:id/counter-offer` — Implementado (F3)
 Corpo: `{ "date"?: string, "value"?: number, "message": string }`.
 
 | Regra | Mensagem |
@@ -1115,25 +1117,25 @@ A quantidade não muda. `pending` → `counter_offer`. 200: `ServiceRequestDetai
 
 Efeitos: evento `counter_offer`; notifica o produtor (`counter_offer`).
 
-### `POST /provider/requests/:id/start` — Planejado (F3)
+### `POST /provider/requests/:id/start` — Implementado (F3)
 `accepted` → `in_progress`, só se hoje ≥ `scheduledDate`. Antes disso: 409 `invalid_transition`, `O serviço só pode ser iniciado a partir da data agendada.`
 
 200: `ServiceRequestDetail`. Efeitos: evento `started`; notifica o produtor.
 
-### `POST /provider/requests/:id/complete` — Planejado (F3)
+### `POST /provider/requests/:id/complete` — Implementado (F3)
 `in_progress` → `completed`. 200: `ServiceRequestDetail`.
 
 Efeitos: evento `completed`; notifica o produtor com o título `Serviço concluído. Conte como foi.`
 
-### `POST /provider/requests/:id/cancel` — Planejado (F3)
+### `POST /provider/requests/:id/cancel` — Implementado (F3)
 Corpo: `{ "reason": string }` (5 a 500 caracteres, obrigatório).
 
 `accepted` → `cancelled`, `cancelledBy: "provider"`. Em `pending`, o prestador usa `reject`. 200: `ServiceRequestDetail`. Efeitos: evento `cancelled`; notifica o produtor.
 
-### `GET /provider/equipment` — Planejado (F5)
+### `GET /provider/equipment` — Implementado (F5)
 200: `Equipment[]` do prestador.
 
-### `POST /provider/equipment` — Planejado (F5)
+### `POST /provider/equipment` — Implementado (F5)
 Corpo:
 
 | Campo | Regra | Mensagem |
@@ -1146,13 +1148,13 @@ Corpo:
 
 201: `Equipment`. Rótulos dos tipos: `tractor` Trator, `harvester` Colheitadeira, `sprayer` Pulverizador, `drone` Drone, `truck` Caminhão, `implement` Implemento, `other` Outro.
 
-### `PATCH /provider/equipment/:id` — Planejado (F5)
+### `PATCH /provider/equipment/:id` — Implementado (F5)
 Corpo parcial. 200: `Equipment`. 404 `equipment_not_found`.
 
-### `DELETE /provider/equipment/:id` — Planejado (F5)
+### `DELETE /provider/equipment/:id` — Implementado (F5)
 204. Remove também o id de `equipmentIds` dos serviços do prestador.
 
-### `GET /provider/agenda` — Planejado (F5)
+### `GET /provider/agenda` — Implementado (F5)
 Query: `month` (`YYYY-MM`, padrão mês atual).
 
 200:
@@ -1163,30 +1165,30 @@ Query: `month` (`YYYY-MM`, padrão mês atual).
 
 `requests` traz as solicitações `accepted`, `in_progress` e `completed` com `scheduledDate` no mês. Não há limite de serviços por dia.
 
-### `POST /provider/blocked-days` — Planejado (F5)
+### `POST /provider/blocked-days` — Implementado (F5)
 Corpo: `{ "date": string }` (≥ hoje: `Escolha uma data a partir de hoje.`).
 
 201: `{ "date": string }`. Idempotente: bloquear um dia já bloqueado também responde 201.
 
 Bloquear não cancela solicitações já aceitas naquele dia. Só impede solicitações novas.
 
-### `DELETE /provider/blocked-days/:date` — Planejado (F5)
+### `DELETE /provider/blocked-days/:date` — Implementado (F5)
 204, idempotente.
 
-### `GET /provider/reviews` — Planejado (F4)
+### `GET /provider/reviews` — Implementado (F4)
 Query: `page`, `pageSize` (padrão 10, máximo 50), `rating` (1 a 5).
 
 200: `{ data: Review[], meta, summary: ReviewSummary }` das avaliações recebidas, incluindo as ocultas (com `hidden: true`, para o prestador saber).
 
-### `PUT /provider/reviews/:id/reply` — Planejado (F4)
+### `PUT /provider/reviews/:id/reply` — Implementado (F4)
 Corpo: `{ "text": string }` (2 a 1000 caracteres). Cria ou edita a resposta pública (uma por avaliação).
 
 200: `Review`. 404 `review_not_found` se não for avaliação dele. Efeitos: na primeira resposta, notifica o produtor (`review_reply`).
 
-### `GET /provider/verification` — Planejado (F5)
+### `GET /provider/verification` — Implementado (F5)
 200: `Verification`.
 
-### `POST /provider/verification` — Planejado (F5)
+### `POST /provider/verification` — Implementado (F5)
 Corpo: `{ "identityUploadId": string, "addressUploadId": string }` (uploads do próprio prestador, imagem ou PDF, enviados com `purpose: "verification"`).
 
 Permitido em `not_sent` e `rejected`. Em `under_review` ou `approved`: 409 `conflict`, `Sua verificação já foi enviada.`
@@ -1199,12 +1201,12 @@ Também exige `document` preenchido no perfil: 422 `fields.document` `Preencha o
 
 ## 13. Conversa, notificações e denúncias
 
-### `GET /requests/:id/messages` — Planejado (F4)
+### `GET /requests/:id/messages` — Implementado (F4)
 Produtor ou prestador da solicitação. Administrador só quando existe denúncia (qualquer status) com `targetType: "request"` e esse `targetId`.
 
 200: `Message[]` em ordem cronológica crescente. 404 `request_not_found` para os demais.
 
-### `POST /requests/:id/messages` — Planejado (F4)
+### `POST /requests/:id/messages` — Implementado (F4)
 Produtor ou prestador da solicitação. Corpo: `{ "text": string }` (1 a 2000 caracteres, `Escreva uma mensagem de até 2000 caracteres.`).
 
 Só com a solicitação aberta. Encerrada: 409 `conflict`, `Esta conversa está encerrada.`
@@ -1213,7 +1215,7 @@ Só com a solicitação aberta. Encerrada: 409 `conflict`, `Esta conversa está 
 
 Sem tempo real: o front-end recarrega a conversa ao abrir a tela e depois de enviar.
 
-### `GET /me/notifications` — Planejado (F4)
+### `GET /me/notifications` — Implementado (F4)
 Autenticado. Query: `page`, `pageSize` (padrão 20, máximo 50), `unreadOnly` (`true`).
 
 200:
@@ -1224,13 +1226,13 @@ Autenticado. Query: `page`, `pageSize` (padrão 20, máximo 50), `unreadOnly` (`
 
 Ordem: mais recentes primeiro. O sino usa `pageSize=10`.
 
-### `POST /me/notifications/:id/read` — Planejado (F4)
+### `POST /me/notifications/:id/read` — Implementado (F4)
 204. 404 `notification_not_found` se não for do usuário.
 
-### `POST /me/notifications/read-all` — Planejado (F4)
+### `POST /me/notifications/read-all` — Implementado (F4)
 204.
 
-### `POST /reports` — Planejado (F6)
+### `POST /reports` — Implementado (F6)
 Produtor ou prestador. Corpo: `{ "targetType", "targetId", "reason", "description" }` (`description` de 10 a 1000 caracteres, `Descreva o problema com pelo menos 10 caracteres.`).
 
 Quem pode denunciar o quê:
@@ -1250,7 +1252,7 @@ Alvo não permitido: 422 `fields.targetType` `Você não pode denunciar este ite
 
 Toda ação de escrita nesta seção grava um `AdminAction` (histórico).
 
-### `GET /admin/dashboard` — Planejado (F6)
+### `GET /admin/dashboard` — Implementado (F6)
 200: `AdminDashboard`:
 
 | Campo | Cálculo |
@@ -1263,17 +1265,17 @@ Toda ação de escrita nesta seção grava um `AdminAction` (histórico).
 | `pendingVerifications` | prestadores em `under_review` |
 | `openReports` | denúncias `open` |
 
-### `GET /admin/users` — Planejado (F6)
+### `GET /admin/users` — Implementado (F6)
 Query: `q` (nome ou e-mail, sem diferenciar acento e caixa), `role`, `status` (`active` ou `suspended`; contas excluídas não aparecem), `page`, `pageSize` (padrão 20, máximo 100).
 
 200: `Paginated<User>`, mais recentes primeiro.
 
-### `POST /admin/users` — Planejado (F6)
+### `POST /admin/users` — Implementado (F6)
 Cria outro administrador. Corpo: `{ "name", "email", "password", "city", "state" }` (mesmas regras do cadastro; `password` é a senha provisória).
 
 201: `User` com `role: "admin"` e `mustChangePassword: true`. No primeiro acesso, o novo administrador é obrigado a trocar a senha (`PATCH /me/password`). Efeitos: `AdminAction` `create_admin`.
 
-### `GET /admin/users/:id` — Planejado (F6)
+### `GET /admin/users/:id` — Implementado (F6)
 200:
 
 ```ts
@@ -1294,12 +1296,12 @@ interface AdminUserDetail {
 
 404 `user_not_found`.
 
-### `GET /admin/requests/:id` — Planejado (F6)
+### `GET /admin/requests/:id` — Implementado (F6)
 Detalhe de qualquer solicitação, somente leitura. 200: `ServiceRequestDetail` com `allowedActions: []` e os telefones das duas partes. 404 `request_not_found`.
 
 A conversa da solicitação continua liberada para o administrador só quando há denúncia sobre ela (`GET /requests/:id/messages`).
 
-### `POST /admin/users/:id/suspend` — Planejado (F6)
+### `POST /admin/users/:id/suspend` — Implementado (F6)
 Corpo: `{ "reason": string }` (5 a 500 caracteres).
 
 | Situação | Resposta |
@@ -1319,54 +1321,54 @@ Efeitos (vale para produtor e prestador):
 5. Avaliações já escritas continuam visíveis. Denúncias abertas pela conta continuam na fila.
 6. `AdminAction` `suspend_user` com o motivo.
 
-### `POST /admin/users/:id/reactivate` — Planejado (F6)
+### `POST /admin/users/:id/reactivate` — Implementado (F6)
 200: `User` com `status: "active"`. O acesso volta e os anúncios voltam a aparecer no estado em que estavam. Solicitações canceladas pela suspensão não voltam.
 
 409 `conflict`, `Esta conta já está ativa.` Contas excluídas não podem ser reativadas (409 `conflict`). Efeitos: `AdminAction` `reactivate_user`.
 
-### `GET /admin/verifications` — Planejado (F6)
+### `GET /admin/verifications` — Implementado (F6)
 200: lista dos prestadores em `under_review`, enviados há mais tempo primeiro:
 
 ```ts
 { provider: Provider; email: string; document: string; verification: Verification }[]
 ```
 
-### `POST /admin/verifications/:providerId/approve` — Planejado (F6)
+### `POST /admin/verifications/:providerId/approve` — Implementado (F6)
 Só em `under_review` (senão 409 `invalid_transition`). 200: `Verification` com `status: "approved"`.
 
 Efeitos: `verified: true` em todos os lugares; notifica o prestador (`verification`, `Sua verificação foi aprovada.`); `AdminAction` `approve_verification`.
 
-### `POST /admin/verifications/:providerId/reject` — Planejado (F6)
+### `POST /admin/verifications/:providerId/reject` — Implementado (F6)
 Corpo: `{ "reason": string }` (5 a 500 caracteres). Só em `under_review`.
 
 200: `Verification` com `status: "rejected"` e `rejectionReason`. Efeitos: notifica o prestador com o motivo; `AdminAction` `reject_verification`. O prestador pode corrigir e reenviar.
 
-### `GET /admin/services` — Planejado (F6)
+### `GET /admin/services` — Implementado (F6)
 Query: `q` (como em `GET /services`), `category` (slug), `status` (`active`, `paused` ou `hidden`), `page`, `pageSize` (padrão 20, máximo 100).
 
 200: `Paginated<Service>` em qualquer status, incluindo `hiddenReason`.
 
-### `POST /admin/services/:id/hide` — Planejado (F6)
+### `POST /admin/services/:id/hide` — Implementado (F6)
 Corpo: `{ "reason": string }` (5 a 500 caracteres).
 
 O anúncio vai para `hidden` e o back-end guarda o status anterior (`active` ou `paused`). Já oculto: 409 `invalid_transition`.
 
 200: `Service`. Efeitos: notifica o prestador (`service_hidden`) com o motivo; `AdminAction` `hide_service`.
 
-### `POST /admin/services/:id/show` — Planejado (F6)
+### `POST /admin/services/:id/show` — Implementado (F6)
 Volta ao status anterior ao ocultamento. Não oculto: 409 `invalid_transition`. Ocultado por exclusão de conta: 409 `conflict`, `O prestador excluiu a conta.`
 
 200: `Service`. Efeitos: `AdminAction` `show_service`.
 
-### `DELETE /admin/services/:id` — Planejado (F6)
+### `DELETE /admin/services/:id` — Implementado (F6)
 204. 409 `conflict` com solicitações abertas (mesma mensagem do prestador). Exclusão lógica, como em `DELETE /provider/services/:id`. Efeitos: notifica o prestador (`service_hidden`, `Seu anúncio foi removido pela administração`); `AdminAction` `delete_service`.
 
-### `GET /admin/reports` — Planejado (F6)
+### `GET /admin/reports` — Implementado (F6)
 Query: `status` (padrão `open`; aceita `all`), `targetType`, `page`, `pageSize` (padrão 20, máximo 100).
 
 200: `Paginated<Report>`. Abertas: mais antigas primeiro. Demais: mais recentes primeiro.
 
-### `GET /admin/reports/:id` — Planejado (F6)
+### `GET /admin/reports/:id` — Implementado (F6)
 200:
 
 ```ts
@@ -1379,7 +1381,7 @@ interface ReportDetail {
 
 `target` é o estado atual do alvo, mesmo que oculto ou excluído. `messages` vem quando o alvo é uma solicitação. 404 `report_not_found`.
 
-### `POST /admin/reports/:id/resolve` — Planejado (F6)
+### `POST /admin/reports/:id/resolve` — Implementado (F6)
 Corpo:
 
 | Campo | Regra |
@@ -1412,10 +1414,10 @@ Efeitos:
 
 Em todos os casos: notifica quem denunciou (`report_resolved`, `Sua denúncia foi analisada.`, sem detalhes da ação) e grava `AdminAction` (`resolve_report` ou `dismiss_report`, mais `hide_review`/`warn_user` quando aplicável).
 
-### `GET /admin/categories` — Planejado (F6)
+### `GET /admin/categories` — Implementado (F6)
 200: `(Category & { serviceCount: number })[]`, incluindo desativadas.
 
-### `POST /admin/categories` — Planejado (F6)
+### `POST /admin/categories` — Implementado (F6)
 Corpo: `{ "name": string, "slug"?: string, "icon": CategoryIcon }`.
 
 | Campo | Regra | Mensagem |
@@ -1426,15 +1428,15 @@ Corpo: `{ "name": string, "slug"?: string, "icon": CategoryIcon }`.
 
 201: `Category` com `active: true`. Efeitos: `AdminAction` `create_category`.
 
-### `PATCH /admin/categories/:id` — Planejado (F6)
+### `PATCH /admin/categories/:id` — Implementado (F6)
 Corpo parcial: `name`, `slug`, `icon`, `active`. 200: `Category`.
 
 Desativar tira a categoria dos filtros e do formulário de novo serviço. Os serviços já publicados continuam visíveis. Efeitos: `AdminAction` `update_category`.
 
-### `DELETE /admin/categories/:id` — Planejado (F6)
+### `DELETE /admin/categories/:id` — Implementado (F6)
 204. 409 `conflict`, `Esta categoria tem serviços. Desative em vez de apagar.` Efeitos: `AdminAction` `delete_category`.
 
-### `GET /admin/actions` — Planejado (F6)
+### `GET /admin/actions` — Implementado (F6)
 Query: `adminId`, `action` (`AdminActionType`), `from` e `to` (`YYYY-MM-DD`, inclusive), `page`, `pageSize` (padrão 20, máximo 100).
 
 200: `Paginated<AdminAction>`, mais recentes primeiro. Somente leitura: não existe endpoint para editar ou apagar ações.
@@ -1528,11 +1530,9 @@ Erro (qualquer 4xx ou 5xx):
 - Respostas `204` continuam sem corpo.
 - `GET /uploads/:id/file` devolve o arquivo, sem envelope.
 
-### O que o front-end precisa ajustar para usar `VITE_API_MODE=http`
+### Ajustes feitos no front-end para usar `VITE_API_MODE=http`
 
-O back-end já está pronto. O front-end **não** foi alterado nesta entrega, porque estava com outra pessoa. Os ajustes abaixo ficam para quem for ligar o front ao back. Sem eles, o modo `mock` continua funcionando como antes, e o modo `http` não funciona.
-
-> **Situação:** os ajustes 1 a 4 e o envio de `FormData` no `httpAdapter` (parte do ajuste 5) já foram feitos (issue #6). Falta só o serviço de upload montar o `FormData`, que entra junto com a tela de upload em F3-01.
+> **Situação:** todos os ajustes abaixo já foram feitos. O front-end roda com `VITE_API_MODE=http` contra o back-end sem mudar componentes, e o modo `mock` continua funcionando. A tabela fica como registro do que mudou.
 
 | # | Problema | Onde | O que fazer |
 |---|---|---|---|

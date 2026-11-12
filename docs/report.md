@@ -10,11 +10,14 @@
 | **Etapa** | 1 — Front-end (o back-end é a próxima etapa da disciplina) |
 | **Data** | Outubro de 2026 |
 
+> Este relatório descreve a **etapa 1** (front-end com API simulada). Na etapa 2 o sistema ganhou os papéis de prestador e administrador e o back-end em NestJS + TypeORM + SQLite. A visão do sistema completo está em [`system-flowchart.md`](system-flowchart.md).
+
 Documentos complementares:
 
 - Fluxogramas: [`flowcharts.md`](flowcharts.md)
-- Fluxograma único do sistema atual: [`system-flowchart.md`](system-flowchart.md)
-- Fluxogramas do sistema futuro: [`future-flowcharts.md`](future-flowcharts.md)
+- Fluxograma único do sistema: [`system-flowchart.md`](system-flowchart.md)
+- Fluxos planejados para a ampliação (histórico): [`future-flowcharts.md`](future-flowcharts.md)
+- Back-end da etapa 2: [`../backend/README.md`](../backend/README.md)
 - Apresentação: [`slides/index.html`](slides/index.html) (abrir no navegador; setas para navegar, `F` para tela cheia)
 - Contrato da API REST: [`api-contract.md`](api-contract.md)
 - Backlog da ampliação: [`backlog.md`](backlog.md)
@@ -285,12 +288,14 @@ Além dos testes automatizados, os fluxos foram verificados em navegador no buil
 
 ## 12. Próximas etapas
 
+> **Situação:** todos os itens abaixo foram implementados na etapa 2, junto com o back-end.
+
 1. **Back-end REST** implementando o contrato e ligado por `VITE_API_MODE=http`.
 2. **Contratação:** cadastro de usuário, criação e cancelamento de solicitações.
 3. **Prestador:** painel próprio, serviços, agenda e aceite de solicitações.
 4. **Experiência:** mapa de prestadores, favoritos, notificações e modo escuro.
 
-Lista completa em [`backlog.md`](backlog.md). A ampliação com os três papéis (produtor, prestador e administrador) está desenhada em [`future-flowcharts.md`](future-flowcharts.md) e detalhada em [`api-contract.md`](api-contract.md).
+Lista completa em [`backlog.md`](backlog.md). A ampliação com os três papéis (produtor, prestador e administrador) foi planejada em [`future-flowcharts.md`](future-flowcharts.md) e está detalhada em [`api-contract.md`](api-contract.md).
 
 ## 13. Como executar
 

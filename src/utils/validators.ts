@@ -139,3 +139,108 @@ export function validateProviderProfileForm(values: ProviderProfileFormValues): 
   if (values.description.length > 1000) errors.description = 'Use no máximo 1000 caracteres.'
   return errors
 }
+
+export interface PropertyFormValues {
+  name: string
+  city: string
+  state: string
+  accessNotes: string
+  areaHectares: string
+  crops: string[]
+}
+
+export type PropertyFormErrors = Partial<Record<keyof PropertyFormValues, string>>
+
+export function parseDecimal(value: string): number {
+  return Number(value.trim().replace(',', '.'))
+}
+
+export function validatePropertyForm(values: PropertyFormValues): PropertyFormErrors {
+  const errors: PropertyFormErrors = {}
+  const area = parseDecimal(values.areaHectares)
+  const crops = values.crops.map((crop) => crop.trim())
+
+  if (values.name.trim().length < 2 || values.name.trim().length > 80) errors.name = 'Informe o nome da propriedade.'
+  if (values.city.trim().length < 2 || values.city.trim().length > 80) errors.city = 'Informe a cidade.'
+  if (!brazilianStateCodes.has(values.state.trim().toUpperCase())) errors.state = 'Selecione a UF.'
+  if (values.accessNotes.trim().length > 500) errors.accessNotes = 'Use no máximo 500 caracteres.'
+  if (!Number.isFinite(area) || area <= 0 || area > 1_000_000) errors.areaHectares = 'Informe a área em hectares.'
+  if (
+    crops.length > 10 ||
+    crops.some((crop) => crop.length < 2 || crop.length > 40) ||
+    new Set(crops.map((crop) => crop.toLowerCase())).size !== crops.length
+  ) {
+    errors.crops = 'Informe até 10 culturas.'
+  }
+
+  return errors
+}
+
+export interface RequestFormValues {
+  propertyId: string
+  scheduledDate: string
+  quantity: string
+  notes: string
+}
+
+export type RequestFormErrors = Partial<Record<keyof RequestFormValues, string>>
+
+export function validateRequestForm(values: RequestFormValues, today: string, blockedDays: readonly string[]): RequestFormErrors {
+  const errors: RequestFormErrors = {}
+  const quantity = parseDecimal(values.quantity)
+
+  if (!values.propertyId) errors.propertyId = 'Selecione uma propriedade.'
+  if (!values.scheduledDate || values.scheduledDate < today) errors.scheduledDate = 'Escolha uma data a partir de hoje.'
+  else if (blockedDays.includes(values.scheduledDate)) errors.scheduledDate = 'O prestador não atende nesta data.'
+  if (!Number.isFinite(quantity) || quantity <= 0 || quantity > 100_000) errors.quantity = 'Informe a quantidade.'
+  if (values.notes.trim().length > 1000) errors.notes = 'Use no máximo 1000 caracteres.'
+
+  return errors
+}
+
+export const ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
+export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+export const MAX_FILE_BYTES = 5 * 1024 * 1024
+
+export function validateUploadFile(file: File, acceptedTypes: string[] = ACCEPTED_FILE_TYPES): string | undefined {
+  if (!acceptedTypes.includes(file.type)) {
+    return acceptedTypes.includes('application/pdf')
+      ? 'Envie uma imagem JPG, PNG ou WEBP, ou um PDF.'
+      : 'Envie uma imagem JPG, PNG ou WEBP.'
+  }
+  if (file.size > MAX_FILE_BYTES) return 'O arquivo deve ter no máximo 5 MB.'
+  return undefined
+}
+
+export interface ServiceFormValues {
+  title: string
+  categoryId: string
+  description: string
+  price: string
+  priceUnit: string
+  city: string
+  state: string
+  photos: string[]
+  equipmentIds: string[]
+  available: boolean
+}
+
+export type ServiceFormErrors = Partial<Record<keyof ServiceFormValues, string>>
+
+export function validateServiceForm(values: ServiceFormValues): ServiceFormErrors {
+  const errors: ServiceFormErrors = {}
+  const price = parseDecimal(values.price)
+  const title = values.title.trim()
+  const description = values.description.trim()
+
+  if (title.length < 3 || title.length > 80) errors.title = 'Informe o título.'
+  if (!values.categoryId) errors.categoryId = 'Selecione uma categoria.'
+  if (description.length < 20 || description.length > 2000) errors.description = 'Descreva o serviço com pelo menos 20 caracteres.'
+  if (!Number.isFinite(price) || price <= 0) errors.price = 'Informe o preço.'
+  if (!['hectare', 'hour', 'day', 'trip'].includes(values.priceUnit)) errors.priceUnit = 'Selecione a unidade.'
+  if (values.city.trim().length < 2 || values.city.trim().length > 80) errors.city = 'Informe sua cidade.'
+  if (!brazilianStateCodes.has(values.state.trim().toUpperCase())) errors.state = 'Selecione a UF.'
+  if (values.photos.length > 8) errors.photos = 'Use no máximo 8 fotos.'
+
+  return errors
+}

@@ -27,5 +27,9 @@ export function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
     return <Navigate to={getRoleHomePath(user.role)} replace state={state} />
   }
 
+  if (user.role === 'admin' && user.mustChangePassword && location.pathname !== paths.adminAccount) {
+    return <Navigate to={paths.adminAccount} replace />
+  }
+
   return <Outlet />
 }

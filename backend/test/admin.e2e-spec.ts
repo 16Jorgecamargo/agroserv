@@ -231,6 +231,11 @@ describe('admin area', () => {
       expect(updated.body.data.active).toBe(false);
       const publicList = await api(app).get('/categories').expect(200);
       expect(publicList.body.data.map((category: { id: string }) => category.id)).not.toContain('cat-transport');
+      await api(app).get('/services/svc-6').expect(200);
+      const search = await api(app).get('/services?pageSize=50').expect(200);
+      expect(search.body.data.data.map((service: { id: string }) => service.id)).toContain('svc-6');
+      const filtered = await api(app).get('/services?category=transporte').expect(200);
+      expect(filtered.body.data.data).toEqual([]);
       const refused = await api(app, provider).post('/provider/services', {
         title: 'Frete de Calcário', categoryId: 'cat-transport', description: 'Transporte de calcário a granel na região.',
         price: 500, priceUnit: 'trip', city: 'Santa Helena', state: 'PR',

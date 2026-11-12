@@ -51,3 +51,48 @@
     display: none;
   }
 }
+
+.agro-map {
+  background: var(--color-surface-muted);
+}
+
+.agro-map .leaflet-control-attribution {
+  font-size: 10px;
+}
+
+.agro-map-pin {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 3px solid #ffffff;
+  background: var(--color-primary);
+  color: #ffffff;
+  font: 700 13px/1 var(--font-sans);
+  box-shadow: 0 6px 16px rgb(23 32 26 / 0.28);
+  transition: transform 150ms ease, background-color 150ms ease;
+}
+
+.agro-map-pin.is-dot {
+  width: 22px;
+  height: 22px;
+  margin: 7px;
+}
+
+.agro-map-pin.is-selected {
+  background: var(--color-primary-strong);
+  transform: scale(1.18);
+}
+
+.leaflet-marker-icon:focus-visible .agro-map-pin {
+  outline: 2px solid var(--color-primary-strong);
+  outline-offset: 2px;
+}
+
+.agro-map-radius {
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  fill: var(--color-primary);
+  fill-opacity: 0.12;
+}

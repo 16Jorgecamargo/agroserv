@@ -1,23 +1,82 @@
 import { categories } from '../../data/categories'
-import { providerProfiles, providers } from '../../data/providers'
+import {
+  adminActions,
+  blockedDays,
+  equipment,
+  favorites,
+  messages,
+  notifications,
+  reports,
+  reviews,
+  uploads,
+  verifications,
+  type BlockedDayRecord,
+  type FavoriteRecord,
+  type NotificationRecord,
+  type UploadRecord,
+  type VerificationRecord,
+} from '../../data/demo'
+import { properties, type PropertyRecord } from '../../data/properties'
+import { providerProfiles } from '../../data/providers'
 import { requestRecords } from '../../data/requests'
 import { services } from '../../data/services'
 import { userCredentials, users } from '../../data/users'
 import type { RequestRecord } from '../../data/requests'
 import type { ServiceRecord } from '../../data/services'
 import type { UserCredential } from '../../data/users'
-import type { Category, PasswordResetTokenRecord, Provider, ProviderProfile, User } from '../../types/entities'
+import type {
+  AdminAction,
+  Category,
+  Equipment,
+  Message,
+  PasswordResetTokenRecord,
+  ProviderProfile,
+  Report,
+  Review,
+  User,
+} from '../../types/entities'
 
-interface MockDatabase {
+export interface MockDatabase {
+  adminActions: AdminAction[]
+  blockedDays: BlockedDayRecord[]
   categories: Category[]
-  providers: Provider[]
-  providerProfiles: ProviderProfile[]
-  requestRecords: RequestRecord[]
+  equipment: Equipment[]
+  favorites: FavoriteRecord[]
+  messages: Message[]
+  notifications: NotificationRecord[]
   passwordResetTokens: PasswordResetTokenRecord[]
+  properties: PropertyRecord[]
+  providerProfiles: ProviderProfile[]
+  reports: Report[]
+  requestRecords: RequestRecord[]
+  reviews: Review[]
   services: ServiceRecord[]
+  uploads: UploadRecord[]
   userCredentials: UserCredential[]
   users: User[]
+  verifications: VerificationRecord[]
 }
+
+const TABLES: (keyof MockDatabase)[] = [
+  'adminActions',
+  'blockedDays',
+  'categories',
+  'equipment',
+  'favorites',
+  'messages',
+  'notifications',
+  'passwordResetTokens',
+  'properties',
+  'providerProfiles',
+  'reports',
+  'requestRecords',
+  'reviews',
+  'services',
+  'uploads',
+  'userCredentials',
+  'users',
+  'verifications',
+]
 
 interface StoredMockDatabase {
   version: number
@@ -25,7 +84,7 @@ interface StoredMockDatabase {
 }
 
 const STORAGE_KEY = 'agroserv_mock_db'
-const DATABASE_VERSION = 4
+const DATABASE_VERSION = 5
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T
@@ -33,14 +92,24 @@ function clone<T>(value: T): T {
 
 function createSeedDatabase(): MockDatabase {
   return clone({
+    adminActions,
+    blockedDays,
     categories,
-    providers,
-    providerProfiles,
-    requestRecords,
+    equipment,
+    favorites,
+    messages,
+    notifications,
     passwordResetTokens: [],
+    properties,
+    providerProfiles,
+    reports,
+    requestRecords,
+    reviews,
     services,
+    uploads,
     userCredentials,
     users,
+    verifications,
   })
 }
 
@@ -57,16 +126,7 @@ function isMockDatabase(value: unknown): value is MockDatabase {
 
   const database = value as Record<string, unknown>
 
-  return (
-    Array.isArray(database.categories) &&
-    Array.isArray(database.providers) &&
-    Array.isArray(database.providerProfiles) &&
-    Array.isArray(database.requestRecords) &&
-    Array.isArray(database.passwordResetTokens) &&
-    Array.isArray(database.services) &&
-    Array.isArray(database.userCredentials) &&
-    Array.isArray(database.users)
-  )
+  return TABLES.every((table) => Array.isArray(database[table]))
 }
 
 function writeDatabase(database: MockDatabase): void {
@@ -116,14 +176,15 @@ function loadDatabase(): MockDatabase {
   return database
 }
 
-let mockDatabase = loadDatabase()
+let mockDatabase: MockDatabase | null = null
 
 export function getMockDatabase(): MockDatabase {
+  mockDatabase ??= loadDatabase()
   return mockDatabase
 }
 
 export function persistMockDatabase(): void {
-  writeDatabase(mockDatabase)
+  writeDatabase(getMockDatabase())
 }
 
 export function resetMockDatabase(): void {

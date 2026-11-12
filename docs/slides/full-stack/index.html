@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgroServ — Plataforma completa</title>
+<link rel="stylesheet" href="../shared/deck.css" />
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/brand/favicon-32.png" />
+<link rel="apple-touch-icon" href="../../assets/brand/apple-touch-icon.png" />
+</head>
+<body>
+<div class="rotate" role="alert">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg>
+  <small>AgroServ · Apresentação</small>
+  <b>Gire o celular</b>
+  <p>A apresentação foi feita para a tela na horizontal. Vire o aparelho para ver os slides.</p>
+</div>
+<div class="viewport">
+<div class="stage" id="stage">
+  <div id="seed"></div>
+
+  <section class="slide" data-seed="1000,0,920,1080,0,#173F2A">
+    <div class="eyebrow" data-a="rise" data-b="0" style="top:110px">UTFPR · Campus Santa Helena · CC6PDSW</div>
+    <div class="logo" style="position:absolute;left:140px;top:165px" data-a="pop" data-b="1">
+      <img src="../../assets/brand/logo-horizontal.png" alt="AgroServ" width="294" height="76" />
+    </div>
+    <h1 data-a="mask" data-b="2" style="position:absolute;left:140px;top:270px;width:840px;font-size:84px;line-height:1.04;font-weight:800;letter-spacing:-.04em">Do protótipo à plataforma completa.</h1>
+    <p class="lead" data-a="rise" data-b="8" style="position:absolute;left:140px;top:575px;width:760px;font-size:27px">O que construímos hoje: três papéis, o fluxo inteiro de contratação, moderação, uma API real e o sistema publicado.</p>
+    <div class="cover-info">
+      <div data-a="rise" data-b="11">
+        <small>Alunos</small>
+        <p class="ra-list"><i>Jorge Daniel Ristow de Camargo<span>RA 2521679</span></i><i>Felipe Fonseca<span>RA 2651394</span></i><i>Pedro Luca de Lacerda Alves<span>RA 2651416</span></i></p>
+      </div>
+    </div>
+    <div class="cover-photo" data-a="wipe" data-b="2"><img src="../screens/hero-field.jpg" alt="" /></div>
+    <div class="float-chip" style="left:920px;top:640px" data-a="pop" data-b="8">
+      <div class="ic"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg></div>
+      <div><b>3 papéis</b><small><i class="dot"></i>Produtor · Prestador · Administrador</small></div>
+    </div>
+    <div class="float-chip" style="left:1440px;top:160px" data-a="pop" data-b="10">
+      <div class="ic" style="background:#E3ECF5;color:var(--info)"><svg class="icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div>
+      <div><b>API NestJS + SQLite</b><small>91 rotas atendendo o front</small></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">01 · Ponto de partida</div>
+    <h2 class="title" data-a="mask" data-b="1">De uma vitrine para um sistema de verdade.</h2>
+    <div class="versus">
+      <div class="side-card" data-a="rise" data-b="5">
+        <small>Antes</small>
+        <h3>Vitrine do produtor</h3>
+        <ul>
+          <li>6 telas e um único papel</li>
+          <li>Só consulta: buscar e ver serviços</li>
+          <li>Painel com dados de leitura</li>
+          <li>API simulada dentro do navegador</li>
+        </ul>
+      </div>
+      <div class="arrow-mid" data-a="pop" data-b="8">→</div>
+      <div class="side-card dark" data-a="rise" data-b="9">
+        <small>Agora</small>
+        <h3>Plataforma completa</h3>
+        <ul>
+          <li>37 telas e três papéis com permissões</li>
+          <li>Contratação de ponta a ponta, com negociação</li>
+          <li>Moderação com filas, ações e histórico</li>
+          <li>API NestJS + SQLite e site publicado</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">02 · Quem usa</div>
+    <h2 class="title" data-a="mask" data-b="1">Três papéis, cada um com a sua área.</h2>
+    <div class="roles">
+      <div class="role producer" data-a="rise" data-b="5">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M7 20h10M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></div>
+        <h3>Produtor</h3>
+        <p>Encontra o serviço, pede, negocia, acompanha e avalia.</p>
+        <div class="tags"><span>Solicitações</span><span>Propriedades</span><span>Favoritos</span><span>Avaliações</span></div>
+      </div>
+      <div class="role provider" data-a="rise" data-b="6">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M3 4h9l1 7"/><path d="M4 11V4M8 10V4M18 5c-.6 0-1 .4-1 1v5.6"/><path d="m10 11 11 .9c.6 0 .9.5.8 1.1l-.8 5h-1"/><circle cx="7" cy="15" r=".5"/><circle cx="7" cy="15" r="5"/><path d="M16 18h-5"/><circle cx="18" cy="18" r="2"/></svg></div>
+        <h3>Prestador</h3>
+        <p>Anuncia, responde pedidos, organiza a agenda e ganha o selo.</p>
+        <div class="tags"><span>Anúncios</span><span>Agenda</span><span>Equipamentos</span><span>Verificação</span></div>
+      </div>
+      <div class="role admin" data-a="rise" data-b="7">
+        <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.7 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Administrador</h3>
+        <p>Cuida da plataforma: contas, documentos, anúncios e denúncias.</p>
+        <div class="tags"><span>Usuários</span><span>Denúncias</span><span>Categorias</span><span>Histórico</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">03 · Jornada de um serviço</div>
+    <h2 class="title" data-a="mask" data-b="1">Do pedido à avaliação, tudo registrado.</h2>
+    <div class="steps">
+      <div class="rail"><i data-a="grow" data-b="5" data-d="2600"></i></div>
+      <div class="step done" data-a="pop" data-b="5"><div class="dot2">1</div><b>Pedido</b><span>Serviço, propriedade, data e quantidade</span><em class="who p">Produtor</em></div>
+      <div class="step" data-a="pop" data-b="8"><div class="dot2">2</div><b>Resposta</b><span>Aceita, recusa com motivo ou contrapropõe</span><em class="who v">Prestador</em></div>
+      <div class="step" data-a="pop" data-b="11"><div class="dot2">3</div><b>Negociação</b><span>Nova data ou valor, aceite com um clique</span><em class="who p">Produtor</em></div>
+      <div class="step" data-a="pop" data-b="14"><div class="dot2">4</div><b>Conversa</b><span>Mensagens na própria solicitação</span><em class="who p">Os dois</em></div>
+      <div class="step" data-a="pop" data-b="17"><div class="dot2">5</div><b>Execução</b><span>Inicia no dia e conclui o serviço</span><em class="who v">Prestador</em></div>
+      <div class="step" data-a="pop" data-b="20"><div class="dot2">6</div><b>Avaliação</b><span>Nota, comentário e resposta pública</span><em class="who p">Produtor</em></div>
+      <div class="step done" data-a="pop" data-b="23"><div class="dot2">↻</div><b>De novo</b><span>Contratar de novo com os mesmos dados</span><em class="who p">Produtor</em></div>
+    </div>
+    <p class="caption" data-a="rise" data-b="25" style="top:880px">Cada passo entra na <b>linha do tempo</b> e gera uma <b>notificação</b> para a outra parte.</p>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="focusTop">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">04 · Demonstração</div>
+      <h2 class="title" data-a="mask" data-b="1">Negociação</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Contraproposta mostra a data e o valor antigos riscados</li>
+        <li data-a="rise" data-b="5">Aceitar ou recusar direto na solicitação</li>
+        <li data-a="rise" data-b="6">Linha do tempo com cada evento</li>
+        <li data-a="rise" data-b="7">Telefone só aparece depois de agendado</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv/solicitacoes/req-9</div></div><div class="view"><div class="cam" data-cam data-focus="0.5,0.36,1.3"><img src="../screens/request-negotiation.jpg" alt="Solicitação com contraproposta" /></div></div></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="focusTop">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">05 · Área do prestador</div>
+      <h2 class="title" data-a="mask" data-b="1">Pedidos recebidos</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Aceitar, recusar com motivo ou propor outra data e valor</li>
+        <li data-a="rise" data-b="5">Iniciar só no dia marcado, depois concluir</li>
+        <li data-a="rise" data-b="6">Agenda com os serviços e os dias bloqueados</li>
+        <li data-a="rise" data-b="7">Painel com pedidos, ganhos e avaliações</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv/prestador/solicitacoes/req-14</div></div><div class="view"><div class="cam" data-cam data-focus="0.62,0.3,1.25"><img src="../screens/provider-request.jpg" alt="Pedido recebido pelo prestador" /></div></div></div>
+    <div class="inset" style="top:720px" data-a="pop" data-b="20"><small>Agenda</small><img src="../screens/provider-agenda.jpg" alt="Agenda do prestador" /></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="focusTop">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">06 · Área do prestador</div>
+      <h2 class="title" data-a="mask" data-b="1">Anúncios</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Fotos enviadas pelo próprio prestador</li>
+        <li data-a="rise" data-b="5">Preço por hectare, hora, dia ou viagem</li>
+        <li data-a="rise" data-b="6">Equipamentos ligados ao anúncio</li>
+        <li data-a="rise" data-b="7">Pausar, reativar ou excluir sem perder o histórico</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv/prestador/servicos/novo</div></div><div class="view"><div class="cam" data-cam data-focus="0.5,0.4,1.3"><img src="../screens/provider-service-form.jpg" alt="Formulário de anúncio" /></div></div></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="focusTop">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">07 · Descoberta</div>
+      <h2 class="title" data-a="mask" data-b="1">Busca com filtros e mapa</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Filtros por unidade e faixa de preço, nota, selo e dia livre</li>
+        <li data-a="rise" data-b="5">Ordenação por preço ou avaliação</li>
+        <li data-a="rise" data-b="6">Lista ou mapa com Leaflet e OpenStreetMap</li>
+        <li data-a="rise" data-b="7">Um marcador por cidade com a quantidade de serviços</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv/servicos?view=map</div></div><div class="view"><div class="cam" data-cam data-focus="0.5,0.55,1.35"><img src="../screens/services-map.jpg" alt="Mapa de serviços" /></div></div></div>
+    <div class="inset" data-a="pop" data-b="20"><small>Filtros</small><img src="../screens/services-filters.jpg" alt="Filtros avançados" /></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="focusTop">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">08 · Confiança</div>
+      <h2 class="title" data-a="mask" data-b="1">Perfil público e raio</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Perfil do prestador com selo, serviços e avaliações</li>
+        <li data-a="rise" data-b="5">Círculo do raio de atendimento no mapa</li>
+        <li data-a="rise" data-b="6">Aviso quando a propriedade fica fora da área</li>
+        <li data-a="rise" data-b="7">Favoritos com coração animado</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv/prestadores/prv-1</div></div><div class="view"><div class="cam" data-cam data-focus="0.5,0.6,1.4"><img src="../screens/provider-area.jpg" alt="Perfil público com raio de atendimento" /></div></div></div>
+    <div class="inset" data-a="pop" data-b="20"><small>Favoritos</small><img src="../screens/favorites.jpg" alt="Favoritos" /></div>
+  </section>
+
+  <section class="slide" data-seed="760,152,1040,709,26,#E6F0E8" data-script="focusTop">
+    <div class="side">
+      <div class="eyebrow" data-a="rise" data-b="0">09 · Administração</div>
+      <h2 class="title" data-a="mask" data-b="1">Painel com filas</h2>
+      <ul class="bullets">
+        <li data-a="rise" data-b="4">Verificações e denúncias esperando análise</li>
+        <li data-a="rise" data-b="5">Suspender e reativar contas, criar administradores</li>
+        <li data-a="rise" data-b="6">Ocultar anúncios e gerenciar categorias</li>
+        <li data-a="rise" data-b="7">Senha provisória obriga a troca no primeiro acesso</li>
+      </ul>
+    </div>
+    <div class="browser" data-a="rise" data-b="2"><div class="bar"><i></i><i></i><i></i><div class="url">agroserv/admin</div></div><div class="view"><div class="cam" data-cam data-focus="0.6,0.3,1.4"><img src="../screens/admin-dashboard.jpg" alt="Painel do administrador" /></div></div></div>
+    <div class="inset" data-a="pop" data-b="20"><small>Denúncia</small><img src="../screens/admin-report.jpg" alt="Detalhe de denúncia" /></div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45" data-script="moderation">
+    <div class="eyebrow" data-a="rise" data-b="0">10 · Moderação</div>
+    <h2 class="title" data-a="mask" data-b="1">Toda ação deixa rastro.</h2>
+    <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
+      <defs>
+        <marker id="m-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8E9A92" stroke="none"/></marker>
+        <marker class="hot" id="m-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6B45" stroke="none"/></marker>
+      </defs>
+      <path data-a="draw" data-b="6" data-arrow="m-arrow" d="M480 620 H568"/>
+      <path data-a="draw" data-b="9" data-arrow="m-arrow" d="M880 620 C930 620 920 460 968 460"/>
+      <path data-a="draw" data-b="9" data-arrow="m-arrow" d="M880 620 C930 620 920 560 968 560"/>
+      <path data-a="draw" data-b="9" data-arrow="m-arrow-hot" class="hot" d="M880 620 C930 620 920 680 968 680"/>
+      <path data-a="draw" data-b="9" data-arrow="m-arrow" d="M880 620 C930 620 920 780 968 780"/>
+      <path data-a="draw" data-b="13" data-arrow="m-arrow-hot" class="hot" d="M1300 680 H1398"/>
+      <path id="mod-route" class="route" d="M480 620 H880 C930 620 920 680 970 680 H1300 H1400"/>
+    </svg>
+    <div class="node" style="left:140px;top:560px;width:340px;height:120px" data-a="pop" data-b="4"><b>Denúncia</b><span>anúncio, pedido, avaliação ou pessoa</span></div>
+    <div class="node accent" style="left:570px;top:560px;width:310px;height:120px" data-a="pop" data-b="7"><b>Fila do admin</b><span>mais antigas primeiro</span></div>
+    <div class="node soft" style="left:970px;top:420px;width:330px;height:80px" data-a="pop" data-b="10"><b>Arquivar</b></div>
+    <div class="node soft" style="left:970px;top:520px;width:330px;height:80px" data-a="pop" data-b="10"><b>Avisar o usuário</b></div>
+    <div class="node dark" style="left:970px;top:640px;width:330px;height:80px" data-a="pop" data-b="11"><b>Ocultar conteúdo</b></div>
+    <div class="node soft" style="left:970px;top:740px;width:330px;height:80px" data-a="pop" data-b="11"><b>Suspender conta</b></div>
+    <div class="node accent" style="left:1400px;top:600px;width:380px;height:160px" data-a="pop" data-b="14"><b>Histórico de ações</b><span>quem fez, quando e por quê · denunciante notificado</span></div>
+    <div class="packet" data-packet></div>
+    <p class="caption" data-a="rise" data-b="16" style="top:890px">Suspender uma conta <b>cancela as solicitações abertas</b> e avisa a outra parte automaticamente.</p>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45" data-script="backend">
+    <div class="eyebrow" data-a="rise" data-b="0">11 · Back-end</div>
+    <h2 class="title" data-a="mask" data-b="1">A mesma interface, agora com API real.</h2>
+    <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
+      <defs>
+        <marker id="b-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8E9A92" stroke="none"/></marker>
+        <marker class="hot" id="b-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6B45" stroke="none"/></marker>
+      </defs>
+      <path data-a="draw" data-b="6" data-arrow="b-arrow" d="M440 600 H498"/>
+      <path data-a="draw" data-b="7" data-arrow="b-arrow" d="M800 600 C840 600 830 500 868 500"/>
+      <path data-a="draw" data-b="8" data-arrow="b-arrow-hot" class="hot" d="M800 600 C840 600 830 700 868 700"/>
+      <path data-a="draw" data-b="10" data-arrow="b-arrow-hot" class="hot" d="M1180 700 H1258"/>
+      <path data-a="draw" data-b="12" data-arrow="b-arrow-hot" class="hot" d="M1560 700 H1608"/>
+      <path id="be-route" class="route" d="M440 600 H800 C840 600 830 700 870 700 H1560 H1610"/>
+    </svg>
+    <div class="node" style="left:140px;top:540px;width:300px;height:120px" data-a="pop" data-b="4"><b>Telas React</b><span>hooks · services</span></div>
+    <div class="node accent" style="left:500px;top:540px;width:300px;height:120px" data-a="pop" data-b="5"><b>apiClient</b><span>VITE_API_MODE</span></div>
+    <div class="node soft" style="left:870px;top:450px;width:310px;height:100px" data-a="pop" data-b="7"><b>mock</b><span>dados demo no navegador</span></div>
+    <div class="node" style="left:870px;top:650px;width:310px;height:100px" data-a="pop" data-b="8"><b>http</b><span>fetch + envelope</span></div>
+    <div class="node dark" style="left:1260px;top:640px;width:300px;height:120px" data-a="pop" data-b="10"><b>NestJS</b><span>17 módulos · JWT</span></div>
+    <div class="node accent" style="left:1610px;top:640px;width:170px;height:120px" data-a="pop" data-b="12"><b>SQLite</b><span>TypeORM</span></div>
+    <div class="packet" data-packet></div>
+    <div class="checks" style="left:140px;top:820px;grid-template-columns:repeat(3,auto);column-gap:60px">
+      <div data-a="rise" data-b="14"><i>✓</i>Mesmas regras e mensagens</div>
+      <div data-a="rise" data-b="15"><i>✓</i>Zero componentes alterados</div>
+      <div data-a="rise" data-b="16"><i>✓</i>Troca por uma variável</div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">12 · Qualidade</div>
+    <h2 class="title" data-a="mask" data-b="1">Testado nos dois lados.</h2>
+    <div class="metrics">
+      <div class="metric dark" data-a="pop" data-b="4"><strong data-a="count" data-b="5" data-to="460">460</strong><div><b>testes no front-end</b><br><span>telas, rotas, regras do mock</span></div></div>
+      <div class="metric" data-a="pop" data-b="5"><strong data-a="count" data-b="6" data-to="113">113</strong><div><b>testes de integração</b><br><span>API inteira sobre SQLite em memória</span></div></div>
+      <div class="metric" data-a="pop" data-b="6"><strong data-a="count" data-b="7" data-to="33">33</strong><div><b>testes unitários</b><br><span>services do back-end</span></div></div>
+      <div class="metric" data-a="pop" data-b="7"><strong data-a="count" data-b="8" data-to="0">0</strong><div><b>erros no modo http</b><br><span>telas dos três papéis contra a API real</span></div></div>
+    </div>
+    <p class="caption" data-a="rise" data-b="10" style="top:810px">Lint, checagem de tipos e testes passam antes de cada entrega. <b>Uma entrega por funcionalidade.</b></p>
+  </section>
+
+  <section class="slide" data-seed="1000,330,780,470,24,#173F2A">
+    <div class="eyebrow" data-a="rise" data-b="0">13 · Publicação</div>
+    <h2 class="title" data-a="mask" data-b="1">No ar, para qualquer um testar.</h2>
+    <div class="checks" style="left:140px;top:430px">
+      <div data-a="rise" data-b="4"><i>✓</i>Site, app, apresentações e documentos</div>
+      <div data-a="rise" data-b="5"><i>✓</i>Hospedado na Vercel</div>
+      <div data-a="rise" data-b="6"><i>✓</i>Diagramas renderizados no próprio site</div>
+      <div data-a="rise" data-b="7"><i>✓</i>Dados demo restauráveis pelo admin</div>
+    </div>
+    <div style="position:absolute;left:1060px;top:380px;width:660px;color:var(--white)">
+      <div class="col-title" style="position:static;color:var(--light)" data-a="rise" data-b="8">Contas demo · senha 123456</div>
+      <div class="routes private" style="position:static;margin-top:30px">
+        <div class="route" data-a="rise" data-b="9"><code class="mono" style="min-width:0;font-size:24px">produtor@agroserv.com</code></div>
+        <div class="route" data-a="rise" data-b="10"><code class="mono" style="min-width:0;font-size:24px">prestador@agroserv.com</code></div>
+        <div class="route" data-a="rise" data-b="11"><code class="mono" style="min-width:0;font-size:24px">admin@agroserv.com</code></div>
+      </div>
+      <p data-a="rise" data-b="12" style="margin-top:34px;font-size:26px;font-weight:700">agroserv-bay.vercel.app</p>
+    </div>
+  </section>
+
+  <section class="slide final" data-seed="0,0,1920,1080,0,#173F2A" data-dark-chrome="true">
+    <div class="eyebrow" data-a="rise" data-b="2" style="top:360px">AgroServ · Front-end + Back-end</div>
+    <div class="thanks" data-a="mask" data-b="3">Obrigado.</div>
+  </section>
+
+  <div class="hint" id="hint">← → para navegar · F tela cheia</div>
+  <div class="chrome" id="chrome"><span>AGROSERV</span><span id="counter" class="counter">01 / 15</span></div>
+  <div class="progress"><i id="bar"></i></div>
+</div>
+</div>
+<script>
+window.DECK_SCRIPTS = {
+  focusTop(slide, { run, later, focusFrame }) {
+    const cam = slide.querySelector('[data-cam]')
+    const [fx, fy, scale] = (cam.dataset.focus || '0.5,0.4,1.4').split(',').map(Number)
+    later(() => run(cam, [{ transform: 'none' }, { transform: focusFrame(cam, fx, fy, scale) }], { kind: 'heavy' }), 1700)
+  },
+  moderation(slide, { travel, BEAT }) {
+    travel(slide.querySelector('[data-packet]'), slide.querySelector('#mod-route'), { delay: 16 * BEAT, duration: 3000 })
+  },
+  backend(slide, { travel, BEAT }) {
+    travel(slide.querySelector('[data-packet]'), slide.querySelector('#be-route'), { delay: 14 * BEAT, duration: 2600, direction: 'alternate' })
+  },
+}
+</script>
+<script src="../shared/deck.js"></script>
+</body>
+</html>

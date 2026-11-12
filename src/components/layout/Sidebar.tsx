@@ -1,4 +1,4 @@
-import { ClipboardList, LayoutDashboard, LogOut, Search, UserRound, type LucideIcon } from 'lucide-react'
+import { BadgeCheck, CalendarDays, ClipboardList, Flag, Heart, History, LayoutDashboard, LogOut, MapPinned, Megaphone, Search, Star, Tags, Tractor, UserRound, Users, type LucideIcon } from 'lucide-react'
 import { NavLink } from 'react-router'
 import type { Role } from '../../types/entities'
 import { paths } from '../../routes/paths'
@@ -15,14 +15,31 @@ const sidebarItemsByRole: Record<Role, SidebarItem[]> = {
   producer: [
     { label: 'Dashboard', to: paths.dashboard, icon: LayoutDashboard },
     { label: 'Solicitações', to: paths.requests, icon: ClipboardList },
+    { label: 'Propriedades', to: paths.properties, icon: MapPinned },
+    { label: 'Favoritos', to: paths.favorites, icon: Heart },
     { label: 'Ver serviços', to: paths.services, icon: Search },
     { label: 'Perfil', to: paths.profile, icon: UserRound },
   ],
   provider: [
     { label: 'Painel', to: paths.providerDashboard, icon: LayoutDashboard },
+    { label: 'Solicitações', to: paths.providerRequests, icon: ClipboardList },
+    { label: 'Agenda', to: paths.providerAgenda, icon: CalendarDays },
+    { label: 'Meus serviços', to: paths.providerServices, icon: Megaphone },
+    { label: 'Equipamentos', to: paths.providerEquipment, icon: Tractor },
+    { label: 'Avaliações', to: paths.providerReviews, icon: Star },
+    { label: 'Verificação', to: paths.providerVerification, icon: BadgeCheck },
     { label: 'Perfil', to: paths.providerProfile, icon: UserRound },
   ],
-  admin: [{ label: 'Painel', to: paths.adminDashboard, icon: LayoutDashboard }],
+  admin: [
+    { label: 'Painel', to: paths.adminDashboard, icon: LayoutDashboard },
+    { label: 'Usuários', to: paths.adminUsers, icon: Users },
+    { label: 'Verificações', to: paths.adminVerifications, icon: BadgeCheck },
+    { label: 'Anúncios', to: paths.adminServices, icon: Megaphone },
+    { label: 'Denúncias', to: paths.adminReports, icon: Flag },
+    { label: 'Categorias', to: paths.adminCategories, icon: Tags },
+    { label: 'Histórico', to: paths.adminActions, icon: History },
+    { label: 'Minha conta', to: paths.adminAccount, icon: UserRound },
+  ],
 }
 
 const roleLabels: Record<Role, string> = {

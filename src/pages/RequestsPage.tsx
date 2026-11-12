@@ -12,27 +12,12 @@ import { paths } from '../routes/paths'
 import type { RequestStatusFilter } from '../types/api'
 import { cn } from '../utils/cn'
 import { formatCount } from '../utils/format'
-import { isRequestStatus } from '../utils/requestStatus'
-
-const statusFilters: { value: RequestStatusFilter; label: string }[] = [
-  { value: 'all', label: 'Todas' },
-  { value: 'pending', label: 'Pendentes' },
-  { value: 'counter_offer', label: 'Contrapropostas' },
-  { value: 'accepted', label: 'Agendadas' },
-  { value: 'in_progress', label: 'Em andamento' },
-  { value: 'completed', label: 'Concluídas' },
-  { value: 'rejected', label: 'Recusadas' },
-  { value: 'cancelled', label: 'Canceladas' },
-]
-
-function parseStatus(value: string | null): RequestStatusFilter {
-  return value && isRequestStatus(value) ? value : 'all'
-}
+import { parseStatusFilter, requestStatusFilters } from '../utils/requestStatus'
 
 export function RequestsPage() {
   usePageTitle('Minhas solicitações')
   const [searchParams, setSearchParams] = useSearchParams()
-  const status = parseStatus(searchParams.get('status'))
+  const status = parseStatusFilter(searchParams.get('status'))
   const { data, error, isLoading, refetch } = useRequests(status)
 
   function selectStatus(next: RequestStatusFilter) {
@@ -47,7 +32,7 @@ export function RequestsPage() {
       </div>
 
       <div role="group" aria-label="Filtrar por status" className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
-        {statusFilters.map((filter) => (
+        {requestStatusFilters.map((filter) => (
           <FilterChip key={filter.value} isActive={status === filter.value} onClick={() => selectStatus(filter.value)}>
             {filter.label}
           </FilterChip>

@@ -23,9 +23,14 @@ const service: Service = {
   reviewCount: 128,
   available: true,
   imageUrl: '/spraying.jpg',
+  providerVerified: true,
+  photos: ['/spraying.jpg'],
+  equipmentIds: [],
+  status: 'active',
+  createdAt: '2026-01-10T12:00:00.000Z',
 }
 
-const category: Category = { id: 'cat-spraying', slug: 'pulverizacao', name: 'Pulverização', icon: 'spray-can' }
+const category: Category = { id: 'cat-spraying', slug: 'pulverizacao', name: 'Pulverização', icon: 'spray-can', active: true }
 
 describe('ServiceCard', () => {
   it('shows the service summary and links to the detail page', () => {
@@ -35,7 +40,7 @@ describe('ServiceCard', () => {
       </MemoryRouter>,
     )
     expect(screen.getByRole('heading', { name: 'Pulverização Agrícola' })).toBeInTheDocument()
-    expect(screen.getByText('por Agro Máquinas Paraná')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Agro Máquinas Paraná' })).toHaveAttribute('href', '/prestadores/prv-1')
     expect(screen.getByText('Santa Helena - PR')).toBeInTheDocument()
     expect(screen.getByText('Disponível')).toBeInTheDocument()
     expect(screen.getByText(/R\$\s180\/h/)).toBeInTheDocument()

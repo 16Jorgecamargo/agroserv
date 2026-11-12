@@ -3,9 +3,27 @@ import { ApiError } from './apiError'
 import { authRoutes } from './mockRoutes/authRoutes'
 import { catalogRoutes } from './mockRoutes/catalogRoutes'
 import { accountRoutes } from './mockRoutes/accountRoutes'
+import { adminRoutes } from './mockRoutes/adminRoutes'
+import { adminActionRoutes } from './mockRoutes/adminActionRoutes'
+import { adminCategoryRoutes } from './mockRoutes/adminCategoryRoutes'
+import { adminReportRoutes } from './mockRoutes/adminReportRoutes'
+import { adminServiceRoutes } from './mockRoutes/adminServiceRoutes'
+import { reportRoutes } from './mockRoutes/reportRoutes'
+import { adminVerificationRoutes } from './mockRoutes/adminVerificationRoutes'
 import { demoRoutes } from './mockRoutes/demoRoutes'
+import { agendaRoutes } from './mockRoutes/agendaRoutes'
+import { equipmentRoutes } from './mockRoutes/equipmentRoutes'
+import { favoriteRoutes } from './mockRoutes/favoriteRoutes'
+import { messageRoutes } from './mockRoutes/messageRoutes'
+import { reviewRoutes } from './mockRoutes/reviewRoutes'
+import { verificationRoutes } from './mockRoutes/verificationRoutes'
+import { notificationRoutes } from './mockRoutes/notificationRoutes'
 import { producerRoutes } from './mockRoutes/producerRoutes'
+import { propertyRoutes } from './mockRoutes/propertyRoutes'
+import { publicProviderRoutes } from './mockRoutes/publicProviderRoutes'
 import { providerRoutes } from './mockRoutes/providerRoutes'
+import { providerServiceRoutes } from './mockRoutes/providerServiceRoutes'
+import { uploadRoutes } from './mockRoutes/uploadRoutes'
 import { normalizeText } from './mockRoutes/shared'
 import type { MockRoute } from './mockRoutes/types'
 
@@ -38,7 +56,25 @@ const routes: MockRoute[] = [
   ...catalogRoutes,
   ...producerRoutes,
   ...providerRoutes,
+  ...providerServiceRoutes,
+  ...propertyRoutes,
   ...accountRoutes,
+  ...uploadRoutes,
+  ...notificationRoutes,
+  ...messageRoutes,
+  ...reviewRoutes,
+  ...equipmentRoutes,
+  ...agendaRoutes,
+  ...verificationRoutes,
+  ...adminRoutes,
+  ...adminVerificationRoutes,
+  ...adminServiceRoutes,
+  ...adminReportRoutes,
+  ...adminCategoryRoutes,
+  ...adminActionRoutes,
+  ...reportRoutes,
+  ...favoriteRoutes,
+  ...publicProviderRoutes,
   ...demoRoutes,
 ]
 

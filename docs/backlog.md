@@ -6,7 +6,7 @@ Lista de tarefas para levar o AgroServ da etapa 1 (vitrine + painel do produtor)
 |---|---|
 | Este backlog | Quem faz o quê, em que ordem, e quando está pronto. Rotas, regras do projeto e design system. |
 | [`api-contract.md`](api-contract.md) | Endpoints, tipos, erros, permissões e efeitos. **Fonte da verdade** para front-end e back-end. |
-| [`future-flowcharts.md`](future-flowcharts.md) | Fluxos de cada papel em diagramas. |
+| [`future-flowcharts.md`](future-flowcharts.md) | Fluxos de cada papel em diagramas (histórico do planejamento). |
 
 ## Como usar
 
@@ -138,43 +138,43 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 
 | ID | Item | Tamanho | Depende de | Responsável | Situação |
 |---|---|---|---|---|---|
-| F1-01 | Banco simulado persistente e restaurar dados demo | G | — | | A fazer |
-| F1-02 | Papéis, situação da conta e contas demo | M | F1-01 | | A fazer |
-| F1-03 | Componentes de formulário, modal e toasts | G | — | | A fazer |
-| F1-04 | Login por papel e proteção de rotas por papel | M | F1-02 | | A fazer |
-| F1-05 | Layouts das três áreas | M | F1-04 | | A fazer |
-| F1-06 | Cadastro | M | F1-02, F1-03 | | A fazer |
-| F1-07 | Recuperação de senha | P | F1-02, F1-03 | | A fazer |
-| F1-08 | Perfil e conta (produtor e prestador) | M | F1-03, F1-05 | | A fazer |
-| F2-01 | Novo modelo de solicitação e máquina de status | G | F1-02 | | A fazer |
-| F2-02 | Propriedades | M | F1-03, F1-05 | | A fazer |
-| F2-03 | Solicitar serviço | G | F1-03, F2-01, F2-02 | | A fazer |
-| F2-04 | Detalhe da solicitação (produtor) | M | F1-03, F2-01 | | A fazer |
-| F2-05 | Lista e painel do produtor com os novos status | P | F2-01 | | A fazer |
-| F3-01 | Upload de arquivos | M | F1-01, F1-03 | | A fazer |
-| F3-02 | Meus serviços | G | F3-01, F1-05 | | A fazer |
-| F3-03 | Solicitações recebidas e ações do prestador | G | F1-03, F1-05, F2-01 | | A fazer |
-| F3-04 | Painel do prestador | M | F3-03 | | A fazer |
-| F4-01 | Notificações e sino | M | F1-05, F2-01 | | A fazer |
-| F4-02 | Conversa da solicitação | M | F2-04, F3-03 | | A fazer |
-| F4-03 | Avaliar serviço (produtor) | M | F2-04 | | A fazer |
-| F4-04 | Avaliações no detalhe do serviço e respostas do prestador | M | F4-03 | | A fazer |
-| F5-01 | Equipamentos | M | F3-01, F3-02 | | A fazer |
-| F5-02 | Agenda e dias bloqueados | G | F3-03, F2-03 | | A fazer |
-| F5-03 | Verificação do prestador e selo | M | F3-01 | | A fazer |
-| F6-01 | Painel do administrador | P | F1-05 | | A fazer |
-| F6-02 | Usuários e suspensão | G | F1-03, F6-01, F2-01 | | A fazer |
-| F6-03 | Fila de verificações | P | F5-03, F6-01 | | A fazer |
-| F6-04 | Moderação de anúncios | M | F3-02, F6-01 | | A fazer |
-| F6-05 | Denúncias | G | F3-03, F4-04, F6-02, F6-04 | | A fazer |
-| F6-06 | Categorias | M | F1-03, F6-01 | | A fazer |
-| F6-07 | Histórico de ações | P | F6-02 | | A fazer |
-| F7-01 | Filtros avançados e ordenação | M | F5-02, F5-03 | | A fazer |
-| F7-02 | Mapa de serviços e raio de atendimento | G | F1-08 | | A fazer |
-| F7-03 | Favoritos | P | F2-05 | | A fazer |
-| F7-04 | Contratar de novo | P | F2-03 | | A fazer |
-| F7-05 | Perfil público do prestador | M | F4-04, F5-01 | | A fazer |
-| F7-06 | Documentação final | P | todos | | A fazer |
+| F1-01 | Banco simulado persistente e restaurar dados demo | G | — | | Feito |
+| F1-02 | Papéis, situação da conta e contas demo | M | F1-01 | | Feito |
+| F1-03 | Componentes de formulário, modal e toasts | G | — | | Feito |
+| F1-04 | Login por papel e proteção de rotas por papel | M | F1-02 | | Feito |
+| F1-05 | Layouts das três áreas | M | F1-04 | | Feito |
+| F1-06 | Cadastro | M | F1-02, F1-03 | | Feito |
+| F1-07 | Recuperação de senha | P | F1-02, F1-03 | | Feito |
+| F1-08 | Perfil e conta (produtor e prestador) | M | F1-03, F1-05 | | Feito |
+| F2-01 | Novo modelo de solicitação e máquina de status | G | F1-02 | | Feito |
+| F2-02 | Propriedades | M | F1-03, F1-05 | | Feito |
+| F2-03 | Solicitar serviço | G | F1-03, F2-01, F2-02 | | Feito |
+| F2-04 | Detalhe da solicitação (produtor) | M | F1-03, F2-01 | | Feito |
+| F2-05 | Lista e painel do produtor com os novos status | P | F2-01 | | Feito |
+| F3-01 | Upload de arquivos | M | F1-01, F1-03 | | Feito |
+| F3-02 | Meus serviços | G | F3-01, F1-05 | | Feito |
+| F3-03 | Solicitações recebidas e ações do prestador | G | F1-03, F1-05, F2-01 | | Feito |
+| F3-04 | Painel do prestador | M | F3-03 | | Feito |
+| F4-01 | Notificações e sino | M | F1-05, F2-01 | | Feito |
+| F4-02 | Conversa da solicitação | M | F2-04, F3-03 | | Feito |
+| F4-03 | Avaliar serviço (produtor) | M | F2-04 | | Feito |
+| F4-04 | Avaliações no detalhe do serviço e respostas do prestador | M | F4-03 | | Feito |
+| F5-01 | Equipamentos | M | F3-01, F3-02 | | Feito |
+| F5-02 | Agenda e dias bloqueados | G | F3-03, F2-03 | | Feito |
+| F5-03 | Verificação do prestador e selo | M | F3-01 | | Feito |
+| F6-01 | Painel do administrador | P | F1-05 | | Feito |
+| F6-02 | Usuários e suspensão | G | F1-03, F6-01, F2-01 | | Feito |
+| F6-03 | Fila de verificações | P | F5-03, F6-01 | | Feito |
+| F6-04 | Moderação de anúncios | M | F3-02, F6-01 | | Feito |
+| F6-05 | Denúncias | G | F3-03, F4-04, F6-02, F6-04 | | Feito |
+| F6-06 | Categorias | M | F1-03, F6-01 | | Feito |
+| F6-07 | Histórico de ações | P | F6-02 | | Feito |
+| F7-01 | Filtros avançados e ordenação | M | F5-02, F5-03 | | Feito |
+| F7-02 | Mapa de serviços e raio de atendimento | G | F1-08 | | Feito |
+| F7-03 | Favoritos | P | F2-05 | | Feito |
+| F7-04 | Contratar de novo | P | F2-03 | | Feito |
+| F7-05 | Perfil público do prestador | M | F4-04, F5-01 | | Feito |
+| F7-06 | Documentação final | P | todos | | Feito |
 
 ---
 
@@ -610,7 +610,7 @@ Critérios de aceite:
 - [ ] `api-contract.md`: todos os endpoints marcados como **Implementado**.
 - [ ] `system-flowchart.md` descreve o sistema completo. `future-flowcharts.md` vira histórico ou é removido.
 - [ ] README atualizado com as contas demo e as novas áreas.
-- [ ] Imagens dos fluxogramas regeneradas para o GitHub Pages.
+- [ ] Imagens dos fluxogramas regeneradas para o site publicado.
 
 ---
 
@@ -618,7 +618,7 @@ Critérios de aceite:
 
 Para a etapa seguinte da disciplina. O back-end implementa `api-contract.md`. O front-end passa a usá-lo com `VITE_API_MODE=http`.
 
-**Situação:** B-01 a B-07, B-09 e B-10 estão implementados em [`backend/`](../backend/README.md), na branch `backend`. B-08 depende de ajustes no front-end, listados na seção 17 do contrato.
+**Situação:** B-01 a B-10 estão implementados em [`backend/`](../backend/README.md). A troca do front-end (B-08) foi conferida com `VITE_API_MODE=http`: as telas dos três papéis carregam do back-end e as ações de escrita funcionam.
 
 | ID | Item | Critérios de aceite |
 |---|---|---|

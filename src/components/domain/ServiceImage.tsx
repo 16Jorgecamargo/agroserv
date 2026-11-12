@@ -1,5 +1,6 @@
 import { ImageOff } from 'lucide-react'
 import { useState } from 'react'
+import { useFileUrl } from '../../hooks/useFileUrl'
 import { cn } from '../../utils/cn'
 
 interface ServiceImageProps {
@@ -9,9 +10,12 @@ interface ServiceImageProps {
 }
 
 export function ServiceImage({ src, alt, className }: ServiceImageProps) {
+  const { url, isResolving, failed } = useFileUrl(src)
   const [failedSrc, setFailedSrc] = useState<string | null>(null)
 
-  if (failedSrc === src) {
+  if (isResolving) return <div role="img" aria-label={alt} aria-busy className={cn('animate-pulse bg-surface-muted', className)} />
+
+  if (failed || !url || failedSrc === url) {
     return (
       <div role="img" aria-label={alt} className={cn('grid place-items-center bg-surface-muted text-text-muted', className)}>
         <ImageOff className="size-6" aria-hidden />
@@ -19,5 +23,5 @@ export function ServiceImage({ src, alt, className }: ServiceImageProps) {
     )
   }
 
-  return <img src={src} alt={alt} loading="lazy" onError={() => setFailedSrc(src)} className={className} />
+  return <img src={url} alt={alt} loading="lazy" onError={() => setFailedSrc(url)} className={className} />
 }

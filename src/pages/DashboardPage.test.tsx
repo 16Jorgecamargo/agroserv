@@ -1,11 +1,14 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { renderApp } from '../test/renderApp'
 import { getMockDatabase } from '../services/api/mockDatabase'
 import { signInAsDemoProducer } from '../test/session'
+import { keepOnlyFixedRequests } from '../test/seed'
 
 describe('DashboardPage', () => {
+  beforeEach(keepOnlyFixedRequests)
+
   it('shows greeting, stats and recent requests', async () => {
     signInAsDemoProducer()
     renderApp('/dashboard')
@@ -16,7 +19,7 @@ describe('DashboardPage', () => {
     expect(screen.getByRole('heading', { name: 'Em andamento' }).closest('article')).toHaveTextContent('1')
     const table = screen.getByRole('table', { name: 'Solicitações recentes' })
     expect(within(table).getAllByRole('row')).toHaveLength(6)
-    expect(within(table).getByRole('link', { name: 'Pulverização com Drone' })).toHaveAttribute('href', '/servicos/svc-10')
+    expect(within(table).getByRole('link', { name: 'Pulverização com Drone' })).toHaveAttribute('href', '/solicitacoes/req-8')
     expect(await screen.findByText('Você tem uma contraproposta para responder.')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Ver contraproposta' })).toHaveAttribute(
       'href',

@@ -6,12 +6,12 @@ import type {
 } from '../../../types/api'
 import type { ProviderProfile, User } from '../../../types/entities'
 import { brazilianStateCodes } from '../../../data/states'
+import { isOpenRequestStatus } from '../../../utils/requestStatus'
 import { ApiError } from '../apiError'
 import { getMockDatabase, persistMockDatabase } from '../mockDatabase'
-import { findUserByToken, requireRole } from './shared'
+import { areOwnPublicUploads, findUserByToken, OWN_IMAGES_MESSAGE, requireRole } from './shared'
 import type { MockRoute, RouteContext } from './types'
 
-const OPEN_REQUEST_STATUSES = new Set(['pending', 'accepted', 'in_progress'])
 const DELETED_EMAIL_DOMAIN = 'conta-excluida.agroserv.invalid'
 
 function bodyRecord(body: unknown): Record<string, unknown> {
@@ -26,7 +26,6 @@ function updateMe({ token, body }: RouteContext): User {
   const user = findUserByToken(token)
   const payload = bodyRecord(body) as UpdateProfilePayload
   const fields: Record<string, string> = {}
-  const database = getMockDatabase()
   const updates: Partial<User> = {}
 
   if (payload.name !== undefined) {
@@ -51,22 +50,14 @@ function updateMe({ token, body }: RouteContext): User {
   }
   if (payload.avatarUrl !== undefined) {
     if (payload.avatarUrl === null) updates.avatarUrl = undefined
-    else if (typeof payload.avatarUrl === 'string' && /^https?:\/\//.test(payload.avatarUrl)) updates.avatarUrl = payload.avatarUrl
-    else fields.avatarUrl = 'Informe uma URL de imagem válida.'
+    else if (typeof payload.avatarUrl === 'string' && areOwnPublicUploads(user.id, [payload.avatarUrl])) updates.avatarUrl = payload.avatarUrl
+    else fields.avatarUrl = OWN_IMAGES_MESSAGE
   }
 
   if (Object.keys(fields).length) throwFields(fields)
 
   Object.assign(user, updates)
 
-  if (user.role === 'provider') {
-    const provider = database.providers.find((candidate) => candidate.id === user.id)
-    if (provider) {
-      provider.name = user.name
-      provider.city = user.city
-      provider.state = user.state
-    }
-  }
   persistMockDatabase()
   return user
 }
@@ -105,7 +96,7 @@ function getProviderProfile({ token }: RouteContext): ProviderProfile {
 }
 
 function updateProviderProfile({ token, body }: RouteContext): ProviderProfile {
-  const user = requireRole(findUserByToken(token), 'provider')
+  requireRole(findUserByToken(token), 'provider')
   const profile = getProviderProfile({ token, body, params: {}, query: {} })
   const updatedProfile = { ...profile }
   const payload = bodyRecord(body) as ProviderProfilePayload
@@ -142,13 +133,6 @@ function updateProviderProfile({ token, body }: RouteContext): ProviderProfile {
 
   Object.assign(profile, updatedProfile)
 
-  const provider = getMockDatabase().providers.find((candidate) => candidate.id === user.id)
-  if (provider) {
-    provider.yearsOfExperience = updatedProfile.yearsOfExperience
-    provider.serviceRadiusKm = updatedProfile.serviceRadiusKm
-    provider.description = updatedProfile.description
-    provider.verified = updatedProfile.verificationStatus === 'approved'
-  }
   persistMockDatabase()
   return profile
 }
@@ -161,7 +145,7 @@ function deleteMe({ token }: RouteContext): MessageResponse {
 
   const database = getMockDatabase()
   const relatedRequests = database.requestRecords.filter((record) => {
-    if (!OPEN_REQUEST_STATUSES.has(record.request.status)) return false
+    if (!isOpenRequestStatus(record.request.status)) return false
     if (user.role === 'producer') return record.producerId === user.id
     const service = database.services.find((candidate) => candidate.id === record.request.serviceId)
     return service?.providerId === user.id
@@ -181,7 +165,10 @@ function deleteMe({ token }: RouteContext): MessageResponse {
 
   if (user.role === 'provider') {
     database.services.forEach((service) => {
-      if (service.providerId === user.id) service.available = false
+      if (service.providerId !== user.id || service.deletedAt || service.status === 'hidden') return
+      service.statusBeforeHidden = service.status
+      service.status = 'hidden'
+      service.hiddenByAccountDeletion = true
     })
   }
 

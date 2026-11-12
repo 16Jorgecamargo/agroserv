@@ -1,7 +1,7 @@
 import type { RequestRecord } from '../../../data/requests'
 import { getMockDatabase, persistMockDatabase } from '../mockDatabase'
 import { ApiError } from '../apiError'
-import { toService } from './shared'
+import { notify, requestLinkFor, toProvider, toService } from './shared'
 import type {
   Property,
   RequestAction,
@@ -13,7 +13,7 @@ import type {
   ServiceRequestDetail,
   User,
 } from '../../../types/entities'
-import { getTodayInBrasilia } from '../../../utils/date'
+import { getTodayInBrasilia, isDateOnly } from '../../../utils/date'
 
 export type RequestTransitionAction =
   | 'producer_cancel'
@@ -62,12 +62,6 @@ function getRecord(requestId: string): RequestRecord {
 
 export function getRequestRecord(requestId: string): RequestRecord {
   return getRecord(requestId)
-}
-
-function isDateOnly(value: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
-  const parsed = new Date(`${value}T00:00:00.000Z`)
-  return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value
 }
 
 function getEffectiveCounterOfferDate(request: ServiceRequest): string {
@@ -299,8 +293,31 @@ export function applyRequestTransition(
 
   request.updatedAt = timestamp
   appendEvent(record, eventType, actor, timestamp, { note, previousDate, previousValue })
+  notifyTransition(action, request, now)
   persistMockDatabase()
   return request
+}
+
+const transitionNotifications: Partial<
+  Record<RequestTransitionAction, { recipient: 'producer' | 'provider'; type: 'request_status' | 'counter_offer'; title: string }>
+> = {
+  producer_cancel: { recipient: 'provider', type: 'request_status', title: 'Solicitação cancelada pelo produtor' },
+  producer_accept_counter_offer: { recipient: 'provider', type: 'request_status', title: 'Contraproposta aceita' },
+  producer_decline_counter_offer: { recipient: 'provider', type: 'request_status', title: 'Contraproposta recusada' },
+  provider_accept: { recipient: 'producer', type: 'request_status', title: 'Sua solicitação foi agendada' },
+  provider_reject: { recipient: 'producer', type: 'request_status', title: 'Sua solicitação foi recusada' },
+  provider_counter_offer: { recipient: 'producer', type: 'counter_offer', title: 'Você recebeu uma contraproposta' },
+  provider_start: { recipient: 'producer', type: 'request_status', title: 'Serviço em andamento' },
+  provider_complete: { recipient: 'producer', type: 'request_status', title: 'Serviço concluído. Conte como foi.' },
+  provider_cancel: { recipient: 'producer', type: 'request_status', title: 'Solicitação cancelada pelo prestador' },
+}
+
+function notifyTransition(action: RequestTransitionAction, request: ServiceRequest, now: Date): void {
+  const notification = transitionNotifications[action]
+  if (!notification) return
+
+  const recipientId = notification.recipient === 'producer' ? request.producerId : request.providerId
+  notify(recipientId, notification.type, notification.title, requestLinkFor(notification.recipient, request.id), undefined, now)
 }
 
 
@@ -319,7 +336,18 @@ export function cancelOpenRequestsForUser(userId: string, now: Date = new Date()
       { reason: 'Conta suspensa pela administração' },
       now,
     )
+    const recipient: 'producer' | 'provider' = record.request.producerId === userId ? 'provider' : 'producer'
+    const recipientId = recipient === 'producer' ? record.request.producerId : record.request.providerId
+    notify(
+      recipientId,
+      'request_status',
+      'Solicitação cancelada pela administração',
+      requestLinkFor(recipient, record.request.id),
+      undefined,
+      now,
+    )
   }
+  persistMockDatabase()
 }
 function toRequestParty(user: User, includePhone: boolean): RequestParty {
   return {
@@ -340,23 +368,28 @@ export function getRequestDetail(record: RequestRecord, role: Role, now: Date = 
   const database = getMockDatabase()
   const request = record.request
   const serviceRecord = database.services.find((candidate) => candidate.id === request.serviceId)
-  const provider = database.providers.find((candidate) => candidate.id === request.providerId)
+  const provider = toProvider(request.providerId)
   const producer = database.users.find((candidate) => candidate.id === request.producerId)
   const providerUser = database.users.find((candidate) => candidate.id === request.providerId)
+  const propertyRecord = database.properties.find((candidate) => candidate.id === request.propertyId)
+  const review = request.reviewId ? database.reviews.find((candidate) => candidate.id === request.reviewId) : undefined
 
   if (!serviceRecord || !provider || !producer || !providerUser) return missingDetail()
 
   const canContact = ['accepted', 'in_progress', 'completed'].includes(request.status)
+  const showProducerPhone = role === 'admin' || (canContact && role === 'provider')
+  const showProviderPhone = role === 'admin' || (canContact && role === 'producer')
 
   return {
     ...request,
     service: toService(serviceRecord),
-    serviceRemoved: false,
+    serviceRemoved: Boolean(serviceRecord.deletedAt),
     property: record.property as Property,
-    propertyRemoved: false,
-    producer: toRequestParty(producer, canContact && role === 'provider'),
-    provider: { ...provider, ...(canContact && role === 'producer' && providerUser.phone ? { phone: providerUser.phone } : {}) },
+    propertyRemoved: !propertyRecord || Boolean(propertyRecord.deletedAt),
+    producer: toRequestParty(producer, showProducerPhone),
+    provider: { ...provider, ...(showProviderPhone && providerUser.phone ? { phone: providerUser.phone } : {}) },
     events: [...record.events].sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
+    ...(review ? { review } : {}),
     allowedActions: getAllowedActions(request, role, now),
   }
 }

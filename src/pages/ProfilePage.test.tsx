@@ -63,4 +63,22 @@ describe('ProfilePage', () => {
     expect(await screen.findByRole('status')).toHaveTextContent('Dados demo restaurados.')
     expect(getMockDatabase().categories[0].name).toBe('Plantio')
   })
+
+  it('changes and removes the profile photo', async () => {
+    signInAsDemoProducer()
+    renderApp('/perfil')
+
+    const photo = new File([new Uint8Array([137, 80, 78, 71])], 'eu.png', { type: 'image/png' })
+    await userEvent.upload(await screen.findByLabelText('Escolher foto de perfil'), photo)
+
+    expect(await screen.findByText('Foto de perfil atualizada.')).toBeInTheDocument()
+    const stored = getMockDatabase().users.find((user) => user.id === 'usr-1')?.avatarUrl
+    expect(stored).toMatch(/^mockfile:upl-/)
+    const section = screen.getByRole('region', { name: 'Foto de perfil' })
+    expect(await within(section).findByRole('img', { name: 'Carlos Henrique Souza' })).toHaveAttribute('src', expect.stringMatching(/^data:image\/png;base64,/))
+
+    await userEvent.click(within(section).getByRole('button', { name: 'Remover foto' }))
+    expect(await screen.findByText('Foto de perfil removida.')).toBeInTheDocument()
+    expect(getMockDatabase().users.find((user) => user.id === 'usr-1')?.avatarUrl).toBeUndefined()
+  })
 })

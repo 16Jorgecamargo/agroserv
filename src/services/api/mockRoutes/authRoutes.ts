@@ -5,7 +5,6 @@ import type {
 } from '../../../types/api'
 import type {
   PasswordResetTokenRecord,
-  Provider,
   ProviderProfile,
   Role,
   User,
@@ -85,20 +84,7 @@ function register({ body }: RouteContext): LoginResponse {
       rating: 0,
       reviewCount: 0,
     }
-    const provider: Provider = {
-      id,
-      name,
-      city,
-      state,
-      rating: 0,
-      reviewCount: 0,
-      yearsOfExperience: 0,
-      verified: false,
-      serviceRadiusKm: 50,
-      description: '',
-    }
     database.providerProfiles.push(profile)
-    database.providers.push(provider)
   }
 
   persistMockDatabase()

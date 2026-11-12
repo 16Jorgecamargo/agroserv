@@ -5,6 +5,16 @@ import { createHttpAdapter } from './httpAdapter'
 import { createMockAdapter } from './mockAdapter'
 
 type UnauthorizedListener = (token: string) => void
+type MutationListener = () => void
+
+const mutationListeners = new Set<MutationListener>()
+
+export function subscribeMutations(listener: MutationListener): () => void {
+  mutationListeners.add(listener)
+  return () => {
+    mutationListeners.delete(listener)
+  }
+}
 
 const unauthorizedListeners = new Set<UnauthorizedListener>()
 
@@ -26,7 +36,9 @@ export function createApiClient(
 ) {
   async function send<T>(config: RequestConfig): Promise<T> {
     try {
-      return await adapter.request<T>(config)
+      const result = await adapter.request<T>(config)
+      if (config.method !== 'GET') mutationListeners.forEach((listener) => listener())
+      return result
     } catch (error) {
       if (config.token && isApiError(error) && error.status === 401) onUnauthorized(config.token)
       throw error

@@ -1,6 +1,7 @@
 import { startTransition, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { Alert } from '../ui/Alert'
+import { AvatarSettings } from './AvatarSettings'
 import { Button } from '../ui/Button'
 import { ConfirmDialog } from '../ui/ConfirmDialog'
 import { Input } from '../ui/Input'
@@ -76,6 +77,7 @@ export function AccountSettings({ onDemoRestored }: { onDemoRestored?: () => voi
       setNewPassword('')
       setConfirmPassword('')
       setPasswordErrors({})
+      if (user?.mustChangePassword) updateUser({ ...user, mustChangePassword: false })
       toast.success(response.message)
     } catch (error) {
       if (isApiError(error) && error.fields) setPasswordErrors(error.fields as ChangePasswordFormErrors)
@@ -127,6 +129,8 @@ export function AccountSettings({ onDemoRestored }: { onDemoRestored?: () => voi
     <div className="space-y-8">
       {formError && <Alert tone="danger">{formError}</Alert>}
 
+      <AvatarSettings />
+
       <section aria-labelledby="personal-details-heading" className="rounded-card border border-border bg-surface p-6 shadow-card sm:p-8">
         <div className="mb-6">
           <h2 id="personal-details-heading" className="text-xl font-semibold text-text">Dados pessoais</h2>
@@ -165,7 +169,7 @@ export function AccountSettings({ onDemoRestored }: { onDemoRestored?: () => voi
 
       <section aria-labelledby="account-actions-heading" className="rounded-card border border-danger/25 bg-surface p-6 shadow-card sm:p-8">
         <h2 id="account-actions-heading" className="text-xl font-semibold text-text">Ações da conta</h2>
-        <p className="mt-1 max-w-2xl text-sm text-text-muted">A exclusão encerra sua sessão e libera seu e-mail. Solicitações em andamento precisam ser concluídas ou canceladas antes.</p>
+        {user?.role !== 'admin' && <p className="mt-1 max-w-2xl text-sm text-text-muted">A exclusão encerra sua sessão e libera seu e-mail. Solicitações em andamento precisam ser concluídas ou canceladas antes.</p>}
         <div className="mt-5 flex flex-wrap gap-3">
           {accountService.canRestoreDemoData && <Button variant="secondary" onClick={() => setIsRestoreDialogOpen(true)}>Restaurar dados demo</Button>}
           {user?.role !== 'admin' && <Button className="bg-danger hover:bg-danger/90" onClick={() => setIsDeleteDialogOpen(true)}>Excluir conta</Button>}
