@@ -12,4 +12,16 @@ export const requestService = {
   create(payload: CreateRequestPayload): Promise<ServiceRequestDetail> {
     return apiClient.post<ServiceRequestDetail>('/requests', payload)
   },
+  getById(id: string): Promise<ServiceRequestDetail> {
+    return apiClient.get<ServiceRequestDetail>(`/requests/${encodeURIComponent(id)}`)
+  },
+  cancel(id: string, reason?: string): Promise<ServiceRequestDetail> {
+    return apiClient.post<ServiceRequestDetail>(`/requests/${encodeURIComponent(id)}/cancel`, reason ? { reason } : {})
+  },
+  acceptCounterOffer(id: string): Promise<ServiceRequestDetail> {
+    return apiClient.post<ServiceRequestDetail>(`/requests/${encodeURIComponent(id)}/counter-offer/accept`)
+  },
+  declineCounterOffer(id: string): Promise<ServiceRequestDetail> {
+    return apiClient.post<ServiceRequestDetail>(`/requests/${encodeURIComponent(id)}/counter-offer/decline`)
+  },
 }

@@ -161,8 +161,18 @@ function createRequest({ token, body }: RouteContext): ServiceRequestDetail {
   return getRequestDetail(requestRecord, 'producer')
 }
 
+function getOwnRequest({ token, params }: RouteContext): ServiceRequestDetail {
+  const user = requireUser(token, 'producer')
+  const record = getMockDatabase().requestRecords.find((candidate) => candidate.request.id === params.id)
+  if (!record || record.request.producerId !== user.id) {
+    throw new ApiError({ status: 404, code: 'request_not_found', message: 'Solicitação não encontrada.' })
+  }
+  return getRequestDetail(record, 'producer')
+}
+
 export const producerRoutes: MockRoute[] = [
   { method: 'POST', pattern: '/requests', handle: createRequest },
+  { method: 'GET', pattern: '/requests/:id', handle: getOwnRequest },
   { method: 'GET', pattern: '/requests', handle: listRequests },
   { method: 'GET', pattern: '/dashboard', handle: getDashboard },
   { method: 'POST', pattern: '/requests/:id/cancel', handle: handleProducerTransition('producer_cancel') },

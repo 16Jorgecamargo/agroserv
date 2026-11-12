@@ -12,16 +12,21 @@ export const paths = {
   privacy: '/privacidade',
   dashboard: '/dashboard',
   requests: '/solicitacoes',
+  requestDetail: (id: string) => `/solicitacoes/${encodeURIComponent(id)}`,
   properties: '/propriedades',
   providerRoot: '/prestador',
   providerDashboard: '/prestador/dashboard',
+  providerRequests: '/prestador/solicitacoes',
+  providerRequestDetail: (id: string) => `/prestador/solicitacoes/${encodeURIComponent(id)}`,
   adminDashboard: '/admin',
+  adminRequestDetail: (id: string) => `/admin/solicitacoes/${encodeURIComponent(id)}`,
   profile: '/perfil',
   providerProfile: '/prestador/perfil',
 }
 
 export const routePatterns = {
   serviceDetail: '/servicos/:id',
+  requestDetail: '/solicitacoes/:id',
 }
 
 export interface LoginLocationState {

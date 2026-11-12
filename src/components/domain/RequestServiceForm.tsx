@@ -114,7 +114,7 @@ export function RequestServiceForm({ service, onCancel }: RequestServiceFormProp
           <Button variant="secondary" onClick={onCancel}>
             Fechar
           </Button>
-          <Link to={`${paths.requests}/${created.id}`} className={buttonClasses('primary', 'md')}>
+          <Link to={paths.requestDetail(created.id)} className={buttonClasses('primary', 'md')}>
             Ver solicitação
           </Link>
         </div>

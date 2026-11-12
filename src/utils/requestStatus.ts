@@ -1,4 +1,4 @@
-import type { RequestStatus } from '../types/entities'
+import type { RequestEventType, RequestStatus } from '../types/entities'
 
 export const requestStatuses: RequestStatus[] = [
   'pending',
@@ -22,4 +22,22 @@ export const requestStatusLabels: Record<RequestStatus, string> = {
 
 export function isRequestStatus(value: string): value is RequestStatus {
   return (requestStatuses as string[]).includes(value)
+}
+
+export const openRequestStatuses: RequestStatus[] = ['pending', 'counter_offer', 'accepted', 'in_progress']
+
+export function isOpenRequestStatus(status: RequestStatus): boolean {
+  return openRequestStatuses.includes(status)
+}
+
+export const requestEventLabels: Record<RequestEventType, string> = {
+  created: 'Solicitação criada',
+  accepted: 'Solicitação aceita e agendada',
+  rejected: 'Solicitação recusada',
+  counter_offer: 'Contraproposta enviada',
+  counter_offer_accepted: 'Contraproposta aceita',
+  counter_offer_declined: 'Contraproposta recusada',
+  started: 'Serviço iniciado',
+  completed: 'Serviço concluído',
+  cancelled: 'Solicitação cancelada',
 }

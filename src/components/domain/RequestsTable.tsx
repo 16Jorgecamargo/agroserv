@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
-import { paths } from '../../routes/paths'
 import type { ServiceRequest } from '../../types/entities'
 import { formatCurrency, formatDate } from '../../utils/format'
+import { getRequestDetailPath } from '../../utils/requestDetail'
 import { Skeleton } from '../ui/Skeleton'
 import { StatusBadge } from '../ui/StatusBadge'
 
@@ -9,11 +9,15 @@ interface RequestsTableProps {
   requests: ServiceRequest[]
   caption: string
   showLocation?: boolean
+  viewer?: 'producer' | 'provider'
 }
 
 const cellClasses = 'px-5 py-4'
 
-export function RequestsTable({ requests, caption, showLocation = false }: RequestsTableProps) {
+export function RequestsTable({ requests, caption, showLocation = false, viewer = 'producer' }: RequestsTableProps) {
+  const partyLabel = viewer === 'provider' ? 'Produtor' : 'Prestador'
+  const partyName = (request: ServiceRequest) => (viewer === 'provider' ? request.producerName : request.providerName)
+
   return (
     <>
       <div className="hidden overflow-hidden rounded-card border border-border bg-surface shadow-card md:block">
@@ -22,7 +26,7 @@ export function RequestsTable({ requests, caption, showLocation = false }: Reque
           <thead className="border-b border-border bg-surface-muted/60 text-xs font-semibold tracking-[0.06em] text-text-muted uppercase">
             <tr>
               <th scope="col" className="px-5 py-3">Serviço</th>
-              <th scope="col" className="px-5 py-3">Prestador</th>
+              <th scope="col" className="px-5 py-3">{partyLabel}</th>
               <th scope="col" className="px-5 py-3">Data</th>
               {showLocation && <th scope="col" className="px-5 py-3">Local</th>}
               <th scope="col" className="px-5 py-3">Status</th>
@@ -33,11 +37,11 @@ export function RequestsTable({ requests, caption, showLocation = false }: Reque
             {requests.map((request) => (
               <tr key={request.id} className="transition-colors hover:bg-surface-muted/50">
                 <td className={cellClasses}>
-                  <Link to={paths.serviceDetail(request.serviceId)} className="font-semibold text-text hover:text-primary">
+                  <Link to={getRequestDetailPath(viewer, request.id)} className="font-semibold text-text hover:text-primary">
                     {request.serviceTitle}
                   </Link>
                 </td>
-                <td className={`${cellClasses} text-text-muted`}>{request.providerName}</td>
+                <td className={`${cellClasses} text-text-muted`}>{partyName(request)}</td>
                 <td className={`${cellClasses} text-text-muted tabular-nums`}>{formatDate(request.scheduledDate)}</td>
                 {showLocation && <td className={`${cellClasses} text-text-muted`}>{request.location}</td>}
                 <td className={cellClasses}>
@@ -56,12 +60,12 @@ export function RequestsTable({ requests, caption, showLocation = false }: Reque
         {requests.map((request) => (
           <li key={request.id} className="rounded-card border border-border bg-surface p-4 shadow-card">
             <div className="flex items-start justify-between gap-3">
-              <Link to={paths.serviceDetail(request.serviceId)} className="font-semibold text-text hover:text-primary">
+              <Link to={getRequestDetailPath(viewer, request.id)} className="font-semibold text-text hover:text-primary">
                 {request.serviceTitle}
               </Link>
               <StatusBadge status={request.status} />
             </div>
-            <p className="mt-1 text-sm text-text-muted">{request.providerName}</p>
+            <p className="mt-1 text-sm text-text-muted">{partyName(request)}</p>
             <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
               <div>
                 <dt className="text-xs text-text-muted">Data</dt>
