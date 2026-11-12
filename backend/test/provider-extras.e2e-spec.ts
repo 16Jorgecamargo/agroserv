@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { addDays, ClockService } from '../src/common/clock.service.js';
+import { addDays, ClockService } from '../src/services/clock.service.js';
 import { ADMIN, api, createApp, login, PRODUCER, PROVIDER } from './helpers.js';
 
 const PNG = Buffer.from(

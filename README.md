@@ -135,9 +135,13 @@ frontend/src/
 └── pages/        uma página por rota
 
 backend/src/
-├── common/       guard JWT, papéis, validação, envelope de resposta, filtro de erros
-├── database/     entidades TypeORM e semente dos dados demo
-└── <módulo>/     controller + service + repository por recurso
+├── config/  database/      variáveis de ambiente, conexão, migrations e seed
+├── modules/                um módulo NestJS por recurso
+├── controllers/  services/  repositories/   rotas, regras de negócio e acesso a dados
+├── entities/  dto/  presenters/             tabelas, validação de entrada e formato de saída
+├── guards/  decorators/  pipes/             JWT, papéis e validação
+├── middlewares/  interceptors/  filters/    log, envelope de resposta e de erro
+└── exceptions/  types/  utils/              erros, tipos do contrato e funções puras
 ```
 
 Fluxo de dados: `página → hook → service → apiClient → adaptador (mock ou http) → API NestJS → SQLite`.

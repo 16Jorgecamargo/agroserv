@@ -1,4 +1,4 @@
-import type { CategoryIcon, PriceUnit, RequestEventType, RequestStatus, Role, VerificationStatus } from '../common/types.js';
+import type { CategoryIcon, PriceUnit, RequestEventType, RequestStatus, Role, VerificationStatus } from '../types/index.js';
 
 export const DEMO_PASSWORD = '123456';
 

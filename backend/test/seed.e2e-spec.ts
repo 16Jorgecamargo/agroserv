@@ -2,11 +2,11 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../src/app.module.js';
-import { REQUEST_STATUSES } from '../src/common/types.js';
-import { ProviderProfile } from '../src/providers/entities/provider-profile.entity.js';
-import { ServiceRequest } from '../src/requests/entities/service-request.entity.js';
-import { Service } from '../src/services/entities/service.entity.js';
-import { User } from '../src/users/entities/user.entity.js';
+import { REQUEST_STATUSES } from '../src/types/index.js';
+import { ProviderProfile } from '../src/entities/provider-profile.entity.js';
+import { ServiceRequest } from '../src/entities/service-request.entity.js';
+import { Service } from '../src/entities/service.entity.js';
+import { User } from '../src/entities/user.entity.js';
 
 describe('seed', () => {
   let app: INestApplication;
