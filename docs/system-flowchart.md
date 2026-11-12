@@ -1,13 +1,15 @@
 # AgroServ — Fluxograma do Sistema
 
-Visão única de como as telas se conectam e de como o sistema funciona por trás delas: inicialização, autenticação, proteção de rotas, carregamento de dados e estados de cada tela.
+Visão única do sistema completo: como o app inicia, como cada papel entra na sua área, como produtor e prestador fecham um serviço e como a administração modera a plataforma. Front-end e back-end seguem o mesmo contrato ([`api-contract.md`](api-contract.md)), então os fluxos valem nos dois modos (`mock` e `http`).
 
-Para os diagramas detalhados por assunto, veja [flowcharts.md](flowcharts.md). Para o sistema planejado, com produtor, prestador e administrador, veja [future-flowcharts.md](future-flowcharts.md).
+Para os diagramas detalhados por assunto, com imagens, veja [flowcharts.md](flowcharts.md).
 
 1. [Fluxograma completo](#1-fluxograma-completo)
-2. [Telas e ações](#2-telas-e-ações)
-3. [Telas e dados consumidos](#3-telas-e-dados-consumidos)
-4. [Legenda](#4-legenda)
+2. [Jornada de um serviço](#2-jornada-de-um-serviço)
+3. [Moderação](#3-moderação)
+4. [Telas e dados consumidos](#4-telas-e-dados-consumidos)
+5. [Rotas](#5-rotas)
+6. [Legenda](#6-legenda)
 
 ---
 
@@ -15,294 +17,265 @@ Para os diagramas detalhados por assunto, veja [flowcharts.md](flowcharts.md). P
 
 ```mermaid
 flowchart TD
-    start([Usuário abre o app]) --> boot["main.tsx → App<br/>Router (Browser ou Hash) + MotionConfig + AuthProvider"]
-    boot --> hasToken{Token salvo no localStorage?}
-    hasToken -->|Não| guest[Visitante<br/>user = null]
-    hasToken -->|Sim| restore["Restaura usuário salvo<br/>isLoading = true"]
-    restore --> me["GET /auth/me"]
-    me -->|200| refresh[Atualiza sessão<br/>usuário autenticado]
-    me -->|401| clear1[clearSession<br/>vira visitante]
-    me -->|Outro erro| keep[Mantém sessão salva]
-    refresh --> ready
-    clear1 --> ready
-    keep --> ready
-    guest --> ready{{Rotas resolvidas em AppRoutes}}
+    start([Usuário abre o app]) --> boot["main.tsx → App<br/>Router + AuthProvider + FavoritesProvider + ToastProvider"]
+    boot --> hasToken{Token salvo?}
+    hasToken -->|Não| guest[Visitante]
+    hasToken -->|Sim| me["GET /auth/me"]
+    me -->|200| authed[Sessão restaurada]
+    me -->|401| guest
+    guest --> routes{{AppRoutes}}
+    authed --> routes
 
-    ready -->|"/"| home
-    ready -->|"/servicos"| services
-    ready -->|"/servicos/:id"| detail
-    ready -->|"/login"| login
-    ready -->|"/dashboard ou /solicitacoes"| guard
-    ready -->|Rota inexistente| notfound
-
-    subgraph PUBLIC["Área pública — PublicLayout (Navbar + Footer)"]
-        home["Página inicial<br/>Hero, busca, categorias, destaques"]
-        services["Listagem de serviços<br/>Busca, filtro por categoria, paginação"]
-        detail["Detalhes do serviço<br/>Preço, disponibilidade, prestador"]
-        notfound["Página não encontrada"]
+    subgraph PUBLIC["Área pública — PublicLayout"]
+        home["Página inicial<br/>busca, categorias, destaques"]
+        services["Serviços<br/>filtros avançados, ordenação, lista ou mapa"]
+        detail["Detalhe do serviço<br/>galeria, equipamentos, avaliações, favoritar"]
+        providerProfile["Perfil público do prestador<br/>raio de atendimento no mapa"]
     end
 
-    home -->|Encontrar serviços / Ver todos| services
-    home -->|"Buscar (q + location)"| services
-    home -->|"Card de categoria (?category=slug)"| services
-    home -->|Card de serviço em destaque| detail
-    home -->|Acessar meu painel| guard
-    services -->|Ver detalhes| detail
-    services -->|Breadcrumb Início| home
-    detail -->|Breadcrumb Serviços| services
-    detail --> isAuthDetail{Usuário autenticado?}
-    isAuthDetail -->|Não: Entrar para contratar| login
-    isAuthDetail -->|Sim: Acompanhar no painel| dashboard
-    notfound -->|Voltar para o início| home
-
-    subgraph AUTH["Autenticação"]
-        login["Tela de login<br/>E-mail, senha, conta demo"]
-        alreadyAuth{Já autenticado?}
-        validate{Formulário válido?}
-        post["POST /auth/login"]
-        save[saveSession<br/>token + usuário no localStorage]
-        fieldErr[Mostra erros nos campos]
-        apiErr[Mostra alerta de erro]
+    subgraph ACCOUNT["Conta"]
+        login["Login"]
+        register["Cadastro de produtor ou prestador"]
+        recovery["Esqueci a senha → e-mail → nova senha"]
     end
 
-    login --> alreadyAuth
-    alreadyAuth -->|Sim| backTo
-    alreadyAuth -->|Não| validate
-    validate -->|Não| fieldErr --> login
-    validate -->|Sim| post
-    post -->|Credenciais inválidas| apiErr --> login
-    post -->|Sucesso| save --> backTo{Veio de rota guardada?}
-    backTo -->|Sim| original[Volta para rota original<br/>pathname + query]
-    backTo -->|Não| dashboard
-    original --> guard
-    original --> detail
-    login -->|Voltar para o site| home
+    routes --> home
+    routes --> services
+    routes --> detail
+    routes --> providerProfile
+    routes --> login
+    login --> register
+    login --> recovery
+    detail -->|Visitante| login
+    detail -->|Produtor: Solicitar serviço| request
 
-    guard{"ProtectedRoute<br/>Sessão carregando?"}
-    guard -->|Sim| loader[FullScreenLoader] --> guard
-    guard -->|Não| authed{Autenticado?}
-    authed -->|Não| redirect["Redireciona para /login<br/>reason = protected + rota original"]
-    redirect --> login
-    authed -->|Sim| privateArea
+    routes --> guard{"ProtectedRoute<br/>papel aceito?"}
+    login -->|Sucesso| guard
+    guard -->|Sem sessão| login
+    guard -->|Outro papel| ownHome[Painel do próprio papel]
+    guard -->|Admin com senha provisória| adminAccount["/admin/conta"]
+    guard -->|Produtor| producer
+    guard -->|Prestador| provider
+    guard -->|Administrador| admin
 
-    subgraph PRIVATE["Área privada — PrivateLayout (Sidebar + cabeçalho com usuário)"]
-        privateArea{Qual rota?}
-        dashboard["Dashboard<br/>Resumo em 4 cards + solicitações recentes"]
-        requests["Minhas solicitações<br/>Filtro por status na URL"]
+    subgraph PRODUCER["Área do produtor"]
+        producer["Painel"]
+        request["Solicitações e detalhe<br/>conversa, contraproposta, avaliação, contratar de novo"]
+        properties["Propriedades"]
+        favorites["Favoritos"]
+        producerProfile["Perfil e conta"]
     end
 
-    privateArea -->|/dashboard| dashboard
-    privateArea -->|/solicitacoes| requests
-    dashboard -->|Ver todas| requests
-    dashboard -->|Buscar serviços| services
-    requests -->|Sidebar Dashboard| dashboard
-    requests -->|Buscar serviços / Sidebar Ver serviços| services
+    subgraph PROVIDER["Área do prestador"]
+        provider["Painel"]
+        ads["Meus serviços<br/>criar, editar, pausar, excluir"]
+        received["Pedidos recebidos<br/>aceitar, recusar, contraproposta, iniciar, concluir"]
+        agenda["Agenda e dias bloqueados"]
+        reviews["Avaliações e respostas"]
+        equipment["Equipamentos"]
+        verification["Verificação de documentos"]
+    end
 
-    dashboard -->|Sair| logout
-    requests -->|Sair| logout
-    home -.->|Navbar Sair| logout
-    logout[logout<br/>clearSession + user = null] --> home
+    subgraph ADMIN["Área do administrador"]
+        admin["Painel com filas"]
+        users["Usuários: suspender, reativar, criar admin"]
+        verifications["Verificações: aprovar ou rejeitar"]
+        moderation["Anúncios: ocultar, mostrar, excluir"]
+        reports["Denúncias: resolver com ação"]
+        categories["Categorias"]
+        history["Histórico de ações"]
+    end
 
-    expired([Qualquer resposta 401 com token]) -.-> clear2[subscribeUnauthorized<br/>clearSession] -.-> guard
+    producer --> request
+    producer --> properties
+    producer --> favorites
+    producer --> producerProfile
+    provider --> ads
+    provider --> received
+    provider --> agenda
+    provider --> reviews
+    provider --> equipment
+    provider --> verification
+    admin --> users
+    admin --> verifications
+    admin --> moderation
+    admin --> reports
+    admin --> categories
+    admin --> history
+
+    request <-.->|"mensagens e notificações"| received
+    verification -.->|fila| verifications
+    request -.->|"Denunciar"| reports
+    received -.->|"Denunciar"| reports
+
+    expired([Qualquer 401 com token]) -.-> clear[Limpa a sessão] -.-> login
 
     classDef public fill:#E6F0E8,stroke:#2F6B45,color:#17201A
-    classDef private fill:#173F2A,stroke:#173F2A,color:#FFFFFF
+    classDef producerC fill:#173F2A,stroke:#173F2A,color:#FFFFFF
+    classDef providerC fill:#2B5C8A,stroke:#2B5C8A,color:#FFFFFF
+    classDef adminC fill:#475467,stroke:#475467,color:#FFFFFF
     classDef auth fill:#FFF4E5,stroke:#B54708,color:#17201A
     classDef system fill:#F2F4F7,stroke:#667085,color:#17201A
-    classDef decision fill:#FFFFFF,stroke:#2F6B45,color:#17201A
 
-    class home,services,detail,notfound public
-    class dashboard,requests private
-    class login,post,save,fieldErr,apiErr,redirect,logout auth
-    class boot,restore,me,refresh,clear1,keep,guest,loader,original,clear2,expired,start system
-    class hasToken,ready,isAuthDetail,alreadyAuth,validate,backTo,guard,authed,privateArea decision
+    class home,services,detail,providerProfile public
+    class producer,request,properties,favorites,producerProfile producerC
+    class provider,ads,received,agenda,reviews,equipment,verification providerC
+    class admin,users,verifications,moderation,reports,categories,history,adminAccount adminC
+    class login,register,recovery auth
+    class boot,me,authed,guest,clear,expired,start,ownHome system
 ```
 
 ---
 
-## 2. Telas e ações
+## 2. Jornada de um serviço
+
+Do anúncio à avaliação. Cada passo grava um evento na linha do tempo da solicitação e notifica a outra parte.
 
 ```mermaid
-flowchart LR
-    subgraph HOME["Página inicial /"]
-        h1[Encontrar serviços]
-        h2[Acessar meu painel]
-        h3[Barra de busca]
-        h4[Cards de categoria]
-        h5[Serviços em destaque]
-    end
+sequenceDiagram
+    actor V as Prestador
+    participant API as API (mock ou NestJS)
+    actor P as Produtor
 
-    subgraph SERVICES["Serviços /servicos"]
-        s1[Barra de busca]
-        s2[Chips de categoria]
-        s3[Limpar filtros]
-        s4[Carregar mais]
-        s5[Card de serviço]
+    V->>API: POST /provider/services (fotos, preço, equipamentos)
+    P->>API: GET /services?category=&minRating=&date=
+    API-->>P: anúncios visíveis (ativo + prestador ativo)
+    P->>API: POST /me/favorites (opcional)
+    P->>API: POST /requests (serviço, propriedade, data, quantidade)
+    Note over P: Aviso se a propriedade estiver fora do raio de atendimento
+    API-->>V: notificação: nova solicitação
+    alt aceita
+        V->>API: POST /provider/requests/:id/accept
+    else contraproposta
+        V->>API: POST /provider/requests/:id/counter-offer
+        P->>API: POST /requests/:id/counter-offer/accept
+    else recusa
+        V->>API: POST /provider/requests/:id/reject (motivo)
     end
-
-    subgraph DETAIL["Detalhes /servicos/:id"]
-        d1[Entrar para contratar]
-        d2[Acompanhar no painel]
-        d3[Breadcrumbs]
-    end
-
-    subgraph LOGIN["Login /login"]
-        l1[Entrar]
-        l2[Usar conta demo]
-        l3[Mostrar/ocultar senha]
-        l4[Voltar para o site]
-    end
-
-    subgraph DASH["Dashboard /dashboard"]
-        a1[Buscar serviços]
-        a2[Ver todas]
-    end
-
-    subgraph REQ["Solicitações /solicitacoes"]
-        r1[Chips de status]
-        r2[Ver todas / Buscar serviços]
-    end
-
-    subgraph SIDEBAR["Sidebar privada"]
-        b1[Dashboard]
-        b2[Solicitações]
-        b3[Ver serviços]
-        b4[Sair]
-    end
-
-    h1 --> SERVICES
-    h2 --> DASH
-    h3 -->|"?q=&location="| SERVICES
-    h4 -->|"?category="| SERVICES
-    h5 --> DETAIL
-    s1 -->|Atualiza URL| SERVICES
-    s2 -->|Atualiza URL| SERVICES
-    s3 -->|Remove filtros| SERVICES
-    s4 -->|+9 itens| SERVICES
-    s5 --> DETAIL
-    d1 --> LOGIN
-    d2 --> DASH
-    d3 --> SERVICES
-    l1 -->|Sucesso| DASH
-    l2 -->|Preenche campos| LOGIN
-    l3 --> LOGIN
-    l4 --> HOME
-    a1 --> SERVICES
-    a2 --> REQ
-    r1 -->|"?status="| REQ
-    r2 --> SERVICES
-    b1 --> DASH
-    b2 --> REQ
-    b3 --> SERVICES
-    b4 --> HOME
+    P->>API: POST /requests/:id/messages
+    V->>API: POST /provider/requests/:id/start (no dia)
+    V->>API: POST /provider/requests/:id/complete
+    API-->>P: notificação: serviço concluído
+    P->>API: POST /requests/:id/review (nota e comentário)
+    V->>API: PUT /provider/reviews/:id/reply
+    P->>API: Contratar de novo → novo POST /requests
 ```
 
 ---
 
-## 3. Telas e dados consumidos
-
-Cada tela chama um hook, que chama um service, que passa pelo `apiClient`. O adaptador é escolhido por `VITE_API_MODE`: mock (padrão, dados locais em `src/data`) ou HTTP real.
+## 3. Moderação
 
 ```mermaid
 flowchart LR
-    subgraph Telas
-        home[Página inicial]
-        services[Serviços]
-        detail[Detalhes]
-        login[Login]
-        boot[AuthProvider]
-        dashboard[Dashboard]
-        requests[Solicitações]
+    subgraph IN["Entradas"]
+        doc["Prestador envia documentos"]
+        report["Usuário denuncia anúncio, solicitação, avaliação ou pessoa"]
     end
 
-    subgraph Hooks
-        useCategories
-        useFeaturedServices
-        useServicePages
-        useService
-        useAuth
-        useDashboard
-        useRequests
+    subgraph QUEUE["Filas no painel do admin"]
+        vq["Verificações em análise<br/>mais antigas primeiro"]
+        rq["Denúncias abertas<br/>mais antigas primeiro"]
     end
 
-    subgraph Services
-        categoryService
-        serviceService
-        authService
-        requestService
-    end
-
-    subgraph Endpoints
-        e1["GET /categories"]
-        e2["GET /services/featured"]
-        e3["GET /services"]
-        e4["GET /services/:id"]
-        e5["POST /auth/login"]
-        e6["GET /auth/me"]
-        e7["GET /dashboard"]
-        e8["GET /requests"]
-    end
-
-    home --> useCategories & useFeaturedServices
-    services --> useCategories & useServicePages
-    detail --> useService & useAuth
-    login --> useAuth
-    boot --> authService
-    dashboard --> useDashboard & useAuth
-    requests --> useRequests
-
-    useCategories --> categoryService --> e1
-    useFeaturedServices --> serviceService
-    useServicePages --> serviceService
-    useService --> serviceService
-    serviceService --> e2 & e3 & e4
-    useAuth --> authService --> e5 & e6
-    useDashboard --> requestService
-    useRequests --> requestService
-    requestService --> e7 & e8
-
-    Endpoints --> client{{"apiClient<br/>injeta token, trata 401"}}
-    client --> mode{VITE_API_MODE}
-    mode -->|mock| mock["mockAdapter<br/>mockRoutes + src/data"]
-    mode -->|http| http["httpAdapter<br/>VITE_API_URL"]
+    doc --> vq
+    report --> rq
+    vq -->|Aprovar| badge["Selo Verificado nos anúncios"]
+    vq -->|Rejeitar com motivo| retry["Prestador corrige e reenvia"]
+    rq -->|Arquivar| closed["Denúncia resolvida"]
+    rq -->|Avisar| warn["Notificação: Aviso da administração"]
+    rq -->|Ocultar anúncio| hide["Anúncio sai da busca"]
+    rq -->|Ocultar avaliação| hideReview["Média do prestador é recalculada"]
+    rq -->|Suspender conta| suspend["Conta bloqueada<br/>solicitações abertas canceladas<br/>outra parte notificada"]
+    hide --> log[("Histórico de ações<br/>quem, quando, motivo")]
+    hideReview --> log
+    suspend --> log
+    badge --> log
+    retry --> log
+    warn --> log
+    closed --> notifyReporter["Denunciante recebe: Sua denúncia foi analisada."]
 ```
+
+---
+
+## 4. Telas e dados consumidos
+
+Cada tela chama um hook, que chama um service, que passa pelo `apiClient`. O adaptador é escolhido por `VITE_API_MODE`: `mock` (padrão, dados demo no `localStorage`) ou `http` (back-end NestJS em `VITE_API_URL`).
+
+| Área | Telas | Endpoints principais |
+|---|---|---|
+| Pública | Início, serviços (lista e mapa), detalhe, perfil do prestador | `GET /categories`, `GET /services`, `GET /services/featured`, `GET /services/:id`, `GET /services/:id/reviews`, `GET /services/:id/blocked-days`, `GET /providers/:id` |
+| Conta | Login, cadastro, recuperação, perfil | `POST /auth/login`, `POST /auth/register`, `GET /auth/me`, `POST /auth/forgot-password`, `POST /auth/reset-password`, `PATCH /me`, `PATCH /me/password`, `DELETE /me`, `POST /uploads` |
+| Produtor | Painel, solicitações, propriedades, favoritos | `GET /dashboard`, `GET/POST /requests`, `GET /requests/:id`, `POST /requests/:id/cancel`, `POST /requests/:id/counter-offer/accept\|decline`, `POST /requests/:id/review`, `PATCH /reviews/:id`, `GET/POST/PATCH/DELETE /me/properties`, `GET/POST/DELETE /me/favorites` |
+| Prestador | Painel, anúncios, pedidos, agenda, avaliações, equipamentos, verificação | `GET /provider/dashboard`, `GET/POST/PATCH/DELETE /provider/services`, `POST /provider/services/:id/pause\|activate`, `GET /provider/requests`, `POST /provider/requests/:id/accept\|reject\|counter-offer\|start\|complete\|cancel`, `GET /provider/agenda`, `POST /provider/blocked-days`, `DELETE /provider/blocked-days/:date`, `GET /provider/reviews`, `PUT /provider/reviews/:id/reply`, `GET/POST/PATCH/DELETE /provider/equipment`, `GET/POST /provider/verification`, `GET/PATCH /provider/profile` |
+| Conversa e avisos | Detalhe da solicitação, sino, notificações, denúncias | `GET/POST /requests/:id/messages`, `GET /me/notifications`, `POST /me/notifications/:id/read`, `POST /me/notifications/read-all`, `POST /reports` |
+| Administrador | Painel, usuários, verificações, anúncios, denúncias, categorias, histórico | `GET /admin/dashboard`, `GET/POST /admin/users`, `POST /admin/users/:id/suspend\|reactivate`, `GET /admin/requests/:id`, `GET /admin/verifications`, `POST /admin/verifications/:id/approve\|reject`, `GET /admin/services`, `POST /admin/services/:id/hide\|show`, `DELETE /admin/services/:id`, `GET /admin/reports`, `POST /admin/reports/:id/resolve`, `GET/POST/PATCH/DELETE /admin/categories`, `GET /admin/actions` |
 
 Toda tela que carrega dados segue o mesmo ciclo de estados:
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Carregando: useAsync dispara fetch
+    [*] --> Carregando: useAsync dispara a busca
     Carregando --> Erro: falha sem dados
     Carregando --> Vazio: lista vazia
     Carregando --> Conteudo: dados recebidos
-    Erro --> Carregando: Tentar novamente (refetch)
-    Vazio --> Carregando: Limpar filtros / trocar filtro
-    Conteudo --> Carregando: muda filtro ou página
+    Erro --> Carregando: Tentar novamente
+    Vazio --> Carregando: Limpar filtros
+    Conteudo --> Carregando: muda filtro, página ou outra tela altera dados
     Carregando: Skeletons
     Erro: ErrorState
     Vazio: EmptyState
-    Conteudo: Cards / tabela
+    Conteudo: Cards, tabelas ou mapa
 ```
 
 ---
 
-## 4. Legenda
-
-| Cor | Significado |
-|-----|-------------|
-| Verde-claro | Telas públicas (`PublicLayout`) |
-| Verde-escuro | Telas privadas (`PrivateLayout`, exigem login) |
-| Laranja-claro | Autenticação e sessão |
-| Cinza | Processos internos do sistema |
-| Branco | Decisões |
-| Linha tracejada | Evento assíncrono ou alternativo |
+## 5. Rotas
 
 | Rota | Tela | Acesso | Arquivo |
-|------|------|--------|---------|
+|---|---|---|---|
 | `/` | Página inicial | Pública | `src/pages/HomePage.tsx` |
-| `/servicos` | Listagem de serviços | Pública | `src/pages/ServicesPage.tsx` |
-| `/servicos/:id` | Detalhes do serviço | Pública | `src/pages/ServiceDetailPage.tsx` |
+| `/servicos` | Serviços, lista ou mapa | Pública | `src/pages/ServicesPage.tsx` |
+| `/servicos/:id` | Detalhe do serviço | Pública | `src/pages/ServiceDetailPage.tsx` |
+| `/prestadores/:id` | Perfil público do prestador | Pública | `src/pages/ProviderPublicProfilePage.tsx` |
+| `/termos`, `/privacidade` | Termos de uso e privacidade | Pública | `src/pages/TermsPage.tsx`, `src/pages/PrivacyPage.tsx` |
 | `/login` | Login | Pública | `src/pages/LoginPage.tsx` |
-| `/dashboard` | Dashboard do produtor | Privada | `src/pages/DashboardPage.tsx` |
-| `/solicitacoes` | Minhas solicitações | Privada | `src/pages/RequestsPage.tsx` |
+| `/cadastro` | Cadastro | Pública | `src/pages/RegisterPage.tsx` |
+| `/esqueci-senha`, `/redefinir-senha` | Recuperação de senha | Pública | `src/pages/ForgotPasswordPage.tsx`, `src/pages/ResetPasswordPage.tsx` |
+| `/dashboard` | Painel do produtor | Produtor | `src/pages/DashboardPage.tsx` |
+| `/solicitacoes`, `/solicitacoes/:id` | Solicitações e detalhe | Produtor | `src/pages/RequestsPage.tsx`, `src/pages/RequestDetailPage.tsx` |
+| `/propriedades` | Propriedades | Produtor | `src/pages/PropertiesPage.tsx` |
+| `/favoritos` | Favoritos | Produtor | `src/pages/FavoritesPage.tsx` |
+| `/perfil` | Perfil e conta | Produtor | `src/pages/ProfilePage.tsx` |
+| `/prestador/dashboard` | Painel do prestador | Prestador | `src/pages/ProviderDashboardPage.tsx` |
+| `/prestador/servicos`, `/novo`, `/:id/editar` | Anúncios | Prestador | `src/pages/MyServicesPage.tsx`, `src/pages/ServiceFormPage.tsx` |
+| `/prestador/solicitacoes`, `/:id` | Pedidos recebidos | Prestador | `src/pages/ProviderRequestsPage.tsx`, `src/pages/ProviderRequestDetailPage.tsx` |
+| `/prestador/agenda` | Agenda | Prestador | `src/pages/AgendaPage.tsx` |
+| `/prestador/avaliacoes` | Avaliações | Prestador | `src/pages/ProviderReviewsPage.tsx` |
+| `/prestador/equipamentos` | Equipamentos | Prestador | `src/pages/EquipmentPage.tsx` |
+| `/prestador/verificacao` | Verificação | Prestador | `src/pages/VerificationPage.tsx` |
+| `/prestador/perfil` | Perfil profissional | Prestador | `src/pages/ProviderProfilePage.tsx` |
+| `/admin` | Painel do administrador | Administrador | `src/pages/AdminDashboardPage.tsx` |
+| `/admin/usuarios`, `/:id` | Usuários | Administrador | `src/pages/AdminUsersPage.tsx`, `src/pages/AdminUserDetailPage.tsx` |
+| `/admin/solicitacoes/:id` | Solicitação (somente leitura) | Administrador | `src/pages/AdminRequestDetailPage.tsx` |
+| `/admin/verificacoes` | Verificações | Administrador | `src/pages/AdminVerificationsPage.tsx` |
+| `/admin/anuncios` | Anúncios | Administrador | `src/pages/AdminServicesPage.tsx` |
+| `/admin/denuncias`, `/:id` | Denúncias | Administrador | `src/pages/AdminReportsPage.tsx`, `src/pages/AdminReportDetailPage.tsx` |
+| `/admin/categorias` | Categorias | Administrador | `src/pages/AdminCategoriesPage.tsx` |
+| `/admin/historico` | Histórico de ações | Administrador | `src/pages/AdminActionsPage.tsx` |
+| `/admin/conta` | Minha conta | Administrador | `src/pages/AdminAccountPage.tsx` |
+| `/notificacoes`, `/prestador/notificacoes`, `/admin/notificacoes` | Notificações | Cada papel | `src/pages/NotificationsPage.tsx` |
 | `*` | Página não encontrada | Pública | `src/pages/NotFoundPage.tsx` |
+
+---
+
+## 6. Legenda
+
+| Cor | Significado |
+|---|---|
+| Verde-claro | Telas públicas (`PublicLayout`) |
+| Verde-escuro | Área do produtor |
+| Azul | Área do prestador |
+| Cinza-escuro | Área do administrador |
+| Laranja-claro | Autenticação e conta |
+| Cinza-claro | Processos internos do sistema |
+| Linha tracejada | Evento assíncrono ou alternativo |

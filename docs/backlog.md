@@ -6,7 +6,7 @@ Lista de tarefas para levar o AgroServ da etapa 1 (vitrine + painel do produtor)
 |---|---|
 | Este backlog | Quem faz o quê, em que ordem, e quando está pronto. Rotas, regras do projeto e design system. |
 | [`api-contract.md`](api-contract.md) | Endpoints, tipos, erros, permissões e efeitos. **Fonte da verdade** para front-end e back-end. |
-| [`future-flowcharts.md`](future-flowcharts.md) | Fluxos de cada papel em diagramas. |
+| [`future-flowcharts.md`](future-flowcharts.md) | Fluxos de cada papel em diagramas (histórico do planejamento). |
 
 ## Como usar
 
@@ -174,7 +174,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F7-03 | Favoritos | P | F2-05 | | Feito |
 | F7-04 | Contratar de novo | P | F2-03 | | Feito |
 | F7-05 | Perfil público do prestador | M | F4-04, F5-01 | | Feito |
-| F7-06 | Documentação final | P | todos | | A fazer |
+| F7-06 | Documentação final | P | todos | | Feito |
 
 ---
 
@@ -618,7 +618,7 @@ Critérios de aceite:
 
 Para a etapa seguinte da disciplina. O back-end implementa `api-contract.md`. O front-end passa a usá-lo com `VITE_API_MODE=http`.
 
-**Situação:** B-01 a B-07, B-09 e B-10 estão implementados em [`backend/`](../backend/README.md), na branch `backend`. B-08 depende de ajustes no front-end, listados na seção 17 do contrato.
+**Situação:** B-01 a B-10 estão implementados em [`backend/`](../backend/README.md). A troca do front-end (B-08) foi conferida com `VITE_API_MODE=http`: as telas dos três papéis carregam do back-end e as ações de escrita funcionam.
 
 | ID | Item | Critérios de aceite |
 |---|---|---|

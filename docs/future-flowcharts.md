@@ -1,8 +1,8 @@
-# AgroServ — Fluxogramas do Sistema Futuro
+# AgroServ — Fluxogramas da Ampliação (histórico)
 
-Como o AgroServ deve funcionar depois da ampliação, com três papéis: **produtor**, **prestador** e **administrador**. Estes fluxos ainda não estão implementados. Servem de guia para o front-end e para o backend que será construído depois.
+> **Histórico.** Este arquivo foi o plano da ampliação para três papéis: **produtor**, **prestador** e **administrador**. Tudo o que está aqui foi implementado no front-end e no back-end. A descrição do sistema atual fica em [`system-flowchart.md`](system-flowchart.md) e os diagramas com imagem em [`flowcharts.md`](flowcharts.md). O texto abaixo foi mantido como registro do planejamento.
 
-Regras detalhadas de cada fluxo: [`api-contract.md`](api-contract.md). Tarefas e telas: [`backlog.md`](backlog.md). Como o sistema funciona hoje: [`system-flowchart.md`](system-flowchart.md).
+Regras detalhadas de cada fluxo: [`api-contract.md`](api-contract.md). Tarefas e telas: [`backlog.md`](backlog.md).
 
 1. [Mapa geral de telas](#1-mapa-geral-de-telas)
 2. [Cadastro, login e recuperação de senha](#2-cadastro-login-e-recuperação-de-senha)

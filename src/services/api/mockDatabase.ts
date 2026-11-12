@@ -176,14 +176,15 @@ function loadDatabase(): MockDatabase {
   return database
 }
 
-let mockDatabase = loadDatabase()
+let mockDatabase: MockDatabase | null = null
 
 export function getMockDatabase(): MockDatabase {
+  mockDatabase ??= loadDatabase()
   return mockDatabase
 }
 
 export function persistMockDatabase(): void {
-  writeDatabase(mockDatabase)
+  writeDatabase(getMockDatabase())
 }
 
 export function resetMockDatabase(): void {

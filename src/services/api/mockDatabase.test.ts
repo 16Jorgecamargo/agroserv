@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getMockDatabase,
   persistMockDatabase,
@@ -62,5 +62,17 @@ describe('mock database', () => {
     resetMockDatabase()
 
     expect(getMockDatabase().categories[0].name).toBe('Plantio')
+  })
+})
+
+describe('mock database loading', () => {
+  it('does not touch storage until the mock database is used', async () => {
+    localStorage.clear()
+    vi.resetModules()
+    const fresh = await import('./mockDatabase')
+
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull()
+    expect(fresh.getMockDatabase().users.length).toBeGreaterThan(0)
+    expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull()
   })
 })
