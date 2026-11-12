@@ -110,7 +110,7 @@ h2 { margin-top: 10px; font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; fo
 .card .go { margin-top: auto; padding-top: 18px; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--green); }
 .card .go .icon { transition: transform .25s; }
 .card:hover .go .icon { transform: translateX(4px); }
-.card.featured { grid-row: span 2; padding: 0; overflow: hidden; background: var(--dark); border-color: var(--dark); color: var(--white); }
+.card.featured { grid-row: span 3; padding: 0; overflow: hidden; background: var(--dark); border-color: var(--dark); color: var(--white); }
 .card.featured .thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
 .card.featured .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
 .card.featured:hover .thumb img { transform: scale(1.04); }
@@ -204,21 +204,21 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
       <div>
         <span class="badge" data-reveal="rise" data-b="0"><span class="dot"></span>UTFPR · Campus Santa Helena · CC6PDSW</span>
         <h1 data-reveal="mask" data-b="1">O jeito moderno de contratar serviços agrícolas.</h1>
-        <p class="lead" data-reveal="rise" data-b="7">AgroServ é uma plataforma web que conecta produtores rurais a prestadores de máquinas, equipamentos e mão de obra. Projeto da disciplina Projeto e Desenvolvimento de Sistemas Web — etapa 1, front-end.</p>
+        <p class="lead" data-reveal="rise" data-b="7">AgroServ é uma plataforma web que conecta produtores rurais a prestadores de máquinas, equipamentos e mão de obra. Projeto da disciplina Projeto e Desenvolvimento de Sistemas Web: front-end em React e back-end em NestJS + TypeORM + SQLite.</p>
         <div class="actions" data-reveal="rise" data-b="9">
           <a class="btn btn-primary" href="app/">
             Abrir o app
             <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a class="btn btn-secondary" href="slides/">
+          <a class="btn btn-secondary" href="slides/full-stack/">
             <svg class="icon" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>
             Assistir à apresentação
           </a>
         </div>
         <div class="meta" data-reveal="rise" data-b="11">
-          <div><b data-count="13">13</b><span>slides animados</span></div>
-          <div><b data-count="115">115</b><span>testes automatizados</span></div>
-          <div><b data-count="8">8</b><span>fluxogramas</span></div>
+          <div><b data-count="37">37</b><span>telas em três papéis</span></div>
+          <div><b data-count="606">606</b><span>testes automatizados</span></div>
+          <div><b data-count="91">91</b><span>rotas na API</span></div>
         </div>
       </div>
       <div class="visual" data-reveal="scale" data-b="3">
@@ -227,16 +227,16 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
           <div class="bar"><i></i><i></i><i></i><span id="url">agroserv.app</span></div>
           <div class="screen" id="screen">
             <img src="slides/screens/home.jpg" alt="Página inicial do AgroServ" />
-            <img src="slides/screens/dashboard.jpg" alt="Painel do produtor" />
+            <img src="slides/screens/services-map.jpg" alt="Mapa de serviços" />
           </div>
         </a>
         <div class="chip chip-a" data-reveal="pop" data-b="9" data-float="0">
-          <div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
-          <div><b>Rotas protegidas</b><small><span class="dot"></span>login + ProtectedRoute</small></div>
+          <div class="ic"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg></div>
+          <div><b>Três papéis</b><small><span class="dot"></span>produtor · prestador · admin</small></div>
         </div>
         <div class="chip chip-b" data-reveal="pop" data-b="11" data-float="1">
           <div class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-          <div><b>115 testes passando</b><small>TDD · Vitest</small></div>
+          <div><b>606 testes passando</b><small>front-end e API · Vitest</small></div>
         </div>
       </div>
     </div>
@@ -249,20 +249,32 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
           <span class="eyebrow">Documentação</span>
           <h2>Tudo sobre o projeto</h2>
         </div>
-        <p data-reveal="rise" data-b="1">Apresentação, relatório técnico, fluxogramas e o contrato da API que liga o front-end ao back-end da próxima etapa.</p>
+        <p data-reveal="rise" data-b="1">Apresentações, relatório técnico, fluxogramas e o contrato da API que o mock e o back-end seguem.</p>
       </div>
       <div class="docs" data-stagger>
-        <a class="card featured" href="slides/" data-reveal="rise">
+        <a class="card featured" href="slides/full-stack/" data-reveal="rise">
           <div class="thumb">
-            <img src="slides/screens/login-protected.jpg" alt="" />
+            <img src="slides/screens/request-negotiation.jpg" alt="" />
             <span class="play"><svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><polygon points="7 4 20 12 7 20 7 4"/></svg></span>
           </div>
           <div class="body">
-            <h3>Apresentação</h3>
-            <p>13 slides com motion design: arquitetura, rotas, proteção de rotas e demonstração das telas.</p>
+            <h3>Apresentação · sistema completo</h3>
+            <p>15 slides com motion design: três papéis, jornada do serviço, moderação, API real e publicação.</p>
             <div class="keys"><span>← → navegar</span><span>F tela cheia</span><span>R repetir</span></div>
             <span class="go">Abrir slides <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
+        </a>
+        <a class="card" href="slides/backend/" data-reveal="rise">
+          <span class="ic"><svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><polygon points="7 4 20 12 7 20 7 4"/></svg></span>
+          <h3>Apresentação · back-end</h3>
+          <p>NestJS, TypeORM e SQLite: módulos, pipeline, dados, regras, segurança e testes.</p>
+          <span class="go">Abrir slides <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="card" href="slides/" data-reveal="rise">
+          <span class="ic"><svg class="icon" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><polygon points="7 4 20 12 7 20 7 4"/></svg></span>
+          <h3>Apresentação · etapa 1</h3>
+          <p>O front-end inicial: arquitetura, rotas, proteção de rotas e telas.</p>
+          <span class="go">Abrir slides <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
         <a class="card" href="report.html" data-reveal="rise">
           <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
@@ -273,19 +285,19 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
         <a class="card" href="flowcharts.html" data-reveal="rise">
           <span class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="5" rx="1"/><rect x="14" y="16" width="7" height="5" rx="1"/><path d="M6.5 8v4.5a2 2 0 0 0 2 2H17.5V16"/></svg></span>
           <h3>Fluxogramas</h3>
-          <p>Navegação, login, proteção de rotas, arquitetura e estados da interface.</p>
+          <p>Navegação, login, arquitetura, ciclo da solicitação e caminho de uma requisição.</p>
           <span class="go">Ver fluxogramas <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
         <a class="card" href="api-contract.html" data-reveal="rise">
           <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4M6 8l-4 4 4 4M14.5 4l-5 16"/></svg></span>
           <h3>Contrato da API</h3>
-          <p>Endpoints atuais e planejados dos três papéis, com tipos, erros e permissões.</p>
+          <p>Endpoints dos três papéis, com tipos, erros, permissões e notificações.</p>
           <span class="go">Ver contrato <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
         <a class="card" href="https://github.com/16Jorgecamargo/agroserv" data-reveal="rise">
           <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></span>
           <h3>Código-fonte</h3>
-          <p>React, TypeScript e Vite, com instruções para rodar localmente.</p>
+          <p>React no front, NestJS no back, com instruções para rodar localmente.</p>
           <span class="go">Abrir no GitHub <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
       </div>
@@ -299,13 +311,17 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
           <span class="eyebrow">Telas</span>
           <h2>O app em funcionamento</h2>
         </div>
-        <p data-reveal="rise" data-b="1">Páginas públicas, login com proteção de rotas e área privada do produtor. <a href="app/" style="color:var(--green);font-weight:700">Abra o app</a> e entre com <code style="font-size:14px">produtor@agroserv.com</code> / <code style="font-size:14px">123456</code>.</p>
+        <p data-reveal="rise" data-b="1">Áreas pública, do produtor, do prestador e do administrador. <a href="app/" style="color:var(--green);font-weight:700">Abra o app</a> e entre com <code style="font-size:14px">produtor</code>, <code style="font-size:14px">prestador</code> ou <code style="font-size:14px">admin@agroserv.com</code>, senha <code style="font-size:14px">123456</code>.</p>
       </div>
       <div class="gallery" data-stagger>
         <a class="shot" href="app/#/" data-reveal="rise"><div class="img"><img src="slides/screens/home.jpg" alt="Página inicial" loading="lazy" /></div><div class="cap"><b>Página inicial</b><code>/</code></div></a>
-        <a class="shot" href="app/#/servicos" data-reveal="rise"><div class="img"><img src="slides/screens/services.jpg" alt="Listagem de serviços" loading="lazy" /></div><div class="cap"><b>Serviços</b><code>/servicos</code></div></a>
-        <a class="shot" href="app/#/servicos/svc-1" data-reveal="rise"><div class="img"><img src="slides/screens/service-detail.jpg" alt="Detalhes do serviço" loading="lazy" /></div><div class="cap"><b>Detalhes</b><code>/servicos/:id</code></div></a>
-        <a class="shot" href="app/#/dashboard" data-reveal="rise"><div class="img"><img src="slides/screens/dashboard.jpg" alt="Painel do produtor" loading="lazy" /></div><div class="cap"><b>Painel</b><code>/dashboard</code></div></a>
+        <a class="shot" href="app/#/servicos?view=map" data-reveal="rise"><div class="img"><img src="slides/screens/services-map.jpg" alt="Mapa de serviços" loading="lazy" /></div><div class="cap"><b>Mapa de serviços</b><code>/servicos</code></div></a>
+        <a class="shot" href="app/#/solicitacoes/req-9" data-reveal="rise"><div class="img"><img src="slides/screens/request-negotiation.jpg" alt="Negociação" loading="lazy" /></div><div class="cap"><b>Negociação</b><code>/solicitacoes/:id</code></div></a>
+        <a class="shot" href="app/#/favoritos" data-reveal="rise"><div class="img"><img src="slides/screens/favorites.jpg" alt="Favoritos" loading="lazy" /></div><div class="cap"><b>Favoritos</b><code>/favoritos</code></div></a>
+        <a class="shot" href="app/#/prestador/dashboard" data-reveal="rise"><div class="img"><img src="slides/screens/provider-dashboard.jpg" alt="Painel do prestador" loading="lazy" /></div><div class="cap"><b>Painel do prestador</b><code>/prestador/dashboard</code></div></a>
+        <a class="shot" href="app/#/prestador/agenda" data-reveal="rise"><div class="img"><img src="slides/screens/provider-agenda.jpg" alt="Agenda" loading="lazy" /></div><div class="cap"><b>Agenda</b><code>/prestador/agenda</code></div></a>
+        <a class="shot" href="app/#/admin" data-reveal="rise"><div class="img"><img src="slides/screens/admin-dashboard.jpg" alt="Painel do admin" loading="lazy" /></div><div class="cap"><b>Painel do admin</b><code>/admin</code></div></a>
+        <a class="shot" href="app/#/admin/denuncias/rep-1" data-reveal="rise"><div class="img"><img src="slides/screens/admin-report.jpg" alt="Denúncia" loading="lazy" /></div><div class="cap"><b>Denúncia</b><code>/admin/denuncias/:id</code></div></a>
       </div>
     </div>
   </section>
@@ -327,6 +343,12 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
         <span data-reveal="pop">Framer Motion</span>
         <span data-reveal="pop">Context API</span>
         <span data-reveal="pop">Vitest + Testing Library</span>
+        <span data-reveal="pop">Leaflet</span>
+        <span data-reveal="pop">NestJS</span>
+        <span data-reveal="pop">TypeORM</span>
+        <span data-reveal="pop">SQLite</span>
+        <span data-reveal="pop">JWT + bcrypt</span>
+        <span data-reveal="pop">class-validator</span>
       </div>
     </div>
   </section>
@@ -445,7 +467,7 @@ footer .container { display: flex; flex-wrap: wrap; justify-content: space-betwe
       showingSecond = !showingSecond
       const incoming = showingSecond ? second : first
       const outgoing = showingSecond ? first : second
-      url.textContent = showingSecond ? 'agroserv.app/dashboard' : 'agroserv.app'
+      url.textContent = showingSecond ? 'agroserv.app/servicos?view=map' : 'agroserv.app'
       incoming.style.zIndex = '1'
       outgoing.style.zIndex = '0'
       incoming.animate([{ opacity: 0, transform: 'scale(1.03)' }, { opacity: 1, transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' })

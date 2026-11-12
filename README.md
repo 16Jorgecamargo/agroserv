@@ -23,12 +23,14 @@ Projeto acadêmico em duas etapas:
 | [`docs/backlog.md`](docs/backlog.md) | Backlog: tarefas por fase, dependências e critérios de aceite |
 | [`docs/future-flowcharts.md`](docs/future-flowcharts.md) | Histórico: os fluxos planejados para a ampliação, hoje implementados |
 | [`backend/README.md`](backend/README.md) | Como rodar e testar a API |
-| [`docs/slides/`](docs/slides/index.html) | Apresentações animadas: abra no navegador, use ← → e `F` para tela cheia |
+| [`docs/slides/full-stack/`](docs/slides/full-stack/index.html) | Apresentação do sistema completo, front-end e back-end |
+| [`docs/slides/backend/`](docs/slides/backend/index.html) | Apresentação do back-end: NestJS, TypeORM e SQLite |
+| [`docs/slides/`](docs/slides/index.html) | Apresentação da etapa 1 (front-end). Em todas: ← → para navegar e `F` para tela cheia |
 
 ## Demonstração online
 
 - **App:** https://agroserv-bay.vercel.app/app/
-- **Apresentações:** https://agroserv-bay.vercel.app/slides/
+- **Apresentações:** [sistema completo](https://agroserv-bay.vercel.app/slides/full-stack/), [back-end](https://agroserv-bay.vercel.app/slides/backend/) e [etapa 1](https://agroserv-bay.vercel.app/slides/)
 - **Documentação:** https://agroserv-bay.vercel.app/
 
 O site é hospedado na Vercel. O app publicado roda em modo `mock`, com os dados demo no navegador. O comando `npm run build:site` monta tudo em `site/`: a página inicial, os documentos de `docs/` convertidos de Markdown para HTML (com os diagramas Mermaid), as apresentações e o app em `/app/`. A configuração fica em `vercel.json`.

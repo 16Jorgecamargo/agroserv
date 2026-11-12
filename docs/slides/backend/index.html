@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgroServ — Back-end</title>
+<link rel="stylesheet" href="../shared/deck.css" />
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/brand/favicon-32.png" />
+<link rel="apple-touch-icon" href="../../assets/brand/apple-touch-icon.png" />
+</head>
+<body>
+<div class="rotate" role="alert">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg>
+  <small>AgroServ · Apresentação</small>
+  <b>Gire o celular</b>
+  <p>A apresentação foi feita para a tela na horizontal. Vire o aparelho para ver os slides.</p>
+</div>
+<div class="viewport">
+<div class="stage" id="stage">
+  <div id="seed"></div>
+
+  <section class="slide" data-seed="1000,0,920,1080,0,#173F2A">
+    <div class="eyebrow" data-a="rise" data-b="0" style="top:110px">Trabalho 2 · Back-end · CC6PDSW</div>
+    <div class="logo" style="position:absolute;left:140px;top:165px" data-a="pop" data-b="1">
+      <img src="../../assets/brand/logo-horizontal.png" alt="AgroServ" width="294" height="76" />
+    </div>
+    <h1 data-a="mask" data-b="2" style="position:absolute;left:140px;top:270px;width:820px;font-size:84px;line-height:1.04;font-weight:800;letter-spacing:-.04em">A API real por trás do AgroServ.</h1>
+    <p class="lead" data-a="rise" data-b="8" style="position:absolute;left:140px;top:575px;width:760px;font-size:27px">NestJS, TypeORM e SQLite atendendo todas as funcionalidades do front-end do trabalho anterior.</p>
+    <div class="cover-info">
+      <div data-a="rise" data-b="11">
+        <small>Alunos</small>
+        <p class="ra-list"><i>Jorge Daniel Ristow de Camargo<span>RA 2521679</span></i><i>Felipe Fonseca<span>RA 2651394</span></i><i>Pedro Luca de Lacerda Alves<span>RA 2651416</span></i></p>
+      </div>
+    </div>
+    <div class="code" style="left:1090px;top:300px;width:740px" data-a="rise" data-b="4">
+      <span class="tag">HTTP</span>
+      <span class="ln c" data-a="line" data-b="5">POST /auth/login</span>
+      <span class="ln" data-a="line" data-b="6">{ <span class="k">"email"</span>: <span class="s">"produtor@agroserv.com"</span>,</span>
+      <span class="ln" data-a="line" data-b="7">  <span class="k">"password"</span>: <span class="s">"••••••"</span> }</span>
+      <span class="ln"> </span>
+      <span class="ln c" data-a="line" data-b="9">200 OK</span>
+      <span class="ln" data-a="line" data-b="10">{ <span class="k">"success"</span>: <span class="n">true</span>,</span>
+      <span class="ln" data-a="line" data-b="11">  <span class="k">"data"</span>: {</span>
+      <span class="ln" data-a="line" data-b="12">    <span class="k">"token"</span>: <span class="s">"eyJhbGciOiJIUzI1NiIs…"</span>,</span>
+      <span class="ln" data-a="line" data-b="13">    <span class="k">"user"</span>: { <span class="k">"role"</span>: <span class="s">"producer"</span>, … } } }</span>
+    </div>
+    <div class="float-chip" style="left:930px;top:800px" data-a="pop" data-b="14">
+      <div class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+      <div><b>17 módulos · 91 rotas</b><small><i class="dot"></i>NestJS 12</small></div>
+    </div>
+    <div class="float-chip" style="left:1460px;top:110px" data-a="pop" data-b="15">
+      <div class="ic" style="background:#E3ECF5;color:var(--info)"><svg class="icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div>
+      <div><b>18 entidades</b><small>SQLite via TypeORM</small></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">01 · De onde viemos</div>
+    <h2 class="title" data-a="mask" data-b="1">Mesma interface, outro motor.</h2>
+    <div class="versus">
+      <div class="side-card" data-a="rise" data-b="5">
+        <small>Trabalho 1 · Front-end</small>
+        <h3>API simulada</h3>
+        <ul>
+          <li>React, Vite e Tailwind</li>
+          <li>Respostas geradas dentro do navegador</li>
+          <li>Dados guardados no localStorage</li>
+          <li>Sessão e regras só no cliente</li>
+        </ul>
+      </div>
+      <div class="arrow-mid" data-a="pop" data-b="8">→</div>
+      <div class="side-card dark" data-a="rise" data-b="9">
+        <small>Trabalho 2 · Back-end</small>
+        <h3>API de verdade</h3>
+        <ul>
+          <li>As mesmas telas React, sem reescrever</li>
+          <li>API NestJS com 91 rotas</li>
+          <li>Banco SQLite com TypeORM</li>
+          <li>JWT, bcrypt e regras no servidor</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">02 · O enunciado</div>
+    <h2 class="title" data-a="mask" data-b="1">O que foi pedido.</h2>
+    <p class="quote" data-a="rise" data-b="4">Desenvolver o back-end da aplicação criada no trabalho anterior. A API deve atender a todas as funcionalidades do front-end.</p>
+    <div class="big-count" style="top:380px" data-a="pop" data-b="7"><strong data-a="count" data-b="8" data-to="37">37</strong><small>telas atendidas pela API</small></div>
+    <div class="checks" style="left:140px;top:740px;grid-template-columns:repeat(4,auto);column-gap:64px">
+      <div data-a="rise" data-b="10"><i>✓</i>NestJS</div>
+      <div data-a="rise" data-b="11"><i>✓</i>TypeORM</div>
+      <div data-a="rise" data-b="12"><i>✓</i>SQLite</div>
+      <div data-a="rise" data-b="13"><i>✓</i>Todas as funcionalidades</div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">03 · Stack</div>
+    <h2 class="title" data-a="mask" data-b="1">A stack da aula, e o que veio junto.</h2>
+    <div class="tiles">
+      <div class="tile dark" data-a="pop" data-b="4"><i class="tag"></i><b>NestJS 12</b><span>módulos, controllers e injeção de dependência</span></div>
+      <div class="tile dark" data-a="pop" data-b="5"><i class="tag"></i><b>TypeORM</b><span>entidades e repositórios</span></div>
+      <div class="tile dark" data-a="pop" data-b="6"><i class="tag"></i><b>SQLite</b><span>better-sqlite3, um arquivo só</span></div>
+      <div class="tile" data-a="pop" data-b="7"><i class="tag"></i><b>class-validator</b><span>DTOs com mensagem por campo</span></div>
+      <div class="tile" data-a="pop" data-b="8"><i class="tag"></i><b>JWT + bcrypt</b><span>sessão de 7 dias e senha com hash</span></div>
+      <div class="tile" data-a="pop" data-b="9"><i class="tag"></i><b>Helmet + Throttler</b><span>cabeçalhos seguros e limite de taxa</span></div>
+      <div class="tile" data-a="pop" data-b="10"><i class="tag"></i><b>Nodemailer</b><span>e-mail de recuperação de senha</span></div>
+      <div class="tile" data-a="pop" data-b="11"><i class="tag"></i><b>Vitest + supertest</b><span>testes unitários e de integração</span></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">04 · Organização</div>
+    <h2 class="title" data-a="mask" data-b="1">17 módulos, um por recurso.</h2>
+    <div class="modgrid">
+      <div class="mod core" data-a="pop" data-b="4"><b>auth</b><span>/auth</span></div>
+      <div class="mod" data-a="pop" data-b="4"><b>users</b><span>/me</span></div>
+      <div class="mod" data-a="pop" data-b="5"><b>providers</b><span>/providers</span></div>
+      <div class="mod" data-a="pop" data-b="5"><b>catalog</b><span>/services</span></div>
+      <div class="mod" data-a="pop" data-b="6"><b>equipment</b><span>/provider/equipment</span></div>
+      <div class="mod" data-a="pop" data-b="6"><b>properties</b><span>/me/properties</span></div>
+      <div class="mod dark" data-a="pop" data-b="7"><b>requests</b><span>/requests</span></div>
+      <div class="mod" data-a="pop" data-b="7"><b>messages</b><span>…/messages</span></div>
+      <div class="mod" data-a="pop" data-b="8"><b>reviews</b><span>…/reviews</span></div>
+      <div class="mod" data-a="pop" data-b="8"><b>agenda</b><span>/provider/agenda</span></div>
+      <div class="mod" data-a="pop" data-b="9"><b>favorites</b><span>/me/favorites</span></div>
+      <div class="mod" data-a="pop" data-b="9"><b>notifications</b><span>/me/notifications</span></div>
+      <div class="mod" data-a="pop" data-b="10"><b>uploads</b><span>/uploads</span></div>
+      <div class="mod" data-a="pop" data-b="10"><b>reports</b><span>/reports</span></div>
+      <div class="mod" data-a="pop" data-b="11"><b>admin</b><span>/admin</span></div>
+      <div class="mod core" data-a="pop" data-b="11"><b>common</b><span>guards · pipes</span></div>
+      <div class="mod core" data-a="pop" data-b="12"><b>database</b><span>TypeORM · semente</span></div>
+    </div>
+    <p class="caption" data-a="rise" data-b="14" style="top:880px">Em cada módulo: o <b>controller</b> recebe, o <b>service</b> aplica as regras e o <b>repository</b> fala com o banco.</p>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45" data-script="pipeline">
+    <div class="eyebrow" data-a="rise" data-b="0">05 · Caminho de uma requisição</div>
+    <h2 class="title" data-a="mask" data-b="1">Toda rota passa pelo mesmo trilho.</h2>
+    <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
+      <defs>
+        <marker id="p-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8E9A92" stroke="none"/></marker>
+        <marker class="hot" id="p-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6B45" stroke="none"/></marker>
+      </defs>
+      <path data-a="draw" data-b="5" data-arrow="p-arrow-hot" class="hot" d="M380 565 H418"/>
+      <path data-a="draw" data-b="6" data-arrow="p-arrow-hot" class="hot" d="M660 565 H698"/>
+      <path data-a="draw" data-b="7" data-arrow="p-arrow-hot" class="hot" d="M940 565 H978"/>
+      <path data-a="draw" data-b="8" data-arrow="p-arrow-hot" class="hot" d="M1220 565 H1258"/>
+      <path data-a="draw" data-b="9" data-arrow="p-arrow-hot" class="hot" d="M1500 565 H1538"/>
+      <path data-a="draw" data-b="11" data-arrow="p-arrow-hot" class="hot" d="M1660 630 V795 H1502"/>
+      <path data-a="draw" data-b="13" data-arrow="p-arrow" class="dash" d="M540 630 V738"/>
+      <path data-a="draw" data-b="13" data-arrow="p-arrow" class="dash" d="M820 630 C820 690 640 690 640 738"/>
+      <path id="pipe-route" class="route" d="M140 565 H1660 V795 H1500"/>
+    </svg>
+    <div class="node sm" style="left:140px;top:500px;width:240px;height:130px" data-a="pop" data-b="4"><b>Helmet · CORS</b><span>cabeçalhos e origem</span></div>
+    <div class="node sm accent" style="left:420px;top:500px;width:240px;height:130px" data-a="pop" data-b="5"><b>Guards</b><span>limite · JWT · papel</span></div>
+    <div class="node sm accent" style="left:700px;top:500px;width:240px;height:130px" data-a="pop" data-b="6"><b>ValidationPipe</b><span>DTO, campos extras fora</span></div>
+    <div class="node sm" style="left:980px;top:500px;width:240px;height:130px" data-a="pop" data-b="7"><b>Controller</b><span>rota fina</span></div>
+    <div class="node sm dark" style="left:1260px;top:500px;width:240px;height:130px" data-a="pop" data-b="8"><b>Service</b><span>regras e transições</span></div>
+    <div class="node sm accent" style="left:1540px;top:500px;width:240px;height:130px" data-a="pop" data-b="9"><b>TypeORM</b><span>repository → SQLite</span></div>
+    <div class="node soft" style="left:980px;top:740px;width:520px;height:110px" data-a="pop" data-b="12"><b>ResponseInterceptor</b><span>sucesso → { success: true, data }</span></div>
+    <div class="node" style="left:140px;top:740px;width:520px;height:110px;border-color:#F1C4BE" data-a="pop" data-b="14"><b>HttpExceptionFilter</b><span>erro → { success: false, error }</span></div>
+    <div class="edge-label" style="left:700px;top:782px;color:var(--danger);font-size:18px" data-a="rise" data-b="15">401 · 403 · 409 · 422 · 429</div>
+    <div class="packet" data-packet></div>
+    <p class="caption" data-a="rise" data-b="16" style="top:910px">O front recebe sempre o <b>mesmo envelope</b>, venha da API ou do mock.</p>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">06 · Contrato</div>
+    <h2 class="title" data-a="mask" data-b="1">Um envelope para tudo.</h2>
+    <div class="code-title" style="left:140px;top:410px" data-a="rise" data-b="3">Sucesso</div>
+    <div class="code" style="left:140px;top:445px;width:790px" data-a="rise" data-b="3">
+      <span class="tag">200</span>
+      <span class="ln c" data-a="line" data-b="4">GET /services?q=pulverizacao</span>
+      <span class="ln" data-a="line" data-b="5">{</span>
+      <span class="ln" data-a="line" data-b="6">  <span class="k">"success"</span>: <span class="n">true</span>,</span>
+      <span class="ln" data-a="line" data-b="7">  <span class="k">"data"</span>: {</span>
+      <span class="ln" data-a="line" data-b="8">    <span class="k">"data"</span>: [ { <span class="k">"title"</span>: <span class="s">"Pulverização…"</span> } ],</span>
+      <span class="ln" data-a="line" data-b="9">    <span class="k">"meta"</span>: { <span class="k">"page"</span>: <span class="n">1</span>, <span class="k">"total"</span>: <span class="n">3</span>, … }</span>
+      <span class="ln" data-a="line" data-b="10">  }</span>
+      <span class="ln" data-a="line" data-b="10">}</span>
+    </div>
+    <div class="code-title" style="left:990px;top:410px;color:var(--danger)" data-a="rise" data-b="11">Erro de validação</div>
+    <div class="code err" style="left:990px;top:445px;width:790px" data-a="rise" data-b="11">
+      <span class="tag">422</span>
+      <span class="ln c" data-a="line" data-b="12">POST /auth/register</span>
+      <span class="ln" data-a="line" data-b="13">{</span>
+      <span class="ln" data-a="line" data-b="14">  <span class="k">"success"</span>: <span class="n">false</span>,</span>
+      <span class="ln" data-a="line" data-b="15">  <span class="k">"error"</span>: {</span>
+      <span class="ln" data-a="line" data-b="16">    <span class="k">"code"</span>: <span class="s">"validation_error"</span>,</span>
+      <span class="ln" data-a="line" data-b="17">    <span class="k">"message"</span>: <span class="s">"Revise os campos destacados."</span>,</span>
+      <span class="ln" data-a="line" data-b="18">    <span class="k">"fields"</span>: { <span class="k">"email"</span>: <span class="s">"Informe um e-mail válido."</span> }</span>
+      <span class="ln" data-a="line" data-b="19">  }</span>
+      <span class="ln" data-a="line" data-b="19">}</span>
+    </div>
+    <p class="caption" data-a="rise" data-b="21" style="top:900px">O <b>httpAdapter</b> desembrulha o envelope. Erro vira <b>ApiError</b> e o formulário marca o campo.</p>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">07 · Modelo de dados</div>
+    <h2 class="title" data-a="mask" data-b="1">18 entidades no SQLite.</h2>
+    <div class="ent-col" style="left:140px">
+      <h4 data-a="rise" data-b="3">Contas</h4>
+      <div class="entity" data-a="pop" data-b="4"><b>User</b><span>email · role · status</span></div>
+      <div class="entity" data-a="pop" data-b="5"><b>ProviderProfile</b><span>raio · verificação · nota</span></div>
+      <div class="entity" data-a="pop" data-b="6"><b>PasswordResetToken</b><span>tokenHash · expiresAt · usedAt</span></div>
+      <div class="entity" data-a="pop" data-b="7"><b>LoginAttempt</b><span>email · createdAt</span></div>
+    </div>
+    <div class="ent-col" style="left:560px">
+      <h4 data-a="rise" data-b="4">Catálogo</h4>
+      <div class="entity" data-a="pop" data-b="5"><b>Category</b><span>slug · active</span></div>
+      <div class="entity" data-a="pop" data-b="6"><b>Service</b><span>price · priceUnit · status</span></div>
+      <div class="entity" data-a="pop" data-b="7"><b>Equipment</b><span>type · model · year</span></div>
+      <div class="entity" data-a="pop" data-b="8"><b>Upload</b><span>purpose · size</span></div>
+      <div class="entity" data-a="pop" data-b="9"><b>Favorite</b><span>producerId · serviceId</span></div>
+    </div>
+    <div class="ent-col" style="left:980px">
+      <h4 data-a="rise" data-b="5">Contratação</h4>
+      <div class="entity" data-a="pop" data-b="6"><b>Property</b><span>city · areaHectares · crops</span></div>
+      <div class="entity dark" data-a="pop" data-b="7"><b>ServiceRequest</b><span>status · scheduledDate · value</span></div>
+      <div class="entity hub" data-a="pop" data-b="8"><b>RequestEvent</b><span>type · actorRole · previousValue</span></div>
+      <div class="entity" data-a="pop" data-b="9"><b>Message</b><span>senderRole · text</span></div>
+      <div class="entity" data-a="pop" data-b="10"><b>Review</b><span>rating · replyText</span></div>
+      <div class="entity" data-a="pop" data-b="11"><b>BlockedDay</b><span>providerId · date</span></div>
+    </div>
+    <div class="ent-col" style="left:1400px">
+      <h4 data-a="rise" data-b="6">Moderação</h4>
+      <div class="entity" data-a="pop" data-b="7"><b>Report</b><span>targetType · reason · status</span></div>
+      <div class="entity" data-a="pop" data-b="8"><b>AdminAction</b><span>action · targetId · reason</span></div>
+      <div class="entity" data-a="pop" data-b="9"><b>Notification</b><span>type · link · read</span></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45" data-script="lifecycle">
+    <div class="eyebrow" data-a="rise" data-b="0">08 · Regras no servidor</div>
+    <h2 class="title" data-a="mask" data-b="1">O ciclo de vida da solicitação.</h2>
+    <svg class="diagram" viewBox="0 0 1920 1080" width="1920" height="1080">
+      <defs>
+        <marker id="l-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8E9A92" stroke="none"/></marker>
+        <marker class="hot" id="l-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6B45" stroke="none"/></marker>
+      </defs>
+      <path data-a="draw" data-b="5" data-arrow="l-arrow-hot" class="hot" d="M400 622 H698"/>
+      <path data-a="draw" data-b="7" data-arrow="l-arrow" d="M330 580 C330 470 370 442 438 442"/>
+      <path data-a="draw" data-b="8" data-arrow="l-arrow" d="M700 442 C800 442 830 500 830 578"/>
+      <path data-a="draw" data-b="10" data-arrow="l-arrow-hot" class="hot" d="M960 622 H1098"/>
+      <path data-a="draw" data-b="12" data-arrow="l-arrow-hot" class="hot" d="M1360 622 H1498"/>
+      <path data-a="draw" data-b="14" data-arrow="l-arrow" d="M270 664 V788"/>
+      <path data-a="draw" data-b="15" data-arrow="l-arrow" d="M380 664 C420 760 560 832 698 832"/>
+      <path data-a="draw" data-b="15" data-arrow="l-arrow" d="M830 664 V788"/>
+      <path data-a="draw" data-b="17" data-arrow="l-arrow" class="dash" d="M1230 664 C1230 780 1100 832 962 832"/>
+      <path id="life-route" class="route" d="M270 622 H1500"/>
+    </svg>
+    <div class="state" style="left:140px;top:580px;width:260px" data-a="pop" data-b="4">Pendente<small>pending</small></div>
+    <div class="state" style="left:440px;top:400px;width:260px" data-a="pop" data-b="7">Contraproposta<small>counter_offer</small></div>
+    <div class="state on" style="left:700px;top:580px;width:260px" data-a="pop" data-b="6">Aceita<small>accepted</small></div>
+    <div class="state on" style="left:1100px;top:580px;width:260px" data-a="pop" data-b="11">Em andamento<small>in_progress</small></div>
+    <div class="state end" style="left:1500px;top:580px;width:260px" data-a="pop" data-b="13">Concluída<small>completed</small></div>
+    <div class="state bad" style="left:140px;top:790px;width:260px" data-a="pop" data-b="14">Recusada<small>rejected</small></div>
+    <div class="state bad" style="left:700px;top:790px;width:260px" data-a="pop" data-b="16">Cancelada<small>cancelled</small></div>
+    <div class="edge-label" style="left:445px;top:588px;color:var(--green);font-size:17px" data-a="rise" data-b="6">prestador aceita</div>
+    <div class="edge-label" style="left:150px;top:480px;color:var(--muted);font-size:17px" data-a="rise" data-b="8">contrapropõe</div>
+    <div class="edge-label" style="left:852px;top:470px;color:var(--muted);font-size:17px" data-a="rise" data-b="9">produtor aceita</div>
+    <div class="edge-label" style="left:985px;top:588px;color:var(--green);font-size:17px" data-a="rise" data-b="11">no dia</div>
+    <div class="edge-label" style="left:1385px;top:588px;color:var(--green);font-size:17px" data-a="rise" data-b="13">conclui</div>
+    <div class="edge-label" style="left:292px;top:712px;color:var(--muted);font-size:17px" data-a="rise" data-b="15">recusa</div>
+    <div class="edge-label" style="left:545px;top:738px;color:var(--muted);font-size:17px" data-a="rise" data-b="16">produtor cancela</div>
+    <div class="edge-label" style="left:1190px;top:770px;color:var(--danger);font-size:17px" data-a="rise" data-b="18">suspensão de conta</div>
+    <div class="packet" data-packet></div>
+    <p class="caption" data-a="rise" data-b="19" style="top:920px">Fora de ordem → <b>409 invalid_transition</b>. Cada mudança grava um <b>RequestEvent</b> e notifica a outra parte.</p>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">09 · Segurança</div>
+    <h2 class="title" data-a="mask" data-b="1">Quem confere é o servidor.</h2>
+    <div class="checks" style="left:140px;top:420px;width:820px">
+      <div data-a="rise" data-b="4"><i>✓</i>Senhas guardadas com bcrypt</div>
+      <div data-a="rise" data-b="5"><i>✓</i>Sessão JWT de 7 dias, com o papel</div>
+      <div data-a="rise" data-b="6"><i>✓</i>5 senhas erradas em 15 min → 429</div>
+      <div data-a="rise" data-b="7"><i>✓</i>Link de recuperação: uso único, 60 min</div>
+      <div data-a="rise" data-b="8"><i>✓</i>No máximo 3 e-mails de recuperação por hora</div>
+    </div>
+    <div class="checks" style="left:1000px;top:420px;width:780px">
+      <div data-a="rise" data-b="9"><i>✓</i>Documento de verificação: link de 10 min</div>
+      <div data-a="rise" data-b="10"><i>✓</i>Conta suspensa não entra</div>
+      <div data-a="rise" data-b="11"><i>✓</i>Helmet e CORS por origem</div>
+      <div data-a="rise" data-b="12"><i>✓</i>Limite de 300 requisições por minuto</div>
+      <div data-a="rise" data-b="13"><i>✓</i>Campos fora do DTO são descartados</div>
+    </div>
+    <p class="caption" data-a="rise" data-b="15" style="top:880px">As mensagens de erro são <b>as mesmas do mock</b>: a tela mostra o mesmo texto nos dois modos.</p>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">10 · Detalhes</div>
+    <h2 class="title" data-a="mask" data-b="1">O que não aparece na tela.</h2>
+    <div class="col3" style="top:420px">
+      <div class="box" data-a="rise" data-b="4"><div class="num">01</div><h3>Fuso de São Paulo</h3><p>“Hoje” e prazos calculados em America/Sao_Paulo.</p></div>
+      <div class="box" data-a="rise" data-b="5"><div class="num">02</div><h3>Exclusão lógica</h3><p>Anúncio e propriedade removidos seguem no histórico.</p></div>
+      <div class="box" data-a="rise" data-b="6"><div class="num">03</div><h3>Dados demo</h3><p>A semente cria as contas e os dados na primeira execução.</p></div>
+    </div>
+    <div class="col3" style="top:690px">
+      <div class="box" data-a="rise" data-b="7"><div class="num">04</div><h3>Uploads</h3><p>Fotos e documentos em multipart, até 5 MB.</p></div>
+      <div class="box" data-a="rise" data-b="8"><div class="num">05</div><h3>E-mail</h3><p>Recuperação de senha por SMTP com Nodemailer.</p></div>
+      <div class="box" data-a="rise" data-b="9"><div class="num">06</div><h3>Busca sem acento</h3><p>Texto normalizado salvo junto de cada registro.</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">11 · Testes</div>
+    <h2 class="title" data-a="mask" data-b="1">146 testes cobrindo a API.</h2>
+    <div class="metrics" style="grid-template-columns:repeat(3,526px)">
+      <div class="metric dark" data-a="pop" data-b="4"><strong data-a="count" data-b="5" data-to="113">113</strong><div><b>testes de integração</b><br><span>supertest batendo nas rotas reais</span></div></div>
+      <div class="metric" data-a="pop" data-b="5"><strong data-a="count" data-b="6" data-to="33">33</strong><div><b>testes unitários</b><br><span>regras dos services</span></div></div>
+      <div class="metric" data-a="pop" data-b="6"><strong data-a="count" data-b="7" data-to="13">13</strong><div><b>suítes de integração</b><br><span>uma por área do sistema</span></div></div>
+    </div>
+    <div class="cmd" style="left:140px;top:790px;width:640px" data-a="rise" data-b="9">
+      <div><span class="p">$</span> pnpm test<span style="float:right;color:#7FB685">33 passed</span></div>
+      <div><span class="p">$</span> pnpm test:e2e<span style="float:right;color:#7FB685">113 passed</span></div>
+    </div>
+    <p class="caption" data-a="rise" data-b="11" style="left:860px;top:815px;width:920px">Rodam sobre <b>SQLite em memória</b> e ignoram o .env local: banco limpo em toda execução.</p>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">12 · Integração</div>
+    <h2 class="title" data-a="mask" data-b="1">O front não mudou: só trocou o adaptador.</h2>
+    <div class="code-title" style="left:140px;top:450px" data-a="rise" data-b="3">.env do front-end</div>
+    <div class="code" style="left:140px;top:485px;width:720px" data-a="rise" data-b="3">
+      <span class="ln" data-a="line" data-b="4"><span class="k">VITE_API_MODE</span>=<span class="s">http</span></span>
+      <span class="ln" data-a="line" data-b="5"><span class="k">VITE_API_URL</span>=<span class="s">http://localhost:3333</span></span>
+    </div>
+    <div class="node soft" style="left:140px;top:680px;width:340px;height:110px" data-a="pop" data-b="6"><b>mock</b><span>dados demo no navegador</span></div>
+    <div class="node dark" style="left:520px;top:680px;width:340px;height:110px" data-a="pop" data-b="7"><b>http</b><span>API NestJS + SQLite</span></div>
+    <div class="checks" style="left:960px;top:470px;width:820px">
+      <div data-a="rise" data-b="9"><i>✓</i>httpAdapter desembrulha o envelope</div>
+      <div data-a="rise" data-b="10"><i>✓</i>Erro vira ApiError com os campos</div>
+      <div data-a="rise" data-b="11"><i>✓</i>Token JWT no cabeçalho Authorization</div>
+      <div data-a="rise" data-b="12"><i>✓</i>Nenhum componente alterado</div>
+      <div data-a="rise" data-b="13"><i>✓</i>Telas dos três papéis sem erros</div>
+    </div>
+  </section>
+
+  <section class="slide" data-seed="140,150,64,8,4,#2F6B45">
+    <div class="eyebrow" data-a="rise" data-b="0">13 · Como rodar</div>
+    <h2 class="title" data-a="mask" data-b="1">Na sua máquina, em dois terminais.</h2>
+    <div class="code-title" style="left:140px;top:420px" data-a="rise" data-b="3">API · pasta backend</div>
+    <div class="cmd" style="left:140px;top:455px;width:760px" data-a="rise" data-b="3">
+      <div data-a="line" data-b="4"><span class="p">$</span> cd backend</div>
+      <div data-a="line" data-b="5"><span class="p">$</span> pnpm install</div>
+      <div data-a="line" data-b="6"><span class="p">$</span> cp .env.example .env</div>
+      <div data-a="line" data-b="7"><span class="p">$</span> pnpm start:dev</div>
+    </div>
+    <div class="code-title" style="left:1000px;top:420px" data-a="rise" data-b="8">Front-end · raiz</div>
+    <div class="cmd" style="left:1000px;top:455px;width:780px" data-a="rise" data-b="8">
+      <div data-a="line" data-b="9"><span class="p">$</span> cp .env.example .env</div>
+      <div data-a="line" data-b="10"><span class="p">$</span> npm run dev</div>
+    </div>
+    <p class="caption" data-a="rise" data-b="11" style="left:1000px;top:610px;width:780px;font-size:24px">No <b>.env</b>, troque para <b>VITE_API_MODE=http</b>.</p>
+    <div class="checks" style="left:140px;top:740px;grid-template-columns:repeat(3,auto);column-gap:60px">
+      <div data-a="rise" data-b="12"><i>✓</i>API em localhost:3333</div>
+      <div data-a="rise" data-b="13"><i>✓</i>Banco criado com os dados demo</div>
+      <div data-a="rise" data-b="14"><i>✓</i>Contas demo, senha 123456</div>
+    </div>
+  </section>
+
+  <section class="slide final" data-seed="0,0,1920,1080,0,#173F2A" data-dark-chrome="true">
+    <div class="eyebrow" data-a="rise" data-b="2" style="top:360px">AgroServ · NestJS + TypeORM + SQLite</div>
+    <div class="thanks" data-a="mask" data-b="3">Obrigado.</div>
+  </section>
+
+  <div class="hint" id="hint">← → para navegar · F tela cheia</div>
+  <div class="chrome" id="chrome"><span>AGROSERV</span><span id="counter" class="counter">01 / 15</span></div>
+  <div class="progress"><i id="bar"></i></div>
+</div>
+</div>
+<script>
+window.DECK_SCRIPTS = {
+  pipeline(slide, { travel, BEAT }) {
+    travel(slide.querySelector('[data-packet]'), slide.querySelector('#pipe-route'), { delay: 16 * BEAT, duration: 3400 })
+  },
+  lifecycle(slide, { travel, BEAT }) {
+    travel(slide.querySelector('[data-packet]'), slide.querySelector('#life-route'), { delay: 19 * BEAT, duration: 3000 })
+  },
+}
+</script>
+<script src="../shared/deck.js"></script>
+</body>
+</html>
