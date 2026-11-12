@@ -19,6 +19,7 @@ import { AdminDashboardPage } from '../pages/AdminDashboardPage'
 import { AdminRequestDetailPage } from '../pages/AdminRequestDetailPage'
 import { AdminUserDetailPage } from '../pages/AdminUserDetailPage'
 import { AdminUsersPage } from '../pages/AdminUsersPage'
+import { AdminVerificationsPage } from '../pages/AdminVerificationsPage'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
 import { PrivacyPage, TermsPage } from '../pages/LegalPages'
@@ -86,6 +87,7 @@ export function AppRoutes() {
           <Route path="usuarios" element={<AdminUsersPage />} />
           <Route path="usuarios/:id" element={<AdminUserDetailPage />} />
           <Route path="solicitacoes/:id" element={<AdminRequestDetailPage />} />
+          <Route path="verificacoes" element={<AdminVerificationsPage />} />
           <Route path="conta" element={<AdminAccountPage />} />
           <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />

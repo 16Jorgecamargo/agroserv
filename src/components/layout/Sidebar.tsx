@@ -32,6 +32,7 @@ const sidebarItemsByRole: Record<Role, SidebarItem[]> = {
   admin: [
     { label: 'Painel', to: paths.adminDashboard, icon: LayoutDashboard },
     { label: 'Usuários', to: paths.adminUsers, icon: Users },
+    { label: 'Verificações', to: paths.adminVerifications, icon: BadgeCheck },
     { label: 'Minha conta', to: paths.adminAccount, icon: UserRound },
   ],
 }

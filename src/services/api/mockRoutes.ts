@@ -4,6 +4,7 @@ import { authRoutes } from './mockRoutes/authRoutes'
 import { catalogRoutes } from './mockRoutes/catalogRoutes'
 import { accountRoutes } from './mockRoutes/accountRoutes'
 import { adminRoutes } from './mockRoutes/adminRoutes'
+import { adminVerificationRoutes } from './mockRoutes/adminVerificationRoutes'
 import { demoRoutes } from './mockRoutes/demoRoutes'
 import { agendaRoutes } from './mockRoutes/agendaRoutes'
 import { equipmentRoutes } from './mockRoutes/equipmentRoutes'
@@ -59,6 +60,7 @@ const routes: MockRoute[] = [
   ...agendaRoutes,
   ...verificationRoutes,
   ...adminRoutes,
+  ...adminVerificationRoutes,
   ...demoRoutes,
 ]
 
