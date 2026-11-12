@@ -16,7 +16,6 @@ export class FavoritesService {
   ) {}
 
   async list(producerId: string): Promise<ServiceView[]> {
-    // Só aparecem os favoritos que continuam visíveis no catálogo
     const favorites = await this.favorites.findByProducer(producerId);
     const services: Service[] = [];
     for (const favorite of favorites) {
@@ -26,14 +25,13 @@ export class FavoritesService {
     return services.map((service) => toServiceView(service));
   }
 
-  async add(producerId: string, serviceId: string): Promise<void> {
-    // O serviço precisa existir e estar visível
+  async add(producerId: string, serviceId: string): Promise<ServiceView> {
     const service = await this.catalog.findVisible(serviceId);
     await this.favorites.add(producerId, service.id, this.clock.nowIso());
+    return toServiceView(service);
   }
 
   async remove(producerId: string, serviceId: string): Promise<void> {
-    // Remover o que não está nos favoritos também responde 204
     await this.favorites.remove(producerId, serviceId);
   }
 }

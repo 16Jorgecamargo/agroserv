@@ -5,8 +5,8 @@ import { getMockDatabase } from '../mockDatabase'
 
 describe('favorites', () => {
   it('adds idempotently, lists newest first and removes', () => {
-    call('POST', '/me/favorites', { token: tokens.producer, body: { serviceId: 'svc-1' } })
-    call('POST', '/me/favorites', { token: tokens.producer, body: { serviceId: 'svc-1' } })
+    expect(call<Service>('POST', '/me/favorites', { token: tokens.producer, body: { serviceId: 'svc-1' } }).id).toBe('svc-1')
+    expect(call<Service>('POST', '/me/favorites', { token: tokens.producer, body: { serviceId: 'svc-1' } }).id).toBe('svc-1')
 
     expect(call<Service[]>('GET', '/me/favorites', { token: tokens.producer }).map((service) => service.id)).toEqual(['svc-1', 'svc-3'])
 

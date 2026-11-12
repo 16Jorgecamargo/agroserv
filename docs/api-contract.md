@@ -1004,7 +1004,7 @@ Mudança: `open` passa a contar `counter_offer`.
 200: `Service[]` favoritados e visíveis, do mais recente para o mais antigo.
 
 ### `POST /me/favorites` — Implementado (F7)
-Corpo: `{ "serviceId": string }`. 204, idempotente. 404 `service_not_found`.
+Corpo: `{ "serviceId": string }`. 200: o `Service` favoritado. Idempotente: favoritar de novo responde 200 com o mesmo serviço. 404 `service_not_found`.
 
 ### `DELETE /me/favorites/:serviceId` — Implementado (F7)
 204, idempotente (remover algo que não está nos favoritos também responde 204).

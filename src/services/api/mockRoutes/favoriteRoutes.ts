@@ -33,7 +33,7 @@ export const favoriteRoutes: MockRoute[] = [
         database.favorites.push({ producerId: user.id, serviceId, createdAt: new Date().toISOString() })
         persistMockDatabase()
       }
-      return undefined
+      return toService(record)
     },
   },
   {

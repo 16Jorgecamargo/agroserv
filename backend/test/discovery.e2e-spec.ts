@@ -55,8 +55,9 @@ describe('discovery', () => {
 
   describe('favorites', () => {
     it('adds, lists newest first and removes idempotently', async () => {
-      await api(app, producer).post('/me/favorites', { serviceId: 'svc-7' }).expect(204);
-      await api(app, producer).post('/me/favorites', { serviceId: 'svc-7' }).expect(204);
+      const added = await api(app, producer).post('/me/favorites', { serviceId: 'svc-7' }).expect(200);
+      expect(added.body).toMatchObject({ success: true, data: { id: 'svc-7' } });
+      await api(app, producer).post('/me/favorites', { serviceId: 'svc-7' }).expect(200);
       const list = await api(app, producer).get('/me/favorites').expect(200);
       expect(list.body.data.map((service: { id: string }) => service.id)).toEqual(['svc-7', 'svc-3']);
       const missing = await api(app, producer).post('/me/favorites', { serviceId: 'nope' }).expect(404);
