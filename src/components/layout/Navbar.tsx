@@ -3,18 +3,12 @@ import { LogOut, Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router'
 import { useAuth } from '../../hooks/useAuth'
-import { paths } from '../../routes/paths'
+import { getRoleHomePath, paths } from '../../routes/paths'
 import { cn } from '../../utils/cn'
 import { Avatar } from '../ui/Avatar'
 import { buttonClasses } from '../ui/buttonClasses'
 import { Container } from './Container'
 import { Logo } from './Logo'
-
-const navItems = [
-  { label: 'Início', to: paths.home, end: true },
-  { label: 'Serviços', to: paths.services, end: false },
-  { label: 'Painel', to: paths.dashboard, end: false },
-]
 
 function navLinkClasses({ isActive }: { isActive: boolean }) {
   return cn(
@@ -28,6 +22,12 @@ export function Navbar() {
   const navigate = useNavigate()
   const [isScrolled, setIsScrolled] = useState(() => window.scrollY > 8)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const panelPath = isAuthenticated && user ? getRoleHomePath(user.role) : paths.dashboard
+  const navItems = [
+    { label: 'Início', to: paths.home, end: true },
+    { label: 'Serviços', to: paths.services, end: false },
+    { label: 'Painel', to: panelPath, end: false },
+  ]
 
   useEffect(() => {
     function handleScroll() {
@@ -44,7 +44,7 @@ export function Navbar() {
   function handleLogout() {
     closeMenu()
     logout()
-    navigate(paths.home)
+    navigate(paths.home, { replace: true })
   }
 
   return (
@@ -70,7 +70,7 @@ export function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           {isAuthenticated && user ? (
             <>
-              <Link to={paths.dashboard} className={buttonClasses('primary', 'sm')}>
+              <Link to={panelPath} className={buttonClasses('primary', 'sm')}>
                 Meu painel
               </Link>
               <Avatar name={user.name} src={user.avatarUrl} size="sm" />
@@ -118,10 +118,19 @@ export function Navbar() {
                 </NavLink>
               ))}
               <div className="mt-2 border-t border-border pt-3">
-                {isAuthenticated ? (
-                  <button type="button" onClick={handleLogout} className={buttonClasses('secondary', 'md', 'w-full')}>
-                    Sair
-                  </button>
+                {isAuthenticated && user ? (
+                  <>
+                    <Link
+                      to={panelPath}
+                      onClick={closeMenu}
+                      className={buttonClasses('primary', 'md', 'mb-2 w-full')}
+                    >
+                      Meu painel
+                    </Link>
+                    <button type="button" onClick={handleLogout} className={buttonClasses('secondary', 'md', 'w-full')}>
+                      Sair
+                    </button>
+                  </>
                 ) : (
                   <Link to={paths.login} onClick={closeMenu} className={buttonClasses('primary', 'md', 'w-full')}>
                     Entrar

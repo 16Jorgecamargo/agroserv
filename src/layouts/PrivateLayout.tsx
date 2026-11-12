@@ -1,3 +1,4 @@
+import { Bell } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { startTransition } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router'
@@ -7,14 +8,22 @@ import { Alert } from '../components/ui/Alert'
 import { Avatar } from '../components/ui/Avatar'
 import { useAuth } from '../hooks/useAuth'
 import { paths, type LoginLocationState } from '../routes/paths'
+import type { Role } from '../types/entities'
 import { formatLocation } from '../utils/format'
 import { pageTransition } from '../utils/motion'
+
+const roleLabels: Record<Role, string> = {
+  producer: 'produtor',
+  provider: 'prestador',
+  admin: 'administrador',
+}
 
 export function PrivateLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const routeState = (location.state ?? null) as LoginLocationState | null
+  const role = user?.role ?? 'producer'
 
   function handleLogout() {
     startTransition(() => {
@@ -26,19 +35,30 @@ export function PrivateLayout() {
   return (
     <div className="min-h-dvh bg-bg lg:pl-64">
       <SkipLink />
-      <Sidebar onLogout={handleLogout} />
+      <Sidebar role={role} onLogout={handleLogout} />
       <div className="flex min-h-dvh flex-col">
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-bg/85 px-4 backdrop-blur-md sm:px-6 lg:px-8">
-          <p className="text-sm font-medium text-text-muted">Painel do produtor</p>
-          {user && (
-            <div className="flex items-center gap-3">
-              <div className="hidden text-right leading-tight sm:block">
-                <p className="text-sm font-semibold text-text">{user.name}</p>
-                <p className="text-xs text-text-muted">{formatLocation(user.city, user.state)}</p>
+          <p className="text-sm font-medium text-text-muted">Painel do {roleLabels[role]}</p>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              disabled
+              aria-label="Notificações (em breve)"
+              title="Notificações em breve"
+              className="grid size-9 place-items-center rounded-lg text-text-muted"
+            >
+              <Bell className="size-4" aria-hidden />
+            </button>
+            {user && (
+              <div className="flex items-center gap-3">
+                <div className="hidden text-right leading-tight sm:block">
+                  <p className="text-sm font-semibold text-text">{user.name}</p>
+                  <p className="text-xs text-text-muted">{formatLocation(user.city, user.state)}</p>
+                </div>
+                <Avatar name={user.name} src={user.avatarUrl} size="sm" />
               </div>
-              <Avatar name={user.name} src={user.avatarUrl} size="sm" />
-            </div>
-          )}
+            )}
+          </div>
         </header>
         <motion.main
           id="main-content"

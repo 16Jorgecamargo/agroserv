@@ -1,24 +1,46 @@
-import { ClipboardList, LayoutDashboard, LogOut, Search } from 'lucide-react'
+import { ClipboardList, LayoutDashboard, LogOut, Search, type LucideIcon } from 'lucide-react'
 import { NavLink } from 'react-router'
+import type { Role } from '../../types/entities'
 import { paths } from '../../routes/paths'
 import { cn } from '../../utils/cn'
 import { Logo } from './Logo'
 
-const sidebarItems = [
-  { label: 'Dashboard', to: paths.dashboard, icon: LayoutDashboard },
-  { label: 'Solicitações', to: paths.requests, icon: ClipboardList },
-  { label: 'Ver serviços', to: paths.services, icon: Search },
-]
+interface SidebarItem {
+  label: string
+  to: string
+  icon: LucideIcon
+}
+
+const sidebarItemsByRole: Record<Role, SidebarItem[]> = {
+  producer: [
+    { label: 'Dashboard', to: paths.dashboard, icon: LayoutDashboard },
+    { label: 'Solicitações', to: paths.requests, icon: ClipboardList },
+    { label: 'Ver serviços', to: paths.services, icon: Search },
+  ],
+  provider: [{ label: 'Painel', to: paths.providerDashboard, icon: LayoutDashboard }],
+  admin: [{ label: 'Painel', to: paths.adminDashboard, icon: LayoutDashboard }],
+}
+
+const roleLabels: Record<Role, string> = {
+  producer: 'produtor',
+  provider: 'prestador',
+  admin: 'administrador',
+}
 
 const itemClasses = 'flex shrink-0 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors'
 
-export function Sidebar({ onLogout }: { onLogout: () => void }) {
+export function Sidebar({ role, onLogout }: { role: Role; onLogout: () => void }) {
+  const sidebarItems = sidebarItemsByRole[role]
+
   return (
     <aside className="border-b border-border bg-surface lg:fixed lg:inset-y-0 lg:left-0 lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-b-0">
       <div className="flex h-16 items-center px-4 lg:px-6">
         <Logo />
       </div>
-      <nav aria-label="Área do produtor" className="no-scrollbar flex gap-1 overflow-x-auto px-2 pb-2 lg:flex-1 lg:flex-col lg:px-3 lg:pt-4 lg:pb-4">
+      <nav
+        aria-label={`Área do ${roleLabels[role]}`}
+        className="no-scrollbar flex gap-1 overflow-x-auto px-2 pb-2 lg:flex-1 lg:flex-col lg:px-3 lg:pt-4 lg:pb-4"
+      >
         {sidebarItems.map((item) => (
           <NavLink
             key={item.to}
