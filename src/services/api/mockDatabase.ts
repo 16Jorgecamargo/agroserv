@@ -25,7 +25,7 @@ interface StoredMockDatabase {
 }
 
 const STORAGE_KEY = 'agroserv_mock_db'
-const DATABASE_VERSION = 3
+const DATABASE_VERSION = 4
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T
