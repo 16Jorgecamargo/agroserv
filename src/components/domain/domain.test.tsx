@@ -23,9 +23,14 @@ const service: Service = {
   reviewCount: 128,
   available: true,
   imageUrl: '/spraying.jpg',
+  providerVerified: true,
+  photos: ['/spraying.jpg'],
+  equipmentIds: [],
+  status: 'active',
+  createdAt: '2026-01-10T12:00:00.000Z',
 }
 
-const category: Category = { id: 'cat-spraying', slug: 'pulverizacao', name: 'Pulverização', icon: 'spray-can' }
+const category: Category = { id: 'cat-spraying', slug: 'pulverizacao', name: 'Pulverização', icon: 'spray-can', active: true }
 
 describe('ServiceCard', () => {
   it('shows the service summary and links to the detail page', () => {

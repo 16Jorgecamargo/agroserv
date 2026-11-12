@@ -1,4 +1,4 @@
-import type { Provider, ProviderProfile, VerificationStatus } from '../types/entities'
+import type { ProviderProfile, VerificationStatus } from '../types/entities'
 
 interface ProviderSeed extends ProviderProfile {
   name: string
@@ -86,19 +86,6 @@ const providerSeed: ProviderSeed[] = [
     reviewCount: 145,
   },
 ]
-
-export const providers: Provider[] = providerSeed.map((provider) => ({
-  id: provider.userId,
-  name: provider.name,
-  city: provider.city,
-  state: provider.state,
-  rating: provider.rating,
-  reviewCount: provider.reviewCount,
-  yearsOfExperience: provider.yearsOfExperience,
-  verified: provider.verificationStatus === 'approved',
-  serviceRadiusKm: provider.serviceRadiusKm,
-  description: provider.description,
-}))
 
 export const providerProfiles: ProviderProfile[] = providerSeed.map(
   ({

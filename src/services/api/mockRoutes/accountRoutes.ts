@@ -26,7 +26,6 @@ function updateMe({ token, body }: RouteContext): User {
   const user = findUserByToken(token)
   const payload = bodyRecord(body) as UpdateProfilePayload
   const fields: Record<string, string> = {}
-  const database = getMockDatabase()
   const updates: Partial<User> = {}
 
   if (payload.name !== undefined) {
@@ -59,14 +58,6 @@ function updateMe({ token, body }: RouteContext): User {
 
   Object.assign(user, updates)
 
-  if (user.role === 'provider') {
-    const provider = database.providers.find((candidate) => candidate.id === user.id)
-    if (provider) {
-      provider.name = user.name
-      provider.city = user.city
-      provider.state = user.state
-    }
-  }
   persistMockDatabase()
   return user
 }
@@ -105,7 +96,7 @@ function getProviderProfile({ token }: RouteContext): ProviderProfile {
 }
 
 function updateProviderProfile({ token, body }: RouteContext): ProviderProfile {
-  const user = requireRole(findUserByToken(token), 'provider')
+  requireRole(findUserByToken(token), 'provider')
   const profile = getProviderProfile({ token, body, params: {}, query: {} })
   const updatedProfile = { ...profile }
   const payload = bodyRecord(body) as ProviderProfilePayload
@@ -142,13 +133,6 @@ function updateProviderProfile({ token, body }: RouteContext): ProviderProfile {
 
   Object.assign(profile, updatedProfile)
 
-  const provider = getMockDatabase().providers.find((candidate) => candidate.id === user.id)
-  if (provider) {
-    provider.yearsOfExperience = updatedProfile.yearsOfExperience
-    provider.serviceRadiusKm = updatedProfile.serviceRadiusKm
-    provider.description = updatedProfile.description
-    provider.verified = updatedProfile.verificationStatus === 'approved'
-  }
   persistMockDatabase()
   return profile
 }
@@ -181,7 +165,10 @@ function deleteMe({ token }: RouteContext): MessageResponse {
 
   if (user.role === 'provider') {
     database.services.forEach((service) => {
-      if (service.providerId === user.id) service.available = false
+      if (service.providerId !== user.id || service.deletedAt || service.status === 'hidden') return
+      service.statusBeforeHidden = service.status
+      service.status = 'hidden'
+      service.hiddenByAccountDeletion = true
     })
   }
 

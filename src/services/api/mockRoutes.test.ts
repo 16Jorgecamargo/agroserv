@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import type { LoginResponse, Paginated, ProducerDashboard } from '../../types/api'
 import type { Service, ServiceDetail, ServiceRequest, User } from '../../types/entities'
 import { ApiError } from './apiError'
 import { handleMockRequest, matchPath, normalizeText } from './mockRoutes'
+import { keepOnlyFixedRequests } from '../../test/seed'
 
 const TOKEN = 'mock.usr-1'
 
@@ -134,6 +135,8 @@ describe('auth routes', () => {
 })
 
 describe('private routes', () => {
+  beforeEach(keepOnlyFixedRequests)
+
   it('requires a token for requests', () => {
     expect(captureError(() => get('/requests')).status).toBe(401)
   })

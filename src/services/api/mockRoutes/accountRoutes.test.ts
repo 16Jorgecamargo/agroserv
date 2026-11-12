@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { getMockDatabase } from '../mockDatabase'
 import { handleMockRequest } from '../mockRoutes'
 import { ApiError } from '../apiError'
+import { toProvider } from './shared'
 
 function request<T>(method: 'GET' | 'POST' | 'PATCH' | 'DELETE', path: string, body?: unknown, token: string | null = null): T {
   return handleMockRequest({ method, path, body, token }) as T
@@ -27,7 +28,7 @@ describe('account mock routes', () => {
     )
 
     expect(updated).toMatchObject({ name: 'Carlos Souza', phone: '(45) 98888-7777', city: 'Toledo', state: 'PR' })
-    expect(getMockDatabase().providers.find((provider) => provider.id === 'prv-1')).toMatchObject({
+    expect(toProvider('prv-1')).toMatchObject({
       name: 'Carlos Souza',
       city: 'Toledo',
       state: 'PR',
@@ -74,7 +75,7 @@ describe('account mock routes', () => {
       'mock.prv-1',
     )
     expect(result).toMatchObject({ document: '98765432100', verificationStatus: 'not_sent', serviceRadiusKm: 180 })
-    expect(getMockDatabase().providers.find((provider) => provider.id === 'prv-1')).toMatchObject({
+    expect(toProvider('prv-1')).toMatchObject({
       serviceRadiusKm: 180,
       yearsOfExperience: 15,
       description: 'Atendimento especializado.',
@@ -94,7 +95,7 @@ describe('account mock routes', () => {
   it('logically deletes a provider and hides their services', () => {
     expect(request('DELETE', '/me', undefined, 'mock.prv-5')).toEqual({ message: 'Conta excluída.' })
     expect(getMockDatabase().users.find((user) => user.id === 'prv-5')).toMatchObject({ status: 'deleted' })
-    expect(getMockDatabase().services.filter((service) => service.providerId === 'prv-5').every((service) => !service.available)).toBe(true)
+    expect(getMockDatabase().services.filter((service) => service.providerId === 'prv-5').every((service) => service.status === 'hidden' && service.hiddenByAccountDeletion)).toBe(true)
     expect(captureError(() => request('GET', '/services/svc-7')).status).toBe(404)
   })
 

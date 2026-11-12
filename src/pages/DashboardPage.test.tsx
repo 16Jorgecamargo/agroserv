@@ -1,11 +1,14 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { renderApp } from '../test/renderApp'
 import { getMockDatabase } from '../services/api/mockDatabase'
 import { signInAsDemoProducer } from '../test/session'
+import { keepOnlyFixedRequests } from '../test/seed'
 
 describe('DashboardPage', () => {
+  beforeEach(keepOnlyFixedRequests)
+
   it('shows greeting, stats and recent requests', async () => {
     signInAsDemoProducer()
     renderApp('/dashboard')

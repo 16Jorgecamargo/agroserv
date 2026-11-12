@@ -1,10 +1,13 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { renderApp } from '../test/renderApp'
 import { signInAsDemoProducer } from '../test/session'
+import { keepOnlyFixedRequests } from '../test/seed'
 
 describe('RequestsPage', () => {
+  beforeEach(keepOnlyFixedRequests)
+
   it('lists all requests and filters by status', async () => {
     signInAsDemoProducer()
     renderApp('/solicitacoes')

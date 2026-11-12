@@ -9,9 +9,35 @@ import sprayingImage from '../assets/images/service-spraying.jpg'
 import transportImage from '../assets/images/service-transport.jpg'
 import type { Service } from '../types/entities'
 
-export type ServiceRecord = Omit<Service, 'providerName'>
+export interface ServiceRecord extends Omit<Service, 'providerName' | 'providerVerified'> {
+  statusBeforeHidden?: 'active' | 'paused'
+  hiddenByAccountDeletion?: boolean
+  deletedAt?: string
+}
 
-export const services: ServiceRecord[] = [
+type ServiceSeed = Pick<
+  ServiceRecord,
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'categoryId'
+  | 'providerId'
+  | 'city'
+  | 'state'
+  | 'price'
+  | 'priceUnit'
+  | 'rating'
+  | 'reviewCount'
+  | 'available'
+  | 'imageUrl'
+>
+
+const equipmentByService: Record<string, string[]> = {
+  'svc-1': ['eqp-1'],
+  'svc-5': ['eqp-2'],
+}
+
+const serviceSeed: ServiceSeed[] = [
   {
     id: 'svc-1',
     title: 'Pulverização Agrícola',
@@ -205,3 +231,11 @@ export const services: ServiceRecord[] = [
     imageUrl: maintenanceImage,
   },
 ]
+
+export const services: ServiceRecord[] = serviceSeed.map((service, index) => ({
+  ...service,
+  photos: [service.imageUrl],
+  equipmentIds: equipmentByService[service.id] ?? [],
+  status: 'active',
+  createdAt: new Date(Date.UTC(2026, 0, 10 + index, 12)).toISOString(),
+}))
