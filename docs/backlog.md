@@ -138,19 +138,19 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 
 | ID | Item | Tamanho | Depende de | Responsável | Situação |
 |---|---|---|---|---|---|
-| F1-01 | Banco simulado persistente e restaurar dados demo | G | — | | A fazer |
-| F1-02 | Papéis, situação da conta e contas demo | M | F1-01 | | A fazer |
-| F1-03 | Componentes de formulário, modal e toasts | G | — | | A fazer |
-| F1-04 | Login por papel e proteção de rotas por papel | M | F1-02 | | A fazer |
-| F1-05 | Layouts das três áreas | M | F1-04 | | A fazer |
-| F1-06 | Cadastro | M | F1-02, F1-03 | | A fazer |
-| F1-07 | Recuperação de senha | P | F1-02, F1-03 | | A fazer |
-| F1-08 | Perfil e conta (produtor e prestador) | M | F1-03, F1-05 | | A fazer |
-| F2-01 | Novo modelo de solicitação e máquina de status | G | F1-02 | | A fazer |
+| F1-01 | Banco simulado persistente e restaurar dados demo | G | — | | Feito |
+| F1-02 | Papéis, situação da conta e contas demo | M | F1-01 | | Feito |
+| F1-03 | Componentes de formulário, modal e toasts | G | — | | Feito |
+| F1-04 | Login por papel e proteção de rotas por papel | M | F1-02 | | Feito |
+| F1-05 | Layouts das três áreas | M | F1-04 | | Feito |
+| F1-06 | Cadastro | M | F1-02, F1-03 | | Feito |
+| F1-07 | Recuperação de senha | P | F1-02, F1-03 | | Feito |
+| F1-08 | Perfil e conta (produtor e prestador) | M | F1-03, F1-05 | | Feito |
+| F2-01 | Novo modelo de solicitação e máquina de status | G | F1-02 | | Feito |
 | F2-02 | Propriedades | M | F1-03, F1-05 | | A fazer |
 | F2-03 | Solicitar serviço | G | F1-03, F2-01, F2-02 | | A fazer |
 | F2-04 | Detalhe da solicitação (produtor) | M | F1-03, F2-01 | | A fazer |
-| F2-05 | Lista e painel do produtor com os novos status | P | F2-01 | | A fazer |
+| F2-05 | Lista e painel do produtor com os novos status | P | F2-01 | | Feito |
 | F3-01 | Upload de arquivos | M | F1-01, F1-03 | | A fazer |
 | F3-02 | Meus serviços | G | F3-01, F1-05 | | A fazer |
 | F3-03 | Solicitações recebidas e ações do prestador | G | F1-03, F1-05, F2-01 | | A fazer |
