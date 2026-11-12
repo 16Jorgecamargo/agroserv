@@ -1,4 +1,4 @@
-import { ClipboardList, LayoutDashboard, LogOut, MapPinned, Search, UserRound, type LucideIcon } from 'lucide-react'
+import { ClipboardList, LayoutDashboard, LogOut, MapPinned, Megaphone, Search, UserRound, type LucideIcon } from 'lucide-react'
 import { NavLink } from 'react-router'
 import type { Role } from '../../types/entities'
 import { paths } from '../../routes/paths'
@@ -21,6 +21,7 @@ const sidebarItemsByRole: Record<Role, SidebarItem[]> = {
   ],
   provider: [
     { label: 'Painel', to: paths.providerDashboard, icon: LayoutDashboard },
+    { label: 'Meus serviços', to: paths.providerServices, icon: Megaphone },
     { label: 'Perfil', to: paths.providerProfile, icon: UserRound },
   ],
   admin: [{ label: 'Painel', to: paths.adminDashboard, icon: LayoutDashboard }],

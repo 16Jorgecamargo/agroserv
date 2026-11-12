@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
 import { CategoryIcon } from '../components/domain/CategoryIcon'
 import { RequestServiceForm } from '../components/domain/RequestServiceForm'
-import { ServiceImage } from '../components/domain/ServiceImage'
+import { ServiceGallery } from '../components/domain/ServiceGallery'
 import { Container } from '../components/layout/Container'
 import { Avatar } from '../components/ui/Avatar'
 import { Badge } from '../components/ui/Badge'
@@ -23,6 +23,7 @@ import { paths, type LoginLocationState } from '../routes/paths'
 import { isApiError } from '../services/api/apiError'
 import { ESTIMATE_NOTICE, formatCount, formatLocation, formatPrice, formatRating } from '../utils/format'
 import { fadeUp, staggerContainer } from '../utils/motion'
+import { serviceStatusLabels } from '../utils/serviceStatus'
 
 function DetailSkeleton() {
   return (
@@ -81,8 +82,14 @@ export function ServiceDetailPage() {
 
       <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px]">
         <motion.div variants={staggerContainer} initial="hidden" animate="visible">
-          <motion.div variants={fadeUp} className="overflow-hidden rounded-card border border-border bg-surface-muted">
-            <ServiceImage src={service.imageUrl} alt={service.title} className="aspect-[16/9] w-full object-cover" />
+          <motion.div variants={fadeUp}>
+            {service.status !== 'active' && (
+              <div role="status" className="mb-4 rounded-card border border-warning/30 bg-warning/5 p-4 text-sm text-warning">
+                <p className="font-semibold">{serviceStatusLabels[service.status]}. Este anúncio não aparece na busca.</p>
+                {service.hiddenReason && <p className="mt-1 text-text">Motivo: {service.hiddenReason}</p>}
+              </div>
+            )}
+            <ServiceGallery title={service.title} photos={service.photos} fallback={service.imageUrl} />
           </motion.div>
 
           <motion.div variants={fadeUp} className="mt-8">

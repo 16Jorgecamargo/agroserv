@@ -211,3 +211,36 @@ export function validateUploadFile(file: File, acceptedTypes: string[] = ACCEPTE
   if (file.size > MAX_FILE_BYTES) return 'O arquivo deve ter no máximo 5 MB.'
   return undefined
 }
+
+export interface ServiceFormValues {
+  title: string
+  categoryId: string
+  description: string
+  price: string
+  priceUnit: string
+  city: string
+  state: string
+  photos: string[]
+  equipmentIds: string[]
+  available: boolean
+}
+
+export type ServiceFormErrors = Partial<Record<keyof ServiceFormValues, string>>
+
+export function validateServiceForm(values: ServiceFormValues): ServiceFormErrors {
+  const errors: ServiceFormErrors = {}
+  const price = parseDecimal(values.price)
+  const title = values.title.trim()
+  const description = values.description.trim()
+
+  if (title.length < 3 || title.length > 80) errors.title = 'Informe o título.'
+  if (!values.categoryId) errors.categoryId = 'Selecione uma categoria.'
+  if (description.length < 20 || description.length > 2000) errors.description = 'Descreva o serviço com pelo menos 20 caracteres.'
+  if (!Number.isFinite(price) || price <= 0) errors.price = 'Informe o preço.'
+  if (!['hectare', 'hour', 'day', 'trip'].includes(values.priceUnit)) errors.priceUnit = 'Selecione a unidade.'
+  if (values.city.trim().length < 2 || values.city.trim().length > 80) errors.city = 'Informe sua cidade.'
+  if (!brazilianStateCodes.has(values.state.trim().toUpperCase())) errors.state = 'Selecione a UF.'
+  if (values.photos.length > 8) errors.photos = 'Use no máximo 8 fotos.'
+
+  return errors
+}

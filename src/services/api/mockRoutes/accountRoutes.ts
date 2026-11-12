@@ -6,12 +6,12 @@ import type {
 } from '../../../types/api'
 import type { ProviderProfile, User } from '../../../types/entities'
 import { brazilianStateCodes } from '../../../data/states'
+import { isOpenRequestStatus } from '../../../utils/requestStatus'
 import { ApiError } from '../apiError'
 import { getMockDatabase, persistMockDatabase } from '../mockDatabase'
 import { areOwnPublicUploads, findUserByToken, OWN_IMAGES_MESSAGE, requireRole } from './shared'
 import type { MockRoute, RouteContext } from './types'
 
-const OPEN_REQUEST_STATUSES = new Set(['pending', 'accepted', 'in_progress'])
 const DELETED_EMAIL_DOMAIN = 'conta-excluida.agroserv.invalid'
 
 function bodyRecord(body: unknown): Record<string, unknown> {
@@ -145,7 +145,7 @@ function deleteMe({ token }: RouteContext): MessageResponse {
 
   const database = getMockDatabase()
   const relatedRequests = database.requestRecords.filter((record) => {
-    if (!OPEN_REQUEST_STATUSES.has(record.request.status)) return false
+    if (!isOpenRequestStatus(record.request.status)) return false
     if (user.role === 'producer') return record.producerId === user.id
     const service = database.services.find((candidate) => candidate.id === record.request.serviceId)
     return service?.providerId === user.id
