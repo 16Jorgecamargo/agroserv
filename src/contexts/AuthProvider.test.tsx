@@ -10,7 +10,7 @@ import { getStoredUser, getToken, saveSession } from '../utils/storage'
 import { AuthProvider } from './AuthProvider'
 
 vi.mock('../services/authService', () => ({
-  authService: { login: vi.fn(), me: vi.fn() },
+  authService: { login: vi.fn(), register: vi.fn(), me: vi.fn() },
 }))
 
 const mockedAuthService = vi.mocked(authService)
@@ -52,6 +52,30 @@ describe('AuthProvider', () => {
     expect(result.current.isAuthenticated).toBe(true)
     expect(result.current.user?.name).toBe('Carlos Henrique Souza')
     expect(getToken()).toBe('mock.usr-1')
+  })
+
+  it('registers and persists the new account session', async () => {
+    mockedAuthService.register.mockResolvedValue({ token: 'mock.usr-9', user: { ...user, id: 'usr-9' } })
+    const { result } = renderHook(() => useAuth(), { wrapper })
+    const payload = {
+      name: 'Ana Produtora',
+      email: 'ana@agroserv.com',
+      password: 'senha-segura',
+      phone: '45999990000',
+      city: 'Toledo',
+      state: 'PR',
+      role: 'producer' as const,
+      acceptedTerms: true as const,
+    }
+
+    await act(async () => {
+      await result.current.register(payload)
+    })
+
+    expect(mockedAuthService.register).toHaveBeenCalledWith(payload)
+    expect(result.current.isAuthenticated).toBe(true)
+    expect(result.current.user?.id).toBe('usr-9')
+    expect(getToken()).toBe('mock.usr-9')
   })
 
   it('rethrows login errors and keeps the user logged out', async () => {

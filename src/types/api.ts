@@ -42,6 +42,15 @@ export interface LoginPayload {
   password: string
 }
 
+export interface RegisterPayload extends LoginPayload {
+  name: string
+  phone: string
+  city: string
+  state: string
+  role: 'producer' | 'provider'
+  acceptedTerms: true
+}
+
 export interface LoginResponse {
   token: string
   user: User

@@ -7,6 +7,8 @@ export const paths = {
   login: '/login',
   forgotPassword: '/esqueci-senha',
   register: '/cadastro',
+  terms: '/termos',
+  privacy: '/privacidade',
   dashboard: '/dashboard',
   requests: '/solicitacoes',
   providerRoot: '/prestador',
