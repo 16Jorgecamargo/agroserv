@@ -12,6 +12,7 @@ export const paths = {
   privacy: '/privacidade',
   dashboard: '/dashboard',
   requests: '/solicitacoes',
+  properties: '/propriedades',
   providerRoot: '/prestador',
   providerDashboard: '/prestador/dashboard',
   adminDashboard: '/admin',

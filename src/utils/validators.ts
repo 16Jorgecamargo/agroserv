@@ -139,3 +139,39 @@ export function validateProviderProfileForm(values: ProviderProfileFormValues): 
   if (values.description.length > 1000) errors.description = 'Use no máximo 1000 caracteres.'
   return errors
 }
+
+export interface PropertyFormValues {
+  name: string
+  city: string
+  state: string
+  accessNotes: string
+  areaHectares: string
+  crops: string[]
+}
+
+export type PropertyFormErrors = Partial<Record<keyof PropertyFormValues, string>>
+
+export function parseDecimal(value: string): number {
+  return Number(value.trim().replace(',', '.'))
+}
+
+export function validatePropertyForm(values: PropertyFormValues): PropertyFormErrors {
+  const errors: PropertyFormErrors = {}
+  const area = parseDecimal(values.areaHectares)
+  const crops = values.crops.map((crop) => crop.trim())
+
+  if (values.name.trim().length < 2 || values.name.trim().length > 80) errors.name = 'Informe o nome da propriedade.'
+  if (values.city.trim().length < 2 || values.city.trim().length > 80) errors.city = 'Informe a cidade.'
+  if (!brazilianStateCodes.has(values.state.trim().toUpperCase())) errors.state = 'Selecione a UF.'
+  if (values.accessNotes.trim().length > 500) errors.accessNotes = 'Use no máximo 500 caracteres.'
+  if (!Number.isFinite(area) || area <= 0 || area > 1_000_000) errors.areaHectares = 'Informe a área em hectares.'
+  if (
+    crops.length > 10 ||
+    crops.some((crop) => crop.length < 2 || crop.length > 40) ||
+    new Set(crops.map((crop) => crop.toLowerCase())).size !== crops.length
+  ) {
+    errors.crops = 'Informe até 10 culturas.'
+  }
+
+  return errors
+}

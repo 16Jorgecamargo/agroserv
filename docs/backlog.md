@@ -147,7 +147,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F1-07 | Recuperação de senha | P | F1-02, F1-03 | | Feito |
 | F1-08 | Perfil e conta (produtor e prestador) | M | F1-03, F1-05 | | Feito |
 | F2-01 | Novo modelo de solicitação e máquina de status | G | F1-02 | | Feito |
-| F2-02 | Propriedades | M | F1-03, F1-05 | | A fazer |
+| F2-02 | Propriedades | M | F1-03, F1-05 | | Feito |
 | F2-03 | Solicitar serviço | G | F1-03, F2-01, F2-02 | | A fazer |
 | F2-04 | Detalhe da solicitação (produtor) | M | F1-03, F2-01 | | A fazer |
 | F2-05 | Lista e painel do produtor com os novos status | P | F2-01 | | Feito |

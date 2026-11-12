@@ -56,3 +56,13 @@ export function getInitials(name: string): string {
 export function getFirstName(name: string): string {
   return name.trim().split(' ')[0] ?? ''
 }
+
+const numberFormatter = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 })
+
+export function formatNumber(value: number): string {
+  return numberFormatter.format(value)
+}
+
+export function formatArea(hectares: number): string {
+  return `${numberFormatter.format(hectares)} ha`
+}

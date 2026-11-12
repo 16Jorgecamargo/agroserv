@@ -10,6 +10,7 @@ import type { ReactNode } from 'react'
 import { HomePage } from '../pages/HomePage'
 import { LoginPage } from '../pages/LoginPage'
 import { PrivacyPage, TermsPage } from '../pages/LegalPages'
+import { PropertiesPage } from '../pages/PropertiesPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { RegisterPage } from '../pages/RegisterPage'
 import { ResetPasswordPage } from '../pages/ResetPasswordPage'
@@ -56,6 +57,7 @@ export function AppRoutes() {
         <Route element={<PrivateLayout />}>
           <Route path={paths.dashboard} element={<DashboardPage />} />
           <Route path={paths.requests} element={<RequestsPage />} />
+          <Route path={paths.properties} element={<PropertiesPage />} />
           <Route path={paths.profile} element={<ProfilePage />} />
         </Route>
       </Route>

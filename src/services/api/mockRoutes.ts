@@ -5,6 +5,7 @@ import { catalogRoutes } from './mockRoutes/catalogRoutes'
 import { accountRoutes } from './mockRoutes/accountRoutes'
 import { demoRoutes } from './mockRoutes/demoRoutes'
 import { producerRoutes } from './mockRoutes/producerRoutes'
+import { propertyRoutes } from './mockRoutes/propertyRoutes'
 import { providerRoutes } from './mockRoutes/providerRoutes'
 import { normalizeText } from './mockRoutes/shared'
 import type { MockRoute } from './mockRoutes/types'
@@ -38,6 +39,7 @@ const routes: MockRoute[] = [
   ...catalogRoutes,
   ...producerRoutes,
   ...providerRoutes,
+  ...propertyRoutes,
   ...accountRoutes,
   ...demoRoutes,
 ]
