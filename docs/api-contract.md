@@ -816,7 +816,7 @@ Um upload `verification` não pode ser usado como foto, e um `public` não pode 
 
 ## 10. Catálogo público
 
-Regra geral de visibilidade: um serviço aparece em buscas, destaques, favoritos e perfil público só quando `status === 'active'`, o prestador está `active` e a categoria está ativa. Serviços de prestadores suspensos somem da busca sem mudar de status, e voltam quando a conta é reativada.
+Regra geral de visibilidade: um serviço aparece em buscas, destaques, favoritos e perfil público só quando `status === 'active'` e o prestador está `active`. Categoria desativada sai dos filtros e do formulário de novo serviço, mas os serviços já publicados nela continuam visíveis. Serviços de prestadores suspensos somem da busca sem mudar de status, e voltam quando a conta é reativada.
 
 ### `GET /categories` — Implementado, muda (F6)
 200: `Category[]` com `active: true`, na ordem de cadastro.

@@ -22,11 +22,13 @@ export function Input({
   containerClassName,
   id,
   className,
+  'aria-describedby': describedBy,
   ...rest
 }: InputProps) {
   const generatedId = useId()
   const inputId = id ?? generatedId
   const errorId = `${inputId}-error`
+  const describedByIds = [error ? errorId : undefined, describedBy].filter(Boolean).join(' ') || undefined
 
   return (
     <div className={containerClassName}>
@@ -40,7 +42,7 @@ export function Input({
         <input
           id={inputId}
           aria-invalid={error ? true : undefined}
-          aria-describedby={error ? errorId : undefined}
+          aria-describedby={describedByIds}
           className={cn(
             'h-11 w-full rounded-lg px-3 text-[15px] text-text transition-[border-color,box-shadow] placeholder:text-text-muted/80 focus:outline-none focus-visible:outline-none',
             variant === 'default'

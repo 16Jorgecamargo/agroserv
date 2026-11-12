@@ -1,16 +1,18 @@
 import type {
+  AdminCategory,
   AdminDashboard,
   AdminReportFilters,
   AdminServiceFilters,
   AdminUserDetail,
   AdminUserFilters,
+  CategoryPayload,
   CreateAdminPayload,
   Paginated,
   PendingVerification,
   ReportDetail,
   ResolveReportPayload,
 } from '../types/api'
-import type { Report, Service, ServiceRequestDetail, User, Verification } from '../types/entities'
+import type { Category, Report, Service, ServiceRequestDetail, User, Verification } from '../types/entities'
 import { apiClient } from './api/apiClient'
 
 const userPath = (id: string) => `/admin/users/${encodeURIComponent(id)}`
@@ -66,5 +68,17 @@ export const adminService = {
   },
   resolveReport(id: string, payload: ResolveReportPayload): Promise<Report> {
     return apiClient.post<Report>(`/admin/reports/${encodeURIComponent(id)}/resolve`, payload)
+  },
+  listCategories(): Promise<AdminCategory[]> {
+    return apiClient.get<AdminCategory[]>('/admin/categories')
+  },
+  createCategory(payload: CategoryPayload): Promise<Category> {
+    return apiClient.post<Category>('/admin/categories', payload)
+  },
+  updateCategory(id: string, payload: Partial<CategoryPayload>): Promise<Category> {
+    return apiClient.patch<Category>(`/admin/categories/${encodeURIComponent(id)}`, payload)
+  },
+  deleteCategory(id: string): Promise<void> {
+    return apiClient.delete<void>(`/admin/categories/${encodeURIComponent(id)}`)
   },
 }

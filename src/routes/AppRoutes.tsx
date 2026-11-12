@@ -15,6 +15,7 @@ import { ProviderRequestDetailPage } from '../pages/ProviderRequestDetailPage'
 import { ProviderRequestsPage } from '../pages/ProviderRequestsPage'
 import { ServiceFormPage } from '../pages/ServiceFormPage'
 import { AdminAccountPage } from '../pages/AdminAccountPage'
+import { AdminCategoriesPage } from '../pages/AdminCategoriesPage'
 import { AdminDashboardPage } from '../pages/AdminDashboardPage'
 import { AdminReportDetailPage } from '../pages/AdminReportDetailPage'
 import { AdminReportsPage } from '../pages/AdminReportsPage'
@@ -94,6 +95,7 @@ export function AppRoutes() {
           <Route path="anuncios" element={<AdminServicesPage />} />
           <Route path="denuncias" element={<AdminReportsPage />} />
           <Route path="denuncias/:id" element={<AdminReportDetailPage />} />
+          <Route path="categorias" element={<AdminCategoriesPage />} />
           <Route path="conta" element={<AdminAccountPage />} />
           <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />

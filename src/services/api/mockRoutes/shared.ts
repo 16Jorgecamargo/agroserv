@@ -197,11 +197,9 @@ export function toService(record: ServiceRecord, includeHiddenReason = false): S
 export function isServiceVisible(record: ServiceRecord): boolean {
   if (record.deletedAt || record.status !== 'active') return false
 
-  const database = getMockDatabase()
-  const provider = database.users.find((candidate) => candidate.id === record.providerId)
-  const category = database.categories.find((candidate) => candidate.id === record.categoryId)
+  const provider = getMockDatabase().users.find((candidate) => candidate.id === record.providerId)
 
-  return provider?.status === 'active' && category?.active === true
+  return provider?.status === 'active'
 }
 
 export function findServiceRecord(serviceId: string): ServiceRecord | undefined {

@@ -30,14 +30,14 @@ describe('catalog visibility', () => {
     expect(captureError(() => call('GET', '/services/svc-3', { token: tokens.admin })).status).toBe(404)
   })
 
-  it('hides services of suspended providers and inactive categories', () => {
+  it('hides services of suspended providers and keeps services of inactive categories', () => {
     const provider = getMockDatabase().users.find((user) => user.id === 'prv-2')
     if (provider) provider.status = 'suspended'
     getMockDatabase().categories.find((category) => category.id === 'cat-spraying')!.active = false
 
     const services = call<Paginated<Service>>('GET', '/services', { query: { pageSize: 60 } }).data
     expect(services.some((item) => item.providerId === 'prv-2')).toBe(false)
-    expect(services.some((item) => item.categoryId === 'cat-spraying')).toBe(false)
+    expect(services.some((item) => item.categoryId === 'cat-spraying')).toBe(true)
     expect(call<Category[]>('GET', '/categories').some((category) => category.id === 'cat-spraying')).toBe(false)
     expect(call<Paginated<Service>>('GET', '/services', { query: { category: 'pulverizacao' } }).data).toEqual([])
   })

@@ -42,11 +42,10 @@ export class ServicesRepository {
   }
 
   private visible(): SelectQueryBuilder<Service> {
-    // Só anúncios ativos, de prestador ativo e categoria ativa
+    // Só anúncios ativos, de prestador ativo
     return this.query()
       .andWhere("service.status = 'active'")
-      .andWhere("provider.status = 'active'")
-      .andWhere('category.active = 1');
+      .andWhere("provider.status = 'active'");
   }
 
   private matchTerms(query: SelectQueryBuilder<Service>, column: string, terms: string[]): void {
@@ -62,7 +61,7 @@ export class ServicesRepository {
     const query = this.visible();
     this.matchTerms(query, 'service.searchText', filters.terms);
     this.matchTerms(query, 'service.locationText', filters.locationTerms);
-    if (filters.categorySlug) query.andWhere('category.slug = :slug', { slug: filters.categorySlug });
+    if (filters.categorySlug) query.andWhere('category.slug = :slug AND category.active = 1', { slug: filters.categorySlug });
 
     // Filtros avançados: unidade, faixa de preço, nota, selo e data livre
     if (filters.priceUnit) {
