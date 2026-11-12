@@ -29,7 +29,7 @@ import { UsersModule } from './users/users.module.js';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [loadConfig] }),
+    ConfigModule.forRoot({ isGlobal: true, load: [loadConfig], ignoreEnvFile: process.env.NODE_ENV === 'test' }),
     ThrottlerModule.forRoot({
       throttlers: [{ ttl: 60_000, limit: 300 }],
       skipIf: () => process.env.NODE_ENV === 'test',
