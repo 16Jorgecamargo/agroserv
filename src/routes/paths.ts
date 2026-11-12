@@ -6,12 +6,17 @@ export const paths = {
   serviceDetail: (id: string) => `/servicos/${encodeURIComponent(id)}`,
   login: '/login',
   forgotPassword: '/esqueci-senha',
+  resetPassword: '/redefinir-senha',
   register: '/cadastro',
+  terms: '/termos',
+  privacy: '/privacidade',
   dashboard: '/dashboard',
   requests: '/solicitacoes',
   providerRoot: '/prestador',
   providerDashboard: '/prestador/dashboard',
   adminDashboard: '/admin',
+  profile: '/perfil',
+  providerProfile: '/prestador/perfil',
 }
 
 export const routePatterns = {
@@ -21,6 +26,7 @@ export const routePatterns = {
 export interface LoginLocationState {
   from?: { pathname: string; search: string }
   reason?: 'protected' | 'forbidden'
+  notice?: 'passwordReset'
 }
 
 export function getRoleHomePath(role: Role): string {
@@ -37,7 +43,7 @@ export function getRequiredRole(pathname: string): Role | null {
     pathname === '/propriedades' ||
     pathname.startsWith('/propriedades/') ||
     pathname === '/favoritos' ||
-    pathname === '/perfil'
+    pathname === paths.profile
   ) {
     return 'producer'
   }

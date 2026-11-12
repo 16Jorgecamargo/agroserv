@@ -8,6 +8,14 @@ function jsonResponse(body: unknown, status = 200) {
   })
 }
 
+function successResponse(data: unknown, status = 200) {
+  return jsonResponse({ success: true, data }, status)
+}
+
+function errorResponse(error: Record<string, unknown>, status: number) {
+  return jsonResponse({ success: false, error: { status, ...error } }, status)
+}
+
 afterEach(() => {
   vi.unstubAllGlobals()
 })
@@ -29,7 +37,7 @@ describe('buildUrl', () => {
 
 describe('createHttpAdapter', () => {
   it('sends method, auth header and JSON body', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({ ok: true }))
+    const fetchMock = vi.fn().mockResolvedValue(successResponse({ ok: true }))
     vi.stubGlobal('fetch', fetchMock)
 
     const adapter = createHttpAdapter('http://api.test')
@@ -54,7 +62,7 @@ describe('createHttpAdapter', () => {
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(
-        jsonResponse({ code: 'unauthorized', message: 'Sem acesso' }, 401),
+        errorResponse({ code: 'unauthorized', message: 'Sem acesso' }, 401),
       ),
     )
 
@@ -74,7 +82,7 @@ describe('createHttpAdapter', () => {
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(
-        jsonResponse(
+        errorResponse(
           {
             code: 'validation_error',
             message: 'Revise os campos destacados.',
@@ -101,6 +109,55 @@ describe('createHttpAdapter', () => {
         email: 'Este e-mail já está cadastrado.',
       },
     })
+  })
+
+  it('unwraps paginated data without touching its inner shape', async () => {
+    const page = { data: [{ id: 'svc-1' }], meta: { page: 1, pageSize: 12, total: 1, totalPages: 1 } }
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(successResponse(page)))
+
+    await expect(
+      createHttpAdapter('http://api.test').request({ method: 'GET', path: '/services' }),
+    ).resolves.toEqual(page)
+  })
+
+  it('treats an envelope with success false as an error even with status 200', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        jsonResponse({ success: false, error: { status: 409, code: 'conflict', message: 'Conflito' } }),
+      ),
+    )
+
+    await expect(
+      createHttpAdapter('http://api.test').request({ method: 'POST', path: '/x', body: {} }),
+    ).rejects.toMatchObject({ status: 409, code: 'conflict', message: 'Conflito' })
+  })
+
+  it('falls back to a generic error when the error body is not an envelope', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('Bad Gateway', { status: 502 })))
+
+    await expect(
+      createHttpAdapter('http://api.test').request({ method: 'GET', path: '/x' }),
+    ).rejects.toMatchObject({ status: 502, code: 'http_error', message: 'Erro inesperado no servidor.' })
+  })
+
+  it('sends FormData as is and lets the browser set the multipart content type', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(successResponse({ id: 'upl-1' }, 201))
+    vi.stubGlobal('fetch', fetchMock)
+    const form = new FormData()
+    form.append('purpose', 'avatar')
+
+    await createHttpAdapter('http://api.test').request({
+      method: 'POST',
+      path: '/uploads',
+      body: form,
+      token: 'abc',
+    })
+
+    const [, init] = fetchMock.mock.calls[0]
+    expect(init.body).toBe(form)
+    expect(init.headers['Content-Type']).toBeUndefined()
+    expect(init.headers.Authorization).toBe('Bearer abc')
   })
 
   it('converts network failures into ApiError with status 0', async () => {

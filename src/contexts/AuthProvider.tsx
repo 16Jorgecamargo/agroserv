@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react
 import { subscribeUnauthorized } from '../services/api/apiClient'
 import { isApiError } from '../services/api/apiError'
 import { authService } from '../services/authService'
+import type { RegisterPayload } from '../types/api'
 import type { User } from '../types/entities'
 import { clearSession, getStoredUser, getToken, saveSession } from '../utils/storage'
 import { AuthContext, type AuthContextValue } from './AuthContext'
@@ -52,14 +53,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return response.user
   }, [])
 
+  const register = useCallback(async (payload: RegisterPayload) => {
+    const response = await authService.register(payload)
+    saveSession(response.token, response.user)
+    setUser(response.user)
+    setIsLoading(false)
+    return response.user
+  }, [])
+
   const logout = useCallback(() => {
     clearSession()
     setUser(null)
   }, [])
 
+  const updateUser = useCallback((updatedUser: User) => {
+    const token = getToken()
+    if (token) saveSession(token, updatedUser)
+    setUser(updatedUser)
+  }, [])
+
   const value = useMemo<AuthContextValue>(
-    () => ({ user, isAuthenticated: user !== null, isLoading, login, logout }),
-    [user, isLoading, login, logout],
+    () => ({ user, isAuthenticated: user !== null, isLoading, login, register, updateUser, logout }),
+    [user, isLoading, login, register, updateUser, logout],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

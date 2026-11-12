@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import type { RegisterPayload } from '../types/api'
 import type { User } from '../types/entities'
 
 export interface AuthContextValue {
@@ -6,6 +7,8 @@ export interface AuthContextValue {
   isAuthenticated: boolean
   isLoading: boolean
   login: (email: string, password: string) => Promise<User>
+  register: (payload: RegisterPayload) => Promise<User>
+  updateUser: (user: User) => void
   logout: () => void
 }
 

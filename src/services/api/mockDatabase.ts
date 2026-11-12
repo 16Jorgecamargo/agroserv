@@ -6,13 +6,14 @@ import { userCredentials, users } from '../../data/users'
 import type { RequestRecord } from '../../data/requests'
 import type { ServiceRecord } from '../../data/services'
 import type { UserCredential } from '../../data/users'
-import type { Category, Provider, ProviderProfile, User } from '../../types/entities'
+import type { Category, PasswordResetTokenRecord, Provider, ProviderProfile, User } from '../../types/entities'
 
 interface MockDatabase {
   categories: Category[]
   providers: Provider[]
   providerProfiles: ProviderProfile[]
   requestRecords: RequestRecord[]
+  passwordResetTokens: PasswordResetTokenRecord[]
   services: ServiceRecord[]
   userCredentials: UserCredential[]
   users: User[]
@@ -24,7 +25,7 @@ interface StoredMockDatabase {
 }
 
 const STORAGE_KEY = 'agroserv_mock_db'
-const DATABASE_VERSION = 2
+const DATABASE_VERSION = 4
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T
@@ -36,6 +37,7 @@ function createSeedDatabase(): MockDatabase {
     providers,
     providerProfiles,
     requestRecords,
+    passwordResetTokens: [],
     services,
     userCredentials,
     users,
@@ -60,6 +62,7 @@ function isMockDatabase(value: unknown): value is MockDatabase {
     Array.isArray(database.providers) &&
     Array.isArray(database.providerProfiles) &&
     Array.isArray(database.requestRecords) &&
+    Array.isArray(database.passwordResetTokens) &&
     Array.isArray(database.services) &&
     Array.isArray(database.userCredentials) &&
     Array.isArray(database.users)

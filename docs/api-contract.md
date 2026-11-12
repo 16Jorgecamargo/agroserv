@@ -1532,6 +1532,8 @@ Erro (qualquer 4xx ou 5xx):
 
 O back-end já está pronto. O front-end **não** foi alterado nesta entrega, porque estava com outra pessoa. Os ajustes abaixo ficam para quem for ligar o front ao back. Sem eles, o modo `mock` continua funcionando como antes, e o modo `http` não funciona.
 
+> **Situação:** os ajustes 1 a 4 e o envio de `FormData` no `httpAdapter` (parte do ajuste 5) já foram feitos (issue #6). Falta só o serviço de upload montar o `FormData`, que entra junto com a tela de upload em F3-01.
+
 | # | Problema | Onde | O que fazer |
 |---|---|---|---|
 | 1 | Sucesso vem em `{ success, data }`, e o front lê o corpo direto | `src/services/api/httpAdapter.ts` | Devolver `body.data` |

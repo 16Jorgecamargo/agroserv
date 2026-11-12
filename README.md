@@ -1,4 +1,9 @@
-# AgroServ
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/brand/logo-stacked-white.png" />
+    <img src="docs/assets/brand/logo-stacked.png" alt="AgroServ" width="260" />
+  </picture>
+</h1>
 
 Plataforma web para contratação de serviços agrícolas. Conecta produtores rurais a prestadores de máquinas, equipamentos e mão de obra.
 

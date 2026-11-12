@@ -2,7 +2,10 @@ import type { RequestConfig } from '../../types/api'
 import { ApiError } from './apiError'
 import { authRoutes } from './mockRoutes/authRoutes'
 import { catalogRoutes } from './mockRoutes/catalogRoutes'
+import { accountRoutes } from './mockRoutes/accountRoutes'
+import { demoRoutes } from './mockRoutes/demoRoutes'
 import { producerRoutes } from './mockRoutes/producerRoutes'
+import { providerRoutes } from './mockRoutes/providerRoutes'
 import { normalizeText } from './mockRoutes/shared'
 import type { MockRoute } from './mockRoutes/types'
 
@@ -30,7 +33,14 @@ export function matchPath(pattern: string, path: string): Record<string, string>
   return params
 }
 
-const routes: MockRoute[] = [...authRoutes, ...catalogRoutes, ...producerRoutes]
+const routes: MockRoute[] = [
+  ...authRoutes,
+  ...catalogRoutes,
+  ...producerRoutes,
+  ...providerRoutes,
+  ...accountRoutes,
+  ...demoRoutes,
+]
 
 export function handleMockRequest(config: RequestConfig): unknown {
   for (const route of routes) {

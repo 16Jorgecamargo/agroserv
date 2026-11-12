@@ -4,12 +4,13 @@ import { Link } from 'react-router'
 import { RequestsTable, RequestsTableSkeleton } from '../components/domain/RequestsTable'
 import { StatsCard } from '../components/domain/StatsCard'
 import { buttonClasses } from '../components/ui/buttonClasses'
+import { Alert } from '../components/ui/Alert'
 import { EmptyState } from '../components/ui/EmptyState'
 import { ErrorState } from '../components/ui/ErrorState'
 import { Skeleton } from '../components/ui/Skeleton'
 import { useAuth } from '../hooks/useAuth'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { useDashboard } from '../hooks/useRequests'
+import { useDashboard, useRequests } from '../hooks/useRequests'
 import { paths } from '../routes/paths'
 import type { ProducerDashboardStats } from '../types/api'
 import { formatCurrency, getFirstName } from '../utils/format'
@@ -28,7 +29,7 @@ function buildStatItems(stats: ProducerDashboardStats): StatItem[] {
     { label: 'Em andamento', value: String(stats.inProgress), description: 'Serviços em execução', icon: Timer },
     { label: 'Concluídos', value: String(stats.completed), description: 'Finalizados com sucesso', icon: CheckCircle2 },
     {
-      label: 'Total contratado',
+      label: 'Total estimado contratado',
       value: formatCurrency(stats.totalSpent),
       description: 'Aceitos, em andamento e concluídos',
       icon: Wallet,
@@ -40,6 +41,7 @@ export function DashboardPage() {
   usePageTitle('Dashboard')
   const { user } = useAuth()
   const { data, error, refetch } = useDashboard()
+  const { data: counterOffers, error: counterOfferError, refetch: refetchCounterOffers } = useRequests('counter_offer')
 
   return (
     <div className="space-y-10">
@@ -87,6 +89,19 @@ export function DashboardPage() {
             )}
           </section>
 
+          {counterOffers && counterOffers.length > 0 ? (
+            <Alert tone="warning">
+              <p>Você tem uma contraproposta para responder.</p>
+              <Link
+                to={paths.requests + '?status=counter_offer'}
+                className="mt-1 inline-flex font-semibold underline underline-offset-2 hover:no-underline"
+              >
+                Ver contraproposta
+              </Link>
+            </Alert>
+          ) : counterOfferError ? (
+            <ErrorState message={counterOfferError.message} onRetry={refetchCounterOffers} />
+          ) : null}
           <section aria-labelledby="recent-heading">
             <div className="mb-4 flex items-center justify-between gap-3">
               <h2 id="recent-heading" className="text-xl font-semibold text-text">

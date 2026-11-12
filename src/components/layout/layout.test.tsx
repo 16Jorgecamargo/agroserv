@@ -6,6 +6,7 @@ import type { AuthContextValue } from '../../contexts/AuthContext'
 import { useAuth } from '../../hooks/useAuth'
 import { PrivateLayout } from '../../layouts/PrivateLayout'
 import type { Role, User } from '../../types/entities'
+import { Logo } from './Logo'
 import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 
@@ -36,6 +37,8 @@ function mockAuth(overrides: Partial<AuthContextValue>) {
     isAuthenticated: false,
     isLoading: false,
     login: vi.fn(),
+    register: vi.fn(),
+    updateUser: vi.fn(),
     logout: vi.fn(),
     ...overrides,
   })
@@ -45,6 +48,31 @@ function LocationProbe() {
   const location = useLocation()
   return <p>Localização: {location.pathname}</p>
 }
+
+describe('Logo', () => {
+  it('links to the home page with the brand artwork', () => {
+    render(
+      <MemoryRouter>
+        <Logo />
+      </MemoryRouter>,
+    )
+
+    const link = screen.getByRole('link', { name: 'AgroServ, página inicial' })
+    expect(link).toHaveAttribute('href', '/')
+    expect(link.querySelector('img')).toHaveAttribute('src', expect.stringMatching(/logo-horizontal\.png$/))
+  })
+
+  it('uses the white artwork on dark backgrounds', () => {
+    render(
+      <MemoryRouter>
+        <Logo tone="light" />
+      </MemoryRouter>,
+    )
+
+    const link = screen.getByRole('link', { name: 'AgroServ, página inicial' })
+    expect(link.querySelector('img')).toHaveAttribute('src', expect.stringMatching(/logo-horizontal-white\.png$/))
+  })
+})
 
 describe('Navbar', () => {
   it('shows the login link for visitors', () => {
@@ -119,6 +147,7 @@ describe('Sidebar', () => {
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page')
     expect(screen.getByRole('link', { name: 'Solicitações' })).toHaveAttribute('href', '/solicitacoes')
     expect(screen.getByRole('link', { name: 'Ver serviços' })).toHaveAttribute('href', '/servicos')
+    expect(screen.getByRole('link', { name: 'Perfil' })).toHaveAttribute('href', '/perfil')
 
     await userEvent.click(screen.getByRole('button', { name: 'Sair' }))
     expect(onLogout).toHaveBeenCalledTimes(1)
@@ -136,6 +165,7 @@ describe('Sidebar', () => {
 
     expect(screen.getByRole('link', { name: label })).toHaveAttribute('href', href)
     expect(screen.getByRole('navigation', { name: `Área do ${labels[role]}` })).toBeInTheDocument()
+    if (role === 'provider') expect(screen.getByRole('link', { name: 'Perfil' })).toHaveAttribute('href', '/prestador/perfil')
   })
 })
 

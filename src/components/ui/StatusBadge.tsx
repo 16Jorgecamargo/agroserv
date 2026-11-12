@@ -4,9 +4,11 @@ import { Badge, type BadgeTone } from './Badge'
 
 const statusTones: Record<RequestStatus, BadgeTone> = {
   pending: 'warning',
+  counter_offer: 'warning',
   accepted: 'primary',
   in_progress: 'info',
   completed: 'success',
+  rejected: 'danger',
   cancelled: 'danger',
 }
 
