@@ -18,6 +18,7 @@ import { AdminAccountPage } from '../pages/AdminAccountPage'
 import { AdminDashboardPage } from '../pages/AdminDashboardPage'
 import { AdminRequestDetailPage } from '../pages/AdminRequestDetailPage'
 import { AdminUserDetailPage } from '../pages/AdminUserDetailPage'
+import { AdminServicesPage } from '../pages/AdminServicesPage'
 import { AdminUsersPage } from '../pages/AdminUsersPage'
 import { AdminVerificationsPage } from '../pages/AdminVerificationsPage'
 import { HomePage } from '../pages/HomePage'
@@ -88,6 +89,7 @@ export function AppRoutes() {
           <Route path="usuarios/:id" element={<AdminUserDetailPage />} />
           <Route path="solicitacoes/:id" element={<AdminRequestDetailPage />} />
           <Route path="verificacoes" element={<AdminVerificationsPage />} />
+          <Route path="anuncios" element={<AdminServicesPage />} />
           <Route path="conta" element={<AdminAccountPage />} />
           <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />
