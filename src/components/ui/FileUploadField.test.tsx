@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { describe, expect, it } from 'vitest'
@@ -39,8 +39,7 @@ describe('ServiceImage', () => {
   it('shows the broken image icon when a mock file is missing', async () => {
     render(<ServiceImage src="mockfile:upl-missing" alt="Foto ausente" className="size-10" />)
 
-    const image = await screen.findByRole('img', { name: 'Foto ausente' })
-    expect(image.tagName).toBe('DIV')
-    expect(image).not.toHaveAttribute('aria-busy')
+    await waitFor(() => expect(screen.getByRole('img', { name: 'Foto ausente' })).not.toHaveAttribute('aria-busy'))
+    expect(screen.getByRole('img', { name: 'Foto ausente' }).tagName).toBe('DIV')
   })
 })

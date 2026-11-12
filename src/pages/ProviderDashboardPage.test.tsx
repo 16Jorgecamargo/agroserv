@@ -16,7 +16,7 @@ describe('ProviderDashboardPage', () => {
     const pending = screen.getByRole('region', { name: 'Aguardando resposta' })
     expect(within(pending).getAllByRole('link', { name: 'Pulverização Agrícola' })[0]).toHaveAttribute('href', '/prestador/solicitacoes/req-14')
     expect(screen.getByRole('region', { name: 'Próximos agendados' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Agenda' })).toHaveAttribute('href', '/prestador/agenda')
+    expect(within(screen.getByRole('main')).getByRole('link', { name: 'Agenda' })).toHaveAttribute('href', '/prestador/agenda')
   })
 
   it('shows a dash for the acceptance rate without responses', async () => {
