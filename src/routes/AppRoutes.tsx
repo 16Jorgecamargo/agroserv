@@ -5,6 +5,7 @@ import { DashboardPage } from '../pages/DashboardPage'
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
 import { ProfilePage } from '../pages/ProfilePage'
 import { ProviderProfilePage } from '../pages/ProviderProfilePage'
+import { ProviderReviewsPage } from '../pages/ProviderReviewsPage'
 import { ProviderDashboardPage } from '../pages/ProviderDashboardPage'
 import { MyServicesPage } from '../pages/MyServicesPage'
 import { ProviderRequestDetailPage } from '../pages/ProviderRequestDetailPage'
@@ -79,6 +80,7 @@ export function AppRoutes() {
           <Route path="servicos/:id/editar" element={<ServiceFormPage />} />
           <Route path="solicitacoes" element={<ProviderRequestsPage />} />
           <Route path="solicitacoes/:id" element={<ProviderRequestDetailPage />} />
+          <Route path="avaliacoes" element={<ProviderReviewsPage />} />
           <Route path="perfil" element={<ProviderProfilePage />} />
           <Route path="notificacoes" element={<NotificationsPage />} />
           <Route path="*" element={<NotFoundPage />} />

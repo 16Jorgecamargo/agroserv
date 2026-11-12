@@ -5,6 +5,7 @@ import { Link, useLocation, useParams } from 'react-router'
 import { CategoryIcon } from '../components/domain/CategoryIcon'
 import { RequestServiceForm } from '../components/domain/RequestServiceForm'
 import { ServiceGallery } from '../components/domain/ServiceGallery'
+import { ServiceReviews } from '../components/domain/ServiceReviews'
 import { Container } from '../components/layout/Container'
 import { Avatar } from '../components/ui/Avatar'
 import { Badge } from '../components/ui/Badge'
@@ -115,6 +116,10 @@ export function ServiceDetailPage() {
             </h2>
             <p className="mt-3 max-w-2xl text-text-muted">{service.description}</p>
           </motion.section>
+
+          <motion.div variants={fadeUp}>
+            <ServiceReviews serviceId={service.id} />
+          </motion.div>
         </motion.div>
 
         <motion.aside
