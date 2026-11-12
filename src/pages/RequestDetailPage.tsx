@@ -2,6 +2,7 @@ import { SearchX } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { RequestConversation } from '../components/domain/RequestConversation'
+import { HireAgainButton } from '../components/domain/HireAgainButton'
 import { ReportButton } from '../components/domain/ReportButton'
 import { RequestDetailView } from '../components/domain/RequestDetailView'
 import { RequestReviewSection } from '../components/domain/RequestReviewSection'
@@ -95,9 +96,10 @@ export function RequestDetailPage() {
           )
         }
         actions={
-          can('cancel') || can('report') ? (
+          can('cancel') || can('report') || request.status === 'completed' ? (
             <div className="space-y-3">
               <p className="text-sm font-semibold text-text">Ações</p>
+              {request.status === 'completed' && <HireAgainButton request={request} />}
               {can('cancel') && (
                 <Button variant="secondary" className="w-full text-danger" disabled={isRunning} onClick={() => setDialog('cancel')}>
                   Cancelar solicitação

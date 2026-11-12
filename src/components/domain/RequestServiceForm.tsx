@@ -24,11 +24,12 @@ import { PropertyForm } from './PropertyForm'
 interface RequestServiceFormProps {
   service: Service
   onCancel: () => void
+  initialPropertyId?: string
 }
 
 const EMPTY_VALUES: RequestFormValues = { propertyId: '', scheduledDate: '', quantity: '', notes: '' }
 
-export function RequestServiceForm({ service, onCancel }: RequestServiceFormProps) {
+export function RequestServiceForm({ service, onCancel, initialPropertyId }: RequestServiceFormProps) {
   const { user } = useAuth()
   const [properties, setProperties] = useState<Property[] | null>(null)
   const [blockedDays, setBlockedDays] = useState<string[]>([])
@@ -49,7 +50,8 @@ export function RequestServiceForm({ service, onCancel }: RequestServiceFormProp
         setProperties(loadedProperties)
         setBlockedDays(loadedBlockedDays)
         setIsCreatingProperty(loadedProperties.length === 0)
-        if (loadedProperties.length === 1) setValues((current) => ({ ...current, propertyId: loadedProperties[0].id }))
+        const preselected = loadedProperties.find((property) => property.id === initialPropertyId) ?? (loadedProperties.length === 1 ? loadedProperties[0] : undefined)
+        if (preselected) setValues((current) => ({ ...current, propertyId: preselected.id }))
       })
       .catch((error: unknown) => {
         if (active) setLoadError(isApiError(error) ? error.message : 'Não foi possível carregar suas propriedades.')
@@ -57,7 +59,7 @@ export function RequestServiceForm({ service, onCancel }: RequestServiceFormProp
     return () => {
       active = false
     }
-  }, [service.id])
+  }, [service.id, initialPropertyId])
 
   function update<K extends keyof RequestFormValues>(field: K, value: RequestFormValues[K]) {
     setValues((current) => ({ ...current, [field]: value }))
