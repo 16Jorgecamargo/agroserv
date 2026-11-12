@@ -1,8 +1,8 @@
-backend
-node_modules
-site
-dist
-.playwright-mcp
-docs/superpowers
-src/components 2
-src/services 2
+/backend
+/node_modules
+/site
+/dist
+/.playwright-mcp
+/docs/superpowers
+/src/components 2
+/src/services 2
