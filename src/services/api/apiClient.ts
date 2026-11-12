@@ -40,6 +40,15 @@ export function createApiClient(
     post<T>(path: string, body?: unknown): Promise<T> {
       return send<T>({ method: 'POST', path, body, token: getAuthToken() })
     },
+    patch<T>(path: string, body?: unknown): Promise<T> {
+      return send<T>({ method: 'PATCH', path, body, token: getAuthToken() })
+    },
+    put<T>(path: string, body?: unknown): Promise<T> {
+      return send<T>({ method: 'PUT', path, body, token: getAuthToken() })
+    },
+    delete<T>(path: string): Promise<T> {
+      return send<T>({ method: 'DELETE', path, token: getAuthToken() })
+    },
   }
 }
 
