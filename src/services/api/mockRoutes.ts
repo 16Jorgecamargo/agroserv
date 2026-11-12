@@ -13,6 +13,7 @@ import { adminVerificationRoutes } from './mockRoutes/adminVerificationRoutes'
 import { demoRoutes } from './mockRoutes/demoRoutes'
 import { agendaRoutes } from './mockRoutes/agendaRoutes'
 import { equipmentRoutes } from './mockRoutes/equipmentRoutes'
+import { favoriteRoutes } from './mockRoutes/favoriteRoutes'
 import { messageRoutes } from './mockRoutes/messageRoutes'
 import { reviewRoutes } from './mockRoutes/reviewRoutes'
 import { verificationRoutes } from './mockRoutes/verificationRoutes'
@@ -71,6 +72,7 @@ const routes: MockRoute[] = [
   ...adminCategoryRoutes,
   ...adminActionRoutes,
   ...reportRoutes,
+  ...favoriteRoutes,
   ...demoRoutes,
 ]
 

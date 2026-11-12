@@ -14,6 +14,7 @@ export const paths = {
   requests: '/solicitacoes',
   requestDetail: (id: string) => `/solicitacoes/${encodeURIComponent(id)}`,
   properties: '/propriedades',
+  favorites: '/favoritos',
   providerRoot: '/prestador',
   providerDashboard: '/prestador/dashboard',
   providerServices: '/prestador/servicos',
@@ -73,7 +74,7 @@ export function getRequiredRole(pathname: string): Role | null {
     pathname.startsWith(`${paths.requests}/`) ||
     pathname === '/propriedades' ||
     pathname.startsWith('/propriedades/') ||
-    pathname === '/favoritos' ||
+    pathname === paths.favorites ||
     pathname === paths.profile
   ) {
     return 'producer'

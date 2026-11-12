@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router'
 import { PrivateLayout } from '../layouts/PrivateLayout'
 import { PublicLayout } from '../layouts/PublicLayout'
 import { DashboardPage } from '../pages/DashboardPage'
+import { FavoritesPage } from '../pages/FavoritesPage'
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
 import { ProfilePage } from '../pages/ProfilePage'
 import { ProviderProfilePage } from '../pages/ProviderProfilePage'
@@ -63,6 +64,7 @@ export function AppRoutes() {
           <Route path={paths.requests} element={<RequestsPage />} />
           <Route path={routePatterns.requestDetail} element={<RequestDetailPage />} />
           <Route path={paths.properties} element={<PropertiesPage />} />
+          <Route path={paths.favorites} element={<FavoritesPage />} />
           <Route path={paths.profile} element={<ProfilePage />} />
           <Route path={paths.notifications} element={<NotificationsPage />} />
         </Route>

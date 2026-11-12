@@ -8,6 +8,7 @@ import { cardHover } from '../../utils/motion'
 import { Badge } from '../ui/Badge'
 import { buttonClasses } from '../ui/buttonClasses'
 import { Rating } from '../ui/Rating'
+import { FavoriteButton } from './FavoriteButton'
 import { ServiceImage } from './ServiceImage'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
 
@@ -29,6 +30,7 @@ export function ServiceCard({ service }: { service: Service }) {
             {service.available ? 'Disponível' : 'Indisponível'}
           </Badge>
         </div>
+        <FavoriteButton serviceId={service.id} serviceTitle={service.title} className="absolute top-3 right-3" />
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>

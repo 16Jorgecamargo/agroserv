@@ -3,6 +3,7 @@ import { MapPin, SearchX } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
 import { CategoryIcon } from '../components/domain/CategoryIcon'
+import { FavoriteButton } from '../components/domain/FavoriteButton'
 import { ReportButton } from '../components/domain/ReportButton'
 import { RequestServiceForm } from '../components/domain/RequestServiceForm'
 import { ServiceGallery } from '../components/domain/ServiceGallery'
@@ -100,9 +101,10 @@ export function ServiceDetailPage() {
               <CategoryIcon name={category.icon} className="size-3.5" />
               {category.name}
             </Badge>
-            <h1 className="mt-3 text-3xl/[38px] font-bold tracking-[-0.01em] text-text sm:text-4xl/[44px]">
-              {service.title}
-            </h1>
+            <div className="mt-3 flex items-start justify-between gap-3">
+              <h1 className="text-3xl/[38px] font-bold tracking-[-0.01em] text-text sm:text-4xl/[44px]">{service.title}</h1>
+              <FavoriteButton serviceId={service.id} serviceTitle={service.title} className="mt-1 shrink-0 border border-border" />
+            </div>
             <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-text-muted">
               <Rating value={service.rating} count={service.reviewCount} />
               <span className="inline-flex items-center gap-1.5">
