@@ -1,10 +1,13 @@
-import type { CounterOfferPayload, RequestStatusFilter } from '../types/api'
+import type { CounterOfferPayload, ProviderDashboard, RequestStatusFilter } from '../types/api'
 import type { ServiceRequest, ServiceRequestDetail } from '../types/entities'
 import { apiClient } from './api/apiClient'
 
 const pathFor = (id: string) => `/provider/requests/${encodeURIComponent(id)}`
 
 export const providerRequestService = {
+  dashboard(): Promise<ProviderDashboard> {
+    return apiClient.get<ProviderDashboard>('/provider/dashboard')
+  },
   list(status: RequestStatusFilter = 'all'): Promise<ServiceRequest[]> {
     return apiClient.get<ServiceRequest[]>('/provider/requests', status === 'all' ? undefined : { status })
   },

@@ -1,4 +1,6 @@
+import type { ProviderDashboard } from '../../../types/api'
 import type { ServiceRequest, ServiceRequestDetail, User } from '../../../types/entities'
+import { addDays, getTodayInBrasilia } from '../../../utils/date'
 import { isRequestStatus } from '../../../utils/requestStatus'
 import { ApiError } from '../apiError'
 import { getMockDatabase } from '../mockDatabase'
@@ -38,7 +40,58 @@ function getReceivedRequest({ token, params }: RouteContext): ServiceRequestDeta
   return getRequestDetail(record, 'provider')
 }
 
+const RESPONSE_EVENTS = new Set(['accepted', 'rejected', 'counter_offer'])
+
+function getProviderDashboard({ token }: RouteContext): ProviderDashboard {
+  const user = requireUser(token, 'provider')
+  const now = new Date()
+  const today = getTodayInBrasilia(now)
+  const weekEnd = addDays(today, 7)
+  const month = today.slice(0, 7)
+  const responseWindowStart = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000).toISOString()
+  const database = getMockDatabase()
+  const records = database.requestRecords.filter((record) => record.request.providerId === user.id)
+  const requests = records.map((record) => record.request)
+  const pending = requests.filter((request) => request.status === 'pending').sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+  const upcoming = requests
+    .filter((request) => request.status === 'accepted' && request.scheduledDate >= today && request.scheduledDate <= weekEnd)
+    .sort((a, b) => a.scheduledDate.localeCompare(b.scheduledDate))
+
+  let responded = 0
+  let acceptedCount = 0
+  let monthEstimatedValue = 0
+  for (const record of records) {
+    const events = [...record.events].sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    const firstResponse = events.find((event) => RESPONSE_EVENTS.has(event.type))
+    if (firstResponse && firstResponse.createdAt >= responseWindowStart) {
+      responded += 1
+      const acceptedLater = firstResponse.type === 'counter_offer' && events.some((event) => event.type === 'counter_offer_accepted')
+      if (firstResponse.type === 'accepted' || acceptedLater) acceptedCount += 1
+    }
+    const completed = events.find((event) => event.type === 'completed')
+    if (record.request.status === 'completed' && completed && getTodayInBrasilia(new Date(completed.createdAt)).startsWith(month)) {
+      monthEstimatedValue += record.request.value
+    }
+  }
+
+  const profile = database.providerProfiles.find((candidate) => candidate.userId === user.id)
+
+  return {
+    stats: {
+      newRequests: pending.length,
+      upcoming: upcoming.length,
+      inProgress: requests.filter((request) => request.status === 'in_progress').length,
+      acceptanceRate: responded ? acceptedCount / responded : null,
+      averageRating: profile?.rating ?? 0,
+      monthEstimatedValue: Math.round(monthEstimatedValue * 100) / 100,
+    },
+    pendingRequests: pending.slice(0, 5),
+    upcomingRequests: upcoming.slice(0, 5),
+  }
+}
+
 export const providerRoutes: MockRoute[] = [
+  { method: 'GET', pattern: '/provider/dashboard', handle: getProviderDashboard },
   { method: 'GET', pattern: '/provider/requests', handle: listReceivedRequests },
   { method: 'GET', pattern: '/provider/requests/:id', handle: getReceivedRequest },
   { method: 'POST', pattern: '/provider/requests/:id/accept', handle: handleProviderTransition('provider_accept') },

@@ -20,6 +20,7 @@ export const paths = {
   providerServiceNew: '/prestador/servicos/novo',
   providerServiceEdit: (id: string) => `/prestador/servicos/${encodeURIComponent(id)}/editar`,
   providerRequests: '/prestador/solicitacoes',
+  providerAgenda: '/prestador/agenda',
   providerRequestDetail: (id: string) => `/prestador/solicitacoes/${encodeURIComponent(id)}`,
   adminDashboard: '/admin',
   adminRequestDetail: (id: string) => `/admin/solicitacoes/${encodeURIComponent(id)}`,

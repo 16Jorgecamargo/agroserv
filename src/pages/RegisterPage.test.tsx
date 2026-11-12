@@ -45,7 +45,7 @@ describe('RegisterPage', () => {
     await fillValidRegistration('provider')
     await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }))
 
-    expect(await screen.findByRole('heading', { level: 1, name: 'Painel do prestador' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: /^Olá, / })).toBeInTheDocument()
     expect(localStorage.getItem('agroserv_token')).toBe('mock.prv-7')
   })
 

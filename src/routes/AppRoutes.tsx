@@ -5,6 +5,7 @@ import { DashboardPage } from '../pages/DashboardPage'
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage'
 import { ProfilePage } from '../pages/ProfilePage'
 import { ProviderProfilePage } from '../pages/ProviderProfilePage'
+import { ProviderDashboardPage } from '../pages/ProviderDashboardPage'
 import { MyServicesPage } from '../pages/MyServicesPage'
 import { ProviderRequestDetailPage } from '../pages/ProviderRequestDetailPage'
 import { ProviderRequestsPage } from '../pages/ProviderRequestsPage'
@@ -70,15 +71,7 @@ export function AppRoutes() {
 
       <Route element={<ProtectedRoute allowedRoles={['provider']} />}>
         <Route path={paths.providerRoot} element={<PrivateLayout />}>
-          <Route
-            path="dashboard"
-            element={
-              <RoleDashboardPlaceholder
-                title="Painel do prestador"
-                description="O painel completo do prestador será disponibilizado em uma próxima etapa."
-              />
-            }
-          />
+          <Route path="dashboard" element={<ProviderDashboardPage />} />
           <Route path="servicos" element={<MyServicesPage />} />
           <Route path="servicos/novo" element={<ServiceFormPage />} />
           <Route path="servicos/:id/editar" element={<ServiceFormPage />} />
