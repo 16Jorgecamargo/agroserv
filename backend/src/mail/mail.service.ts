@@ -1,13 +1,18 @@
+import { resolve } from 'node:path';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import nodemailer, { type Transporter } from 'nodemailer';
+import nodemailer, { type SendMailOptions, type Transporter } from 'nodemailer';
 
 export interface MailMessage {
   to: string;
   subject: string;
   text: string;
   html: string;
+  attachments?: SendMailOptions['attachments'];
 }
+
+const LOGO_CID = 'agroserv-logo';
+const LOGO_PATH = resolve(import.meta.dirname, '../../assets/brand/logo-email.png');
 
 function escapeHtml(value: string): string {
   // Evita que nomes com símbolos quebrem o HTML do e-mail
@@ -70,6 +75,7 @@ export class MailService implements OnModuleInit {
     ].join('\n');
     const html = `
       <div style="font-family: Arial, sans-serif; color: #17201A; max-width: 520px;">
+        <img src="cid:${LOGO_CID}" alt="AgroServ" width="155" height="40" style="display: block; margin-bottom: 24px;">
         <h2 style="color: #2F6B45;">Redefinição de senha</h2>
         <p>Olá, ${safeName}.</p>
         <p>Recebemos um pedido para redefinir a senha da sua conta no AgroServ.</p>
@@ -79,6 +85,12 @@ export class MailService implements OnModuleInit {
         <p>Se o botão não abrir, copie este endereço no navegador:<br><a href="${link}">${link}</a></p>
         <p style="color: #667085;">O link vale por 60 minutos e só pode ser usado uma vez. Se você não fez este pedido, ignore este e-mail. Sua senha continua a mesma.</p>
       </div>`;
-    return this.send({ to, subject: 'AgroServ: redefinição de senha', text, html });
+    return this.send({
+      to,
+      subject: 'AgroServ: redefinição de senha',
+      text,
+      html,
+      attachments: [{ filename: 'agroserv.png', path: LOGO_PATH, cid: LOGO_CID, contentType: 'image/png' }],
+    });
   }
 }

@@ -6,6 +6,7 @@ import type { AuthContextValue } from '../../contexts/AuthContext'
 import { useAuth } from '../../hooks/useAuth'
 import { PrivateLayout } from '../../layouts/PrivateLayout'
 import type { Role, User } from '../../types/entities'
+import { Logo } from './Logo'
 import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 
@@ -45,6 +46,31 @@ function LocationProbe() {
   const location = useLocation()
   return <p>Localização: {location.pathname}</p>
 }
+
+describe('Logo', () => {
+  it('links to the home page with the brand artwork', () => {
+    render(
+      <MemoryRouter>
+        <Logo />
+      </MemoryRouter>,
+    )
+
+    const link = screen.getByRole('link', { name: 'AgroServ, página inicial' })
+    expect(link).toHaveAttribute('href', '/')
+    expect(link.querySelector('img')).toHaveAttribute('src', expect.stringMatching(/logo-horizontal\.png$/))
+  })
+
+  it('uses the white artwork on dark backgrounds', () => {
+    render(
+      <MemoryRouter>
+        <Logo tone="light" />
+      </MemoryRouter>,
+    )
+
+    const link = screen.getByRole('link', { name: 'AgroServ, página inicial' })
+    expect(link.querySelector('img')).toHaveAttribute('src', expect.stringMatching(/logo-horizontal-white\.png$/))
+  })
+})
 
 describe('Navbar', () => {
   it('shows the login link for visitors', () => {
