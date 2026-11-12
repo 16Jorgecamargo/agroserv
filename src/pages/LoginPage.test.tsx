@@ -95,7 +95,7 @@ describe('LoginPage', () => {
 
     await submitLogin('produtor@agroserv.com', '123456')
     expect(await screen.findByRole('heading', { level: 1, name: 'Pulverização Agrícola' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Acompanhar no painel' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Solicitar serviço' })).toBeInTheDocument()
   })
 
   it('links to password recovery and account registration', () => {

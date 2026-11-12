@@ -148,7 +148,7 @@ Tamanho (estimativa para uma pessoa): **P** até 1 dia · **M** 2 a 3 dias · **
 | F1-08 | Perfil e conta (produtor e prestador) | M | F1-03, F1-05 | | Feito |
 | F2-01 | Novo modelo de solicitação e máquina de status | G | F1-02 | | Feito |
 | F2-02 | Propriedades | M | F1-03, F1-05 | | Feito |
-| F2-03 | Solicitar serviço | G | F1-03, F2-01, F2-02 | | A fazer |
+| F2-03 | Solicitar serviço | G | F1-03, F2-01, F2-02 | | Feito |
 | F2-04 | Detalhe da solicitação (produtor) | M | F1-03, F2-01 | | A fazer |
 | F2-05 | Lista e painel do produtor com os novos status | P | F2-01 | | Feito |
 | F3-01 | Upload de arquivos | M | F1-01, F1-03 | | A fazer |

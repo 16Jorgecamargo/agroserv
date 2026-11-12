@@ -1,15 +1,19 @@
 import { motion } from 'framer-motion'
 import { MapPin, SearchX } from 'lucide-react'
+import { useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
 import { CategoryIcon } from '../components/domain/CategoryIcon'
+import { RequestServiceForm } from '../components/domain/RequestServiceForm'
 import { ServiceImage } from '../components/domain/ServiceImage'
 import { Container } from '../components/layout/Container'
 import { Avatar } from '../components/ui/Avatar'
 import { Badge } from '../components/ui/Badge'
 import { Breadcrumbs } from '../components/ui/Breadcrumbs'
+import { Button } from '../components/ui/Button'
 import { buttonClasses } from '../components/ui/buttonClasses'
 import { EmptyState } from '../components/ui/EmptyState'
 import { ErrorState } from '../components/ui/ErrorState'
+import { Modal } from '../components/ui/Modal'
 import { Rating } from '../components/ui/Rating'
 import { Skeleton } from '../components/ui/Skeleton'
 import { useAuth } from '../hooks/useAuth'
@@ -17,7 +21,7 @@ import { usePageTitle } from '../hooks/usePageTitle'
 import { useService } from '../hooks/useServices'
 import { paths, type LoginLocationState } from '../routes/paths'
 import { isApiError } from '../services/api/apiError'
-import { formatCount, formatLocation, formatPrice, formatRating } from '../utils/format'
+import { ESTIMATE_NOTICE, formatCount, formatLocation, formatPrice, formatRating } from '../utils/format'
 import { fadeUp, staggerContainer } from '../utils/motion'
 
 function DetailSkeleton() {
@@ -38,7 +42,8 @@ function DetailSkeleton() {
 export function ServiceDetailPage() {
   const { id = '' } = useParams()
   const location = useLocation()
-  const { isAuthenticated } = useAuth()
+  const { user, isAuthenticated } = useAuth()
+  const [isRequesting, setIsRequesting] = useState(false)
   const { data, error, isLoading, refetch } = useService(id)
   const service = data?.id === id ? data : null
   usePageTitle(service?.title ?? 'Serviço')
@@ -122,18 +127,19 @@ export function ServiceDetailPage() {
               </Badge>
             </div>
 
-            {isAuthenticated ? (
-              <Link to={paths.dashboard} className={buttonClasses('primary', 'lg', 'mt-6 w-full')}>
-                Acompanhar no painel
-              </Link>
-            ) : (
+            {!isAuthenticated ? (
               <Link to={paths.login} state={loginState} className={buttonClasses('primary', 'lg', 'mt-6 w-full')}>
                 Entrar para contratar
               </Link>
+            ) : user?.role === 'producer' ? (
+              <Button size="lg" className="mt-6 w-full" disabled={!service.available} onClick={() => setIsRequesting(true)}>
+                Solicitar serviço
+              </Button>
+            ) : null}
+            {!service.available && (
+              <p className="mt-3 text-center text-sm text-text-muted">Este serviço não está disponível para novas solicitações.</p>
             )}
-            <p className="mt-3 text-center text-xs text-text-muted">
-              A contratação online estará disponível na próxima versão.
-            </p>
+            <p className="mt-3 text-center text-xs text-text-muted">{ESTIMATE_NOTICE}</p>
 
             <div className="mt-6 border-t border-border pt-6">
               <p className="text-xs font-semibold tracking-[0.12em] text-text-muted uppercase">Prestador</p>
@@ -158,6 +164,10 @@ export function ServiceDetailPage() {
           </div>
         </motion.aside>
       </div>
+
+      <Modal isOpen={isRequesting} onClose={() => setIsRequesting(false)} title="Solicitar serviço" description={service.title} closeOnBackdrop={false}>
+        {isRequesting && <RequestServiceForm service={service} onCancel={() => setIsRequesting(false)} />}
+      </Modal>
     </Container>
   )
 }

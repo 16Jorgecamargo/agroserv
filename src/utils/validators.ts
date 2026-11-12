@@ -175,3 +175,25 @@ export function validatePropertyForm(values: PropertyFormValues): PropertyFormEr
 
   return errors
 }
+
+export interface RequestFormValues {
+  propertyId: string
+  scheduledDate: string
+  quantity: string
+  notes: string
+}
+
+export type RequestFormErrors = Partial<Record<keyof RequestFormValues, string>>
+
+export function validateRequestForm(values: RequestFormValues, today: string, blockedDays: readonly string[]): RequestFormErrors {
+  const errors: RequestFormErrors = {}
+  const quantity = parseDecimal(values.quantity)
+
+  if (!values.propertyId) errors.propertyId = 'Selecione uma propriedade.'
+  if (!values.scheduledDate || values.scheduledDate < today) errors.scheduledDate = 'Escolha uma data a partir de hoje.'
+  else if (blockedDays.includes(values.scheduledDate)) errors.scheduledDate = 'O prestador não atende nesta data.'
+  if (!Number.isFinite(quantity) || quantity <= 0 || quantity > 100_000) errors.quantity = 'Informe a quantidade.'
+  if (values.notes.trim().length > 1000) errors.notes = 'Use no máximo 1000 caracteres.'
+
+  return errors
+}

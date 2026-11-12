@@ -12,4 +12,7 @@ export const serviceService = {
   getById(id: string): Promise<ServiceDetail> {
     return apiClient.get<ServiceDetail>(`/services/${encodeURIComponent(id)}`)
   },
+  blockedDays(id: string): Promise<string[]> {
+    return apiClient.get<string[]>(`/services/${encodeURIComponent(id)}/blocked-days`)
+  },
 }

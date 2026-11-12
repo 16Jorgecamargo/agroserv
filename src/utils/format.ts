@@ -66,3 +66,26 @@ export function formatNumber(value: number): string {
 export function formatArea(hectares: number): string {
   return `${numberFormatter.format(hectares)} ha`
 }
+
+const quantityUnitLabels: Record<PriceUnit, [string, string]> = {
+  hour: ['hora', 'horas'],
+  hectare: ['hectare', 'hectares'],
+  day: ['dia', 'dias'],
+  trip: ['viagem', 'viagens'],
+}
+
+export function getQuantityUnitLabel(unit: PriceUnit, plural = true): string {
+  return quantityUnitLabels[unit][plural ? 1 : 0]
+}
+
+export function formatQuantity(quantity: number, unit: PriceUnit): string {
+  return `${numberFormatter.format(quantity)} ${quantityUnitLabels[unit][quantity === 1 ? 0 : 1]}`
+}
+
+export function formatMoney(value: number): string {
+  return moneyFormatter.format(value)
+}
+
+const moneyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 })
+
+export const ESTIMATE_NOTICE = 'Valor estimado. O acerto é feito diretamente com o prestador.'
