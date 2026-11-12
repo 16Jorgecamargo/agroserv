@@ -16,6 +16,14 @@ export interface User {
   createdAt: string
 }
 
+export interface PasswordResetTokenRecord {
+  token: string
+  userId: string
+  createdAt: string
+  expiresAt: string
+  usedAt?: string
+}
+
 export interface Category {
   id: string
   slug: string

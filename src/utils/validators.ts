@@ -48,6 +48,12 @@ export const brazilianStates = [
   { value: 'SE', label: 'Sergipe' },
   { value: 'TO', label: 'Tocantins' },
 ] as const
+export interface ResetPasswordFormValues {
+  password: string
+  confirmPassword: string
+}
+
+export type ResetPasswordFormErrors = Partial<Record<keyof ResetPasswordFormValues, string>>
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -82,5 +88,18 @@ export function validateRegisterForm(values: RegisterFormValues): RegisterFormEr
   }
   if (!values.acceptedTerms) errors.acceptedTerms = 'Aceite os termos de uso e a política de privacidade.'
 
+  return errors
+}
+
+export function validateForgotPasswordEmail(email: string): string | undefined {
+  if (!email.trim() || !isValidEmail(email)) return 'Informe um e-mail válido.'
+  return undefined
+}
+
+export function validateResetPasswordForm(values: ResetPasswordFormValues): ResetPasswordFormErrors {
+  const errors: ResetPasswordFormErrors = {}
+  if (values.password.length < 8) errors.password = 'A senha precisa ter pelo menos 8 caracteres.'
+  if (!values.confirmPassword) errors.confirmPassword = 'Confirme sua senha.'
+  else if (values.confirmPassword !== values.password) errors.confirmPassword = 'As senhas não conferem.'
   return errors
 }

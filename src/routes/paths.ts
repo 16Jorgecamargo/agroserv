@@ -6,6 +6,7 @@ export const paths = {
   serviceDetail: (id: string) => `/servicos/${encodeURIComponent(id)}`,
   login: '/login',
   forgotPassword: '/esqueci-senha',
+  resetPassword: '/redefinir-senha',
   register: '/cadastro',
   terms: '/termos',
   privacy: '/privacidade',
@@ -23,6 +24,7 @@ export const routePatterns = {
 export interface LoginLocationState {
   from?: { pathname: string; search: string }
   reason?: 'protected' | 'forbidden'
+  notice?: 'passwordReset'
 }
 
 export function getRoleHomePath(role: Role): string {
