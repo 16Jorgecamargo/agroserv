@@ -51,8 +51,8 @@ export class SeedService implements OnApplicationBootstrap {
   }
 
   async reset(): Promise<void> {
-    // Apaga tudo, recria as tabelas e volta aos dados demo
-    await this.dataSource.synchronize(true);
+    await this.dataSource.dropDatabase();
+    await this.dataSource.runMigrations();
     await this.seed();
   }
 

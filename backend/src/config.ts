@@ -32,7 +32,7 @@ export function loadConfig(): AppConfig {
   return {
     port,
     databasePath: env.DATABASE_PATH ?? (isTest ? ':memory:' : 'data/agroserv.sqlite'),
-    synchronize: flag(env.DB_SYNCHRONIZE, env.NODE_ENV !== 'production'),
+    synchronize: flag(env.DB_SYNCHRONIZE, false),
     jwtSecret: env.JWT_SECRET ?? 'dev-only-secret-change-me',
     jwtExpiresIn: env.JWT_EXPIRES_IN ?? '7d',
     corsOrigin: env.CORS_ORIGIN ?? '*',

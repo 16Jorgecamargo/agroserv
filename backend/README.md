@@ -15,13 +15,16 @@ cp .env.example .env
 pnpm start:dev
 ```
 
-A API sobe em `http://localhost:3333`. Na primeira execução, o banco (`data/agroserv.sqlite`) é criado e recebe os dados demo sozinho.
+A API sobe em `http://localhost:3333`. Na primeira execução, as migrations criam as tabelas em `data/agroserv.sqlite` e o banco recebe os dados demo sozinho.
 
 | Comando | O que faz |
 |---|---|
 | `pnpm start:dev` | Sobe a API recarregando a cada mudança |
 | `pnpm build` e `pnpm start:prod` | Compila e roda a versão compilada |
-| `pnpm seed` | Apaga o banco e volta aos dados demo |
+| `pnpm seed` | Apaga o banco, roda as migrations e volta aos dados demo |
+| `pnpm migration:show` | Lista as migrations e quais já rodaram |
+| `pnpm migration:run` e `pnpm migration:revert` | Aplica as pendentes ou desfaz a última |
+| `pnpm migration:generate src/database/migrations/<Nome>` | Gera uma migration com a diferença entre as entidades e o banco |
 | `pnpm test` | Testes unitários (services com repository simulado) |
 | `pnpm test:e2e` | Testes de integração (API inteira sobre SQLite em memória) |
 | `pnpm lint` e `pnpm typecheck` | Lint e checagem de tipos |
@@ -44,7 +47,7 @@ Todas estão descritas em [`.env.example`](.env.example). As principais:
 |---|---|---|
 | `PORT` | `3333` | Porta da API |
 | `DATABASE_PATH` | `data/agroserv.sqlite` | Arquivo do SQLite |
-| `DB_SYNCHRONIZE` | `true` fora de produção | Cria e atualiza as tabelas sozinho. Use só em desenvolvimento |
+| `DB_SYNCHRONIZE` | `false` | `true` sincroniza as tabelas direto pelas entidades, sem migration. O padrão usa as migrations |
 | `JWT_SECRET` | segredo de desenvolvimento | **Troque** fora do ambiente local |
 | `CORS_ORIGIN` | `*` | Origens liberadas, separadas por vírgula |
 | `PUBLIC_URL` | `http://localhost:<PORT>` | Base das URLs dos arquivos enviados |
@@ -70,6 +73,14 @@ SMTP_PASS=<senha de app de 16 letras>
 ```
 
 Qualquer outro provedor SMTP funciona do mesmo jeito (porta 465 usa TLS direto).
+
+## Migrations
+
+O schema do banco é criado pelas migrations do TypeORM em `src/database/migrations/`. Elas rodam sozinhas quando a API sobe (`migrationsRun`) e ficam registradas na tabela `migrations`, então cada uma roda uma vez só.
+
+- `1794466778622-InitialSchema.ts` cria as 19 tabelas e os índices. Num banco antigo, criado antes pelo `synchronize`, ela só é registrada, sem recriar nada.
+- Para mudar o schema: altere a entidade, rode `pnpm migration:generate src/database/migrations/<Nome>` e adicione a classe gerada em `src/database/migrations/index.ts`.
+- Os testes de integração também criam o banco pelas migrations, então uma migration quebrada derruba os testes.
 
 ## Formato das respostas
 
@@ -109,7 +120,7 @@ Uma pasta por assunto em `src/`. Cada uma segue as mesmas camadas:
 ```
 src/
   common/         envelope, filtro de erros, log, validação, guards, relógio, paginação
-  database/       conexão, lista de entidades e seed
+  database/       conexão, lista de entidades, migrations e seed
   auth/           cadastro, login, sessão e recuperação de senha
   users/          perfil, senha e exclusão de conta
   providers/      perfil profissional, verificação e perfil público
@@ -134,6 +145,7 @@ Os repositories ficam na pasta do seu assunto e são registrados em `database/da
 | Resposta padronizada de erro (filtro global) | `src/common/http-exception.filter.ts`, `src/common/app.exception.ts` |
 | Controller, service e repository | todas as pastas de assunto |
 | Entidades com relacionamentos | `src/**/entities/*.entity.ts` (1:1 usuário–perfil, 1:N em quase tudo, N:N serviço–equipamento) |
+| Migrations | `src/database/migrations/` (rodam ao subir a API), `src/database/data-source.ts` para a CLI do TypeORM |
 | Seed | `src/database/seed.service.ts`, `src/database/seed.data.ts` (`pnpm seed`) |
 | CRUD completo | propriedades, serviços, equipamentos e categorias |
 | Cadastro e login com bcrypt | `src/auth/auth.service.ts` |
@@ -155,7 +167,7 @@ Os repositories ficam na pasta do seu assunto e são registrados em `database/da
 ## Testes
 
 - `pnpm test`: regras puras e services com repository simulado (máquina de status, médias de avaliação, login, relógio).
-- `pnpm test:e2e`: 110 casos sobre a API real com banco em memória. Cobrem sucesso, validação (422), permissão (401/403/404) e transição inválida (409) de cada endpoint.
+- `pnpm test:e2e`: 113 casos sobre a API real com banco em memória. Cobrem sucesso, validação (422), permissão (401/403/404) e transição inválida (409) de cada endpoint.
 
 Os arquivos de teste usam os sufixos `.unit-spec.ts` e `.e2e-spec.ts` para não serem capturados pelo Vitest do front-end na raiz do repositório.
 

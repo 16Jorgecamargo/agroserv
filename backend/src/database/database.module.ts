@@ -22,6 +22,7 @@ import { UploadRulesService } from '../uploads/upload-rules.service.js';
 import { UploadsRepository } from '../uploads/uploads.repository.js';
 import { UsersRepository } from '../users/users.repository.js';
 import { ENTITIES } from './entities.js';
+import { MIGRATIONS } from './migrations/index.js';
 
 const REPOSITORIES = [
   UsersRepository,
@@ -60,6 +61,8 @@ import { SeedService } from './seed.service.js';
           type: 'better-sqlite3' as const,
           database,
           entities: ENTITIES,
+          migrations: MIGRATIONS,
+          migrationsRun: true,
           synchronize: config.getOrThrow<boolean>('synchronize'),
         };
       },
