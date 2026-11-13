@@ -135,7 +135,7 @@ footer a { color: var(--leaf); }
 </style>
 </head>
 <body>
-<header><div class="bar"><a class="brand" href="./" aria-label="AgroServ, página do projeto"><img src="assets/brand/logo-horizontal.png" alt="AgroServ" width="101" height="26" /><span>Página do projeto</span></a><nav><a href="./">Início</a><a href="app/">App</a><a href="slides/full-stack/">Apresentação</a><a href="system-flowchart.html">Sistema</a><a href="api-contract.html">API</a></nav></div></header>
+<header><div class="bar"><a class="brand" href="./" aria-label="AgroServ, página do projeto"><img src="assets/brand/logo-horizontal.png" alt="AgroServ" width="101" height="26" /><span>Página do projeto</span></a><nav><a href="./">Início</a><a href="app/">App</a><a href="slides/full-stack/">Apresentação</a><a href="slides/second-phase/">Etapa 2</a><a href="system-flowchart.html">Sistema</a><a href="api-contract.html">API</a></nav></div></header>
 <main><article>
 ${body}
 </article></main>
